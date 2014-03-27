@@ -14,6 +14,8 @@ public class GBUIExtension extends DefaultClassManager {
     @Override
     public void load(PrimitiveManager pm) throws ExtensionException {
         pm.addPrimitive("print-agent-info", new PrintAgentInfo());
+        pm.addPrimitive("ai-rotate", new AIRotate());
+        pm.addPrimitive("ai-move", new AIMove());
     }
     
 }
