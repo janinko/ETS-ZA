@@ -13,7 +13,7 @@ public class Turtle {
     }
 
     public boolean isHuman() {
-        return "humans".equals(turtle.getBreed().printName());
+        return "HUMANS".equals(turtle.getBreed().printName());
     }
 
     public long getId() {

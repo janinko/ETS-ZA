@@ -59,11 +59,11 @@ public class Callbacks {
         }
         
         public int zombiesAround(){
-            return (int) aroundZ.report(ctx, new Object[0]);
+            return ((Double) aroundZ.report(ctx, new Object[0])).intValue();
         }
         
         public int humansAround(){
-            return (int) aroundH.report(ctx, new Object[0]);
+            return ((Double) aroundH.report(ctx, new Object[0])).intValue();
         }
         
         public Set<Turtle> see(){
