@@ -50,7 +50,7 @@ public class PrintAgentInfo extends DefaultCommand{
             System.out.println("    VAR_SIZE: " + vars[AgentVariableNumbers.VAR_SIZE]);
             System.out.println("    VAR_PENSIZE: " + vars[AgentVariableNumbers.VAR_PENSIZE]);
             System.out.println("    VAR_PENMODE: " + vars[AgentVariableNumbers.VAR_PENMODE]);
-            for(int i=13; i <= vars.length; i++){
+            for(int i=13; i < vars.length; i++){
                 System.out.println("    CUSTOM_VAR_"+i+": " + vars[i]);
             }
             for(Object v : t.variables()){
