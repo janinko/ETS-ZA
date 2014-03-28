@@ -1,6 +1,7 @@
 breed [humans human]
 breed [zombies zombie]
 
+extensions [ gbui ]
 
 globals [
   human-population
@@ -18,6 +19,15 @@ zombies-own [
 to setup
   clear-all
   set-default-shape turtles "person"
+  
+  let tmove task [
+     forward 0.1
+  ]
+  let trotate task [
+     right ?1
+  ]
+  
+  gbui:set-actuators tmove trotate
   
   set human-population round (total-population * (1 - zombie-population-percent / 100))
   set zombie-population round (total-population * (zombie-population-percent / 100))
@@ -53,9 +63,7 @@ to step-human
 end
 
 to step-zombie
-  set nearest-human min-one-of (humans) [ distance myself ]
-  face nearest-human   
-  forward 0.05  
+  gbui:ai-perform
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
