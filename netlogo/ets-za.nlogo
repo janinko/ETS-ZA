@@ -21,12 +21,24 @@ to setup
   set-default-shape turtles "person"
   
   let tmove task [
-     forward 0.1
+    ifelse is-zombie?
+      [ move-z ]
+      [ move-h ]
   ]
   let trotate task [
      right ?1
   ]
+  let tcount-z task [
+     count zombies in-radius 5
+  ]
+  let tcount-h task [
+     count humans in-radius 5
+  ]
+  let tsee task [
+     turtles in-cone 8 30
+  ]
   
+  gbui:set-sensors tcount-z tcount-h tsee
   gbui:set-actuators tmove trotate
   
   set human-population round (total-population * (1 - zombie-population-percent / 100))
@@ -51,20 +63,18 @@ end
 
 
 to step
-  ask humans [ step-human ]
-  ask zombies [step-zombie ]
+  ask humans [ gbui:ai-perform ]
+  ask zombies [ gbui:ai-perform ]
 end
 
-to step-human
-  set nearest-zombie min-one-of (zombies) [ distance myself ]
-  face nearest-zombie   
-  right 180
-  forward 0.1  
+to move-z
+  forward 0.05
 end
 
-to step-zombie
-  gbui:ai-perform
+to move-h
+  forward 0.1
 end
+  
 @#$#@#$#@
 GRAPHICS-WINDOW
 707
@@ -134,7 +144,7 @@ zombie-population-percent
 zombie-population-percent
 0
 100
-34
+75
 1
 1
 % zombie/human
