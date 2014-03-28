@@ -1,6 +1,7 @@
 
 package eu.janinko.etsza;
 
+import eu.janinko.etsza.ai.AI;
 import org.nlogo.api.AgentVariableNumbers;
 import org.nlogo.api.AgentVariables;
 import org.nlogo.api.Argument;
@@ -16,14 +17,17 @@ import org.nlogo.api.Turtle;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class PrintAgentInfo extends DefaultCommand{
+    private AI ai;
+
+    PrintAgentInfo(AI ai) {
+        this.ai = ai;
+    }
 
     @Override
     public Syntax getSyntax() {
         return Syntax.commandSyntax(new int[] { Syntax.TurtleType()});
     }
 
-    
-    
     @Override
     public void perform(Argument[] argmnts, Context cntxt) throws ExtensionException, LogoException {
         AgentVariables.getImplicitLinkVariables();
