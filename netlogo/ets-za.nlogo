@@ -21,7 +21,7 @@ to setup
   set-default-shape turtles "person"
   
   let tmove task [
-    ifelse is-zombie?
+    ifelse breed = zombies
       [ move-z ]
       [ move-h ]
   ]
