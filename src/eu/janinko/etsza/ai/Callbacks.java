@@ -37,7 +37,7 @@ public class Callbacks {
         see = reporterTask;
     }
 
-    public void rotate(Turtle turtle, Context ctx, Integer i) {
+    public void rotate(Turtle turtle, Context ctx, Double i) {
         rotate.perform(ctx, new Object[] {i});
     }
 

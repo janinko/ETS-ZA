@@ -13,11 +13,11 @@ public class Turtle {
     }
 
     public boolean isHuman() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "humans".equals(turtle.getBreed().printName());
     }
 
-    public int getId() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public long getId() {
+        return turtle.id();
     }
     
 }

@@ -12,8 +12,8 @@ import java.util.HashMap;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class Agents {
-    HashMap<Integer, Zombie> zombies = new HashMap<>();
-    HashMap<Integer, Human> humans = new HashMap<>();
+    HashMap<Long, Zombie> zombies = new HashMap<>();
+    HashMap<Long, Human> humans = new HashMap<>();
     AI ai;
 
     Agents(AI ai) {

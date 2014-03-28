@@ -20,7 +20,7 @@ public class Zombie implements Agent{
 
     @Override
     public void perform(Context ctx) {
-        ai.getCallbacks().rotate(turtle, ctx, ai.getRandom().nextInt(41)-20);
+        ai.getCallbacks().rotate(turtle, ctx, ai.getRandom().nextDouble()*40-20);
         ai.getCallbacks().move(turtle, ctx);
     }
     
