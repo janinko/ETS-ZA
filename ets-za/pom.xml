@@ -55,6 +55,7 @@
                         <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
                     </archive>
                     <finalName>gbui</finalName>
+                    <outputDirectory>${outDir}</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
