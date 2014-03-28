@@ -7,13 +7,17 @@ Effective tatctis for survival - zombie apocalypse
 Usage
 =====
 
-Build, package as gbui.jar and place into NETLOGO/extensions/gbui/.
+Build:
+```
+mvn clean install -DoutDir=/path/to/netlogo/extensions/gbui
+```
+or place it there manually.
 
-In netlogo code add:
+In netlogo project code add:
 ```
 extensions [ gbui ]
 ```
 and then you can use:
 ```
-print-agent-info TURTLE
+gbui:print-agent-info <TURTLE>
 ```
