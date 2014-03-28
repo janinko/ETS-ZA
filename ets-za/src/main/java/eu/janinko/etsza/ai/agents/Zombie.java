@@ -22,9 +22,23 @@ public class Zombie implements Agent{
     @Override
     public void perform(Context ctx) {
         Callbacks.Actuators a = ai.getCallbacks().getActuators(ctx);
+        Callbacks.Sensors s = ai.getCallbacks().getSensors(ctx);
         
-        a.rotate(ai.getRandom().nextDouble()*40-20);
-        a.move();
+        for(Turtle t : s.see()){
+            if(t.isHuman()){
+                a.move();
+                return;
+            }
+        }
+        if(s.humansAround() > 0){
+            a.rotate(20.0);
+        }else{
+            if(ai.getRandom().nextInt(3)==0){
+                a.rotate(ai.getRandom().nextDouble()*40-20);
+            }else{
+                a.move();
+            }
+        }
     }
     
     
