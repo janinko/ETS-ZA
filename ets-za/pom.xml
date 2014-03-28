@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cz.muni.fi</groupId>
+    <artifactId>ets-za</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>Effective Tactics for Survival in Zombie Apocalypse (ETS-ZA)</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <lib.path>${project.basedir}/lib</lib.path>
+        <lib.groupId>cz.muni.fi.lib</lib.groupId>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>${lib.groupId}</groupId>
+            <artifactId>netlogo</artifactId>
+            <version>0.0</version>
+            <scope>system</scope>
+            <systemPath>${lib.path}/NetLogo.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>${lib.groupId}</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>0.0</version>
+            <scope>system</scope>
+            <systemPath>${lib.path}/scala-library.jar</systemPath>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                    <finalName>gbui</finalName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
