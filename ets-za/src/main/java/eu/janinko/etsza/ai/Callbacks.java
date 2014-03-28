@@ -1,6 +1,10 @@
 package eu.janinko.etsza.ai;
 
 import eu.janinko.etsza.wrapper.Turtle;
+import java.util.HashSet;
+import java.util.Set;
+import org.nlogo.api.Agent;
+import org.nlogo.api.AgentSet;
 import org.nlogo.api.CommandTask;
 import org.nlogo.api.Context;
 import org.nlogo.api.ReporterTask;
@@ -36,13 +40,59 @@ public class Callbacks {
     public void setSee(ReporterTask reporterTask) {
         see = reporterTask;
     }
-
-    public void rotate(Turtle turtle, Context ctx, Double i) {
-        rotate.perform(ctx, new Object[] {i});
+    
+    public Sensors getSensors(Context ctx){
+        return new Sensors(ctx);
     }
+    
+    public Actuators getActuators(Context ctx){
+        return new Actuators(ctx);
+    }
+    
+    public class Sensors {
+        private Context ctx;
+        
+        private Sensors(){};
 
-    public void move(Turtle turtle, Context ctx) {
-        move.perform(ctx, new Object[] {});
+        private Sensors(Context ctx) {
+            this.ctx = ctx;
+        }
+        
+        public int zombiesAround(){
+            return (int) aroundZ.report(ctx, new Object[0]);
+        }
+        
+        public int humansAround(){
+            return (int) aroundH.report(ctx, new Object[0]);
+        }
+        
+        public Set<Turtle> see(){
+            Set<Turtle> ret = new HashSet<>();
+            AgentSet agents = (AgentSet) see.report(ctx, new Object[0]);
+            for(Agent agent : agents.agents()){
+                ret.add(new Turtle((org.nlogo.api.Turtle) agent));
+            }
+            return ret;
+        }
+    }
+    
+    public class Actuators {
+        private Context ctx;
+        
+        private Actuators(){};
+
+        private Actuators(Context ctx) {
+            this.ctx = ctx;
+        }
+        
+        public void rotate(Double i){
+            rotate.perform(ctx, new Object[] {i});
+        }
+        
+        
+        public void move(){
+            move.perform(ctx, new Object[] {});
+        }
     }
 
 }
