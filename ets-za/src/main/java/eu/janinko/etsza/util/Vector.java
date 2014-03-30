@@ -19,16 +19,27 @@ public class Vector {
     
     public Vector(double angle, double size){
         dy = Math.cos(angle / 180 * Math.PI) * size;
-        dx = Math.sqrt(size*size - dy*dy);
+        double ldx = Math.sqrt(size*size - dy*dy);
+        while(angle > 360){
+            angle -= 360;
+        }
+        while(angle < 0){
+            angle += 360;
+        }
+        if(angle > 180){
+            ldx = -ldx;
+        }
+        dx = ldx;
     }
     
     public double size(){
-        return Math.sqrt(dx*dx + dy*dy);
+        double in = dx*dx + dy*dy;
+        return Math.sqrt(in);
     }
     
     public double angle(){
         double a = Math.acos(dy / size())*180/Math.PI;
-        if(dy < 0){
+        if(dx < 0){
             a = 360 - a;
         }
         return a;
