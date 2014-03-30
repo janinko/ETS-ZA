@@ -29,13 +29,13 @@ to setup
      right ?1
   ]
   let tcount-z task [
-     count zombies in-radius 5
+     count zombies in-radius 3
   ]
   let tcount-h task [
-     count humans in-radius 5
+     count humans in-radius 3
   ]
   let tsee task [
-     turtles in-cone 8 30
+     turtles in-cone 6 60
   ]
   
   gbui:set-sensors tcount-z tcount-h tsee
@@ -52,7 +52,7 @@ end
 
 to setup-human
   setxy random-xcor random-ycor
-  set color red
+  set color 27
 end
 
 
@@ -66,25 +66,43 @@ to step
   gbui:tick
   ask humans [ gbui:ai-perform ]
   ask zombies [ gbui:ai-perform ]
+  tick
 end
 
 to move-z
   forward 0.05
+  battle
 end
 
 to move-h
   forward 0.1
+  battle
+end
+
+to battle
+  let hs humans-here
+  let zs zombies-here
+  let hc count hs
+  let zc count zs
+  ifelse hc = zc [
+    ask hs [ die ]
+    ask zs [ die ]
+  ][
+    ifelse hc < zc
+      [ ask hs [ die ] ]
+      [ ask zs [ die ] ]
+  ]
 end
   
 @#$#@#$#@
 GRAPHICS-WINDOW
 707
 24
-1182
-520
+1337
+675
 -1
 -1
-15.0
+20.0
 1
 10
 1
@@ -98,8 +116,8 @@ GRAPHICS-WINDOW
 30
 0
 30
-0
-0
+1
+1
 1
 ticks
 30.0
@@ -145,7 +163,7 @@ zombie-population-percent
 zombie-population-percent
 0
 100
-75
+60
 1
 1
 % zombie/human
@@ -214,6 +232,25 @@ NIL
 NIL
 NIL
 1
+
+PLOT
+139
+456
+339
+606
+plot 1
+time
+count
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"#humans" 1.0 0 -612749 true "" "plot count humans"
+"#zombies" 1.0 0 -10899396 true "" "plot count zombies"
 
 @#$#@#$#@
 ## WHAT IS IT?

@@ -6,9 +6,9 @@ package eu.janinko.etsza.ai;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class WorldConfig {
-    private double seeDistance = 8;
-    private double seeCone = 30;
-    private double senseDistance = 5;
+    private double seeDistance = 6;
+    private double seeCone = 60;
+    private double senseDistance = 3;
     private double zombieSpeed = 0.05;
     private double humanSpeed = 0.1;
     private double width = 30;
