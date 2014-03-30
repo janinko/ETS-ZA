@@ -40,23 +40,20 @@ public class HumanMemoryBrain implements Brain{
         }
         
         if(s.zombiesAround() == 0){
-            if(owner.getId() == 1) System.out.println(owner.getId() + ": I sense nobody, turning right.");
+            //if(owner.getId() == 1) System.out.println(owner.getId() + ": I sense nobody, turning right.");
             a.rotate(ai.getConfig().getSeeCone());
             return;
         }
         
         double desired = getAngle();
-        if(Double.isNaN(desired)){
-            if(owner.getId() == 1) System.out.println(owner.getId() + ": I didn't seen anybody, turning right.");
-            a.rotate(ai.getConfig().getSeeCone());
-            return;
-        }
-        
         double heading = owner.getHeading();
-        double diff = Vector.angle(new Vector(desired, 1), new Vector(heading, 1));
+        double diff = Math.abs(desired - heading);
+        if(diff > 180){
+            diff = 360 - diff;
+        }
         double margin = ai.getConfig().getSeeCone() / 6;
         if(diff < margin){ // heading probably the right way
-            if(owner.getId() == 1) System.out.println(owner.getId() + ": I want to face "+ desired + ", facing " + heading + ", moving forward.");
+            //if(owner.getId() == 1) System.out.println(owner.getId() + ": I want to face "+ desired + ", facing " + heading + ", moving forward.");
             a.move();
             return;
         }
@@ -65,30 +62,75 @@ public class HumanMemoryBrain implements Brain{
         if(r < 0){
             r += 360;
         }
-        if(owner.getId() == 1) System.out.println(owner.getId() + ": I want to face "+ desired + ", facing " + heading + ", turning right " + r + "°");
+        //if(owner.getId() == 1) System.out.println(owner.getId() + ": I want to face "+ desired + "°, facing " + heading + "°, turning right " + r + "°");
         a.rotate(r);
     }
     
     public double getAngle(){
-        double timeParam = 1 / ai.getConfig().getZombieSpeed();
-        double distanceParam = 1 / ai.getConfig().getHumanSpeed();
         double ox = owner.getPosX();
         double oy = owner.getPosY();
-        long time = ai.getTime();
+        double turnSpeed = 5;
+        double hspeed = ai.getConfig().getHumanSpeed();
+        double heading = owner.getHeading();
         
-        WorldMath wm = new WorldMath(ai.getConfig().getWidth(), ai.getConfig().getHeight());
         
-        List<Vector> vectors = new ArrayList<>(zombies.size());
-        for(ZombieMemory z : zombies.values()){
-            if(time - z.getDate() > 50) continue;
-            Vector v = wm.vector(ox, oy, z.getPosx(), z.getPosy());
-            if(owner.getId() == 1) System.out.println(owner.getId() + ": Zombie " +z.getId()+ " at "+ v.angle() + "°, " + v.size() + " far");
-            double timeModif = timeParam / (timeParam + time - z.getDate());
-            double size = distanceParam / (distanceParam + v.size());
-            vectors.add(new Vector(v.angle() + 180, size * timeModif));
+        /*for(ZombieMemory z : zombies.values()){
+            long age = ai.getTime() - z.getDate();
+            if(owner.getId() == 1) System.out.println(owner.getId() + ": Zombie " +z.getId()+ " at "+ z.getPosx() + ", " + z.getPosy() + " was there in " + age + " ticks.");
+        }*/
+            
+        
+        Vector toAhead = new Vector(heading, hspeed);
+        double dangerAhead = getDanger(ox + toAhead.dx(), oy + toAhead.dy());
+        Vector toLeft = new Vector(heading - turnSpeed, hspeed);
+        double dangerLeft = getDanger(ox + toLeft.dx(), oy + toLeft.dy());
+        Vector toRight = new Vector(heading + turnSpeed, hspeed);
+        double dangerRight = getDanger(ox + toRight.dx(), oy + toRight.dy());
+        
+        double angle = heading;
+        double danger = dangerAhead;
+        if(dangerAhead > dangerLeft || dangerAhead > dangerRight){
+            double diff;
+            double newDanger;
+            if(dangerLeft < dangerRight){
+                diff = -turnSpeed;
+                newDanger = dangerLeft;
+            }else{
+                diff = +turnSpeed;
+                newDanger = dangerRight;
+            }
+            while(newDanger < danger){
+                angle += diff;
+                danger = newDanger;
+                
+                double newAngle = angle + diff;
+                Vector to = new Vector(newAngle, hspeed);
+                newDanger = getDanger(ox + to.dx(), oy + to.dy());
+            }
         }
         
-        return Vector.sum(vectors).angle();
+        /*if(owner.getId() == 1) System.out.println(owner.getId() + ": I am at "
+                + ox + ", " + oy + ", heading " + owner.getHeading()
+                + ". Danger ahead: " + dangerAhead
+                + ", danger at angle: " + angle + ": " + danger);*/
+        return angle;
+    }
+    
+    public double getDanger(double x, double y){
+        double distanceParam = 1 / ai.getConfig().getZombieSpeed();
+        double agingParam = 20;
+        long time = ai.getTime();
+        WorldMath wm = new WorldMath(ai.getConfig().getWidth(), ai.getConfig().getHeight());
+        
+        double ret = 0;
+        for(ZombieMemory z : zombies.values()){
+            long age = time - z.getDate();
+            if(age > 50) continue;
+            double timemodif = agingParam / (agingParam + age);
+            double danger = distanceParam / (distanceParam + wm.distance(x, y, z.getPosx(), z.getPosy()));
+            ret += danger * timemodif;
+        }
+        return ret;
     }
     
 }
