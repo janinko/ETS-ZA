@@ -8,9 +8,12 @@ import java.util.Random;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class AI {
-    Callbacks cb;
-    Random random;
-    Agents agents;
+    private Callbacks cb;
+    private Random random;
+    private Agents agents;
+    private WorldConfig wc;
+    
+    private long time = 0;
 
     public AI() {
         init();
@@ -23,6 +26,7 @@ public class AI {
     private void init(){
         cb = new Callbacks();
         random = new Random();
+        wc = new WorldConfig();
         agents = new Agents(this);
     }
 
@@ -36,6 +40,18 @@ public class AI {
 
     public Random getRandom() {
         return random;
+    }
+
+    public void tick() {
+        time++;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public WorldConfig getConfig() {
+        return wc;
     }
     
 }

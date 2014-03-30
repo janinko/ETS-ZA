@@ -63,6 +63,7 @@ end
 
 
 to step
+  gbui:tick
   ask humans [ gbui:ai-perform ]
   ask zombies [ gbui:ai-perform ]
 end

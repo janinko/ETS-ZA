@@ -37,6 +37,7 @@ public class Agents {
                 a = z;
             }
         }
+        a.updateAgent(t);
         return a;
     }
 }

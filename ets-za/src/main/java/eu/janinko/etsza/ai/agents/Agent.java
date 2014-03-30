@@ -1,6 +1,7 @@
 
 package eu.janinko.etsza.ai.agents;
 
+import eu.janinko.etsza.wrapper.Turtle;
 import org.nlogo.api.Context;
 
 /**
@@ -9,4 +10,5 @@ import org.nlogo.api.Context;
  */
 public interface Agent {
     void perform(Context ctx);
+    void updateAgent(Turtle turtle);
 }

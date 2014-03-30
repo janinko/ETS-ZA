@@ -19,6 +19,7 @@ public class GBUIExtension extends DefaultClassManager {
         pm.addPrimitive("ai-perform", new AIPerform(ai));
         pm.addPrimitive("set-actuators", new SetActuators(ai));
         pm.addPrimitive("set-sensors", new SetSensors(ai));
+        pm.addPrimitive("tick", new Tick(ai));
     }
 
     @Override
