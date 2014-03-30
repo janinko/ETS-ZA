@@ -44,11 +44,7 @@ public class WorldMath {
         }else if(dy > heightH){
             dy = dx - height;
         }
-        double a = Math.acos(dy / Math.sqrt(dx*dx + dy*dy))*180/Math.PI;
-        if(dy < 0){
-            a = 360 - a;
-        }
-        return a;
+        return Math.acos(dy / Math.sqrt(dx*dx + dy*dy))*180/Math.PI;
     }
     
     public Vector vector(double fx, double fy, double tx, double ty){
