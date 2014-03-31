@@ -13,7 +13,7 @@ public class AI {
     private Agents agents;
     private WorldConfig wc;
     
-    private long time = 0;
+    private long time;
 
     public AI() {
         init();
@@ -28,6 +28,7 @@ public class AI {
         random = new Random();
         wc = new WorldConfig();
         agents = new Agents(this);
+        time = 0;
     }
 
     public Callbacks getCallbacks() {

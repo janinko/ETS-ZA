@@ -18,7 +18,7 @@ zombies-own [
 
 to setup
   clear-all
-  set-default-shape turtles "person"
+  set-default-shape turtles "dot"
   
   let tmove task [
     ifelse breed = zombies
@@ -35,7 +35,7 @@ to setup
      count humans in-radius 3
   ]
   let tsee task [
-     turtles in-cone 6 60
+     color-it
   ]
   
   gbui:set-sensors tcount-z tcount-h tsee
@@ -71,12 +71,12 @@ end
 
 to move-z
   forward 0.05
-  battle
+  ;;battle
 end
 
 to move-h
   forward 0.1
-  battle
+  ;;battle
 end
 
 to battle
@@ -94,6 +94,14 @@ to battle
   ]
 end
   
+to-report color-it
+  if who = 1 [
+     ask zombies in-cone 6 60 [
+       set color white
+     ]
+  ]
+  report turtles in-cone 6 60
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 707

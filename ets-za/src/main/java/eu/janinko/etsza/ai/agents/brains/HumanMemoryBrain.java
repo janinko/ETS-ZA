@@ -8,9 +8,14 @@ import eu.janinko.etsza.ai.agents.memory.ZombieMemory;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Turtle;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -78,6 +83,8 @@ public class HumanMemoryBrain implements Brain{
             long age = ai.getTime() - z.getDate();
             if(owner.getId() == 1) System.out.println(owner.getId() + ": Zombie " +z.getId()+ " at "+ z.getPosx() + ", " + z.getPosy() + " was there in " + age + " ticks.");
         }*/
+        
+        if(owner.getId() == 1) printDanger();
             
         
         Vector toAhead = new Vector(heading, hspeed);
@@ -131,6 +138,20 @@ public class HumanMemoryBrain implements Brain{
             ret += danger * timemodif;
         }
         return ret;
+    }
+    
+    private void printDanger(){
+        try(BufferedWriter fw = new BufferedWriter(new FileWriter("/tmp/data_" + ai.getTime()))){
+            for(double x=0; x < 30; x+=0.5){
+                for(double y=0; y < 30; y+=0.5){
+                    fw.write(x + "\t" + y + "\t" + getDanger(x, y));
+                    fw.newLine();
+                }
+                fw.newLine();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(HumanMemoryBrain.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }
