@@ -22,7 +22,10 @@ public class ZombieBasicBrain implements Brain{
     public void perform(Sensors s, Actuators a) {
         for(Turtle t : s.see()){
             if(t.isHuman()){
-                a.move();
+                if(s.canAttack(t))
+                    a.attack(t);
+                else
+                    a.move();
                 return;
             }
         }

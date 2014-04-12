@@ -8,17 +8,17 @@ globals [
   zombie-population
 ]
 
-humans-own [
-  nearest-zombie
+humans-own [  
+  TTL ; represents health of a human, number of tick after which he dies
 ]
 
-zombies-own [
-  nearest-human
+zombies-own [  
+  TTL ; number of ticks after which the zombie dies
 ]
 
 to setup
   clear-all
-  set-default-shape turtles "dot"
+  set-default-shape turtles "default" ;; arrow
   
   let tmove task [
     ifelse breed = zombies
@@ -38,14 +38,32 @@ to setup
      color-it
   ]
   
-  gbui:set-sensors tcount-z tcount-h tsee
-  gbui:set-actuators tmove trotate
+  
+  let tcan-attack task [
+    can-attack ?1
+  ]
+  
+  ; inflict damage equal to the agents TTL, representing its strength
+  ; ?1 = agent being attacked
+  let tattack task [
+    let damage TTL
+    if can-attack ?1 [
+      ask ?1 [ set TTL (TTL - damage) ]
+      ask ?1 [ set color blue ]
+    ]
+  ]
+  
+  
+  
+  
+  gbui:set-sensors tcount-z tcount-h tsee tcan-attack
+  gbui:set-actuators tmove trotate tattack
   
   set human-population round (total-population * (1 - zombie-population-percent / 100))
   set zombie-population round (total-population * (zombie-population-percent / 100))
   create-humans human-population [ setup-human ]
   create-zombies zombie-population [ setup-zombie ]
-  
+  ask turtles [ set TTL 1000 ]
   reset-ticks
 end
 
@@ -66,6 +84,8 @@ to step
   gbui:tick
   ask humans [ gbui:ai-perform ]
   ask zombies [ gbui:ai-perform ]
+  decay
+  reap
   tick
 end
 
@@ -77,6 +97,13 @@ end
 to move-h
   forward 0.1
   ;;battle
+end
+
+; reap the dead
+to reap
+  ask turtles [
+    if TTL <= 0 [ die ]
+  ]
 end
 
 to battle
@@ -93,6 +120,14 @@ to battle
       [ ask zs [ die ] ]
   ]
 end
+
+to decay
+  ask zombies [ set TTL (TTL - 1) ]
+end
+
+to-report can-attack [ x ]
+  report attack-enabled and (distance x) <= 0.1
+end
   
 to-report color-it
   if who = 1 [
@@ -104,10 +139,10 @@ to-report color-it
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-707
-24
-1337
-675
+492
+32
+1382
+603
 -1
 -1
 20.0
@@ -121,9 +156,9 @@ GRAPHICS-WINDOW
 1
 1
 0
-30
+43
 0
-30
+26
 1
 1
 1
@@ -259,6 +294,17 @@ false
 PENS
 "#humans" 1.0 0 -612749 true "" "plot count humans"
 "#zombies" 1.0 0 -10899396 true "" "plot count zombies"
+
+SWITCH
+57
+202
+223
+235
+attack-enabled
+attack-enabled
+0
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?

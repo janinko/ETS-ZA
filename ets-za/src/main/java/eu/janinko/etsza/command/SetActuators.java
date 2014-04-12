@@ -1,5 +1,5 @@
 
-package eu.janinko.etsza;
+package eu.janinko.etsza.command;
 
 import eu.janinko.etsza.ai.Callbacks;
 import eu.janinko.etsza.ai.AI;
@@ -14,7 +14,7 @@ import org.nlogo.api.Syntax;
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-class SetActuators extends DefaultCommand {
+public class SetActuators extends DefaultCommand {
     private AI ai;
 
     public SetActuators(AI ai) {
@@ -27,6 +27,7 @@ class SetActuators extends DefaultCommand {
     @Override
     public Syntax getSyntax() {
         return Syntax.commandSyntax(new int[] { Syntax.CommandTaskType(),
+                                                Syntax.CommandTaskType(),
                                                 Syntax.CommandTaskType()});
     }
 
@@ -35,6 +36,7 @@ class SetActuators extends DefaultCommand {
         Callbacks cb = ai.getCallbacks();
         cb.setMove(args[0].getCommandTask());
         cb.setRotate(args[1].getCommandTask());
+        cb.setAttack(args[2].getCommandTask());
     }
     
 }

@@ -2,12 +2,12 @@
 package eu.janinko.etsza;
 
 import eu.janinko.etsza.ai.AI;
+import eu.janinko.etsza.command.*;
 import org.nlogo.api.DefaultClassManager;
 import org.nlogo.api.ExtensionException;
 import org.nlogo.api.PrimitiveManager;
 
 /**
- *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class GBUIExtension extends DefaultClassManager {
@@ -26,5 +26,5 @@ public class GBUIExtension extends DefaultClassManager {
     public void clearAll() {
         ai.clear();
     }
-    
+
 }

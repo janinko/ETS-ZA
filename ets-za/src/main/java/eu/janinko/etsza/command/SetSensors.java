@@ -1,5 +1,5 @@
 
-package eu.janinko.etsza;
+package eu.janinko.etsza.command;
 
 import eu.janinko.etsza.ai.Callbacks;
 import eu.janinko.etsza.ai.AI;
@@ -14,7 +14,7 @@ import org.nlogo.api.Syntax;
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-class SetSensors extends DefaultCommand {
+public class SetSensors extends DefaultCommand {
     private AI ai;
 
     public SetSensors(AI ai) {
@@ -28,6 +28,7 @@ class SetSensors extends DefaultCommand {
     public Syntax getSyntax() {
         return Syntax.commandSyntax(new int[] { Syntax.ReporterTaskType(),
                                                 Syntax.ReporterTaskType(),
+                                                Syntax.ReporterTaskType(),
                                                 Syntax.ReporterTaskType()});
     }
 
@@ -37,6 +38,7 @@ class SetSensors extends DefaultCommand {
         cb.setAroundZ(args[0].getReporterTask());
         cb.setAroundH(args[1].getReporterTask());
         cb.setSee(args[2].getReporterTask());
+        cb.setCanAttack(args[3].getReporterTask());
     }
     
 }

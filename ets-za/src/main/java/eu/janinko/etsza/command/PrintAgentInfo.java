@@ -1,5 +1,5 @@
 
-package eu.janinko.etsza;
+package eu.janinko.etsza.command;
 
 import eu.janinko.etsza.ai.AI;
 import org.nlogo.api.AgentVariableNumbers;
@@ -19,7 +19,7 @@ import org.nlogo.api.Turtle;
 public class PrintAgentInfo extends DefaultCommand{
     private AI ai;
 
-    PrintAgentInfo(AI ai) {
+    public PrintAgentInfo(AI ai) {
         this.ai = ai;
     }
 

@@ -12,14 +12,19 @@ import org.nlogo.api.ReporterTask;
 /**
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
+ * @author Jakub Senko <373902@mail.muni.cz>
  */
 public class Callbacks {
 
     CommandTask move;
     CommandTask rotate;
+    CommandTask attack;
+
     ReporterTask aroundZ;
     ReporterTask aroundH;
     ReporterTask see;
+    ReporterTask canAttack;
+
 
     public void setMove(CommandTask commandTask) {
         move = commandTask;
@@ -40,7 +45,15 @@ public class Callbacks {
     public void setSee(ReporterTask reporterTask) {
         see = reporterTask;
     }
-    
+
+    public void setAttack(CommandTask commandTask) {
+        attack = commandTask;
+    }
+
+    public void setCanAttack(ReporterTask canAttack) {
+        this.canAttack = canAttack;
+    }
+
     public Sensors getSensors(Context ctx){
         return new Sensors(ctx);
     }
@@ -74,6 +87,10 @@ public class Callbacks {
             }
             return ret;
         }
+
+        public boolean canAttack(Turtle turtle) {
+            return (Boolean) canAttack.report(ctx, new Object[] {turtle.getNLTurtle()});
+        }
     }
     
     public class Actuators {
@@ -93,6 +110,9 @@ public class Callbacks {
         public void move(){
             move.perform(ctx, new Object[] {});
         }
-    }
 
+        public void attack(Turtle agent) {
+            attack.perform(ctx, new Object[] {agent.getNLTurtle()});
+        }
+    }
 }

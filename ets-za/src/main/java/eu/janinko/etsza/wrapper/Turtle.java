@@ -33,5 +33,8 @@ public class Turtle {
     public double getHeading() {
         return (double) turtle.getVariable(AgentVariableNumbers.VAR_HEADING);
     }
-    
+
+    public org.nlogo.api.Turtle getNLTurtle() {
+        return turtle;
+    }
 }
