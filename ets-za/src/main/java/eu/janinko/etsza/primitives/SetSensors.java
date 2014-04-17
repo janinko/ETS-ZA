@@ -1,5 +1,5 @@
 
-package eu.janinko.etsza.command;
+package eu.janinko.etsza.primitives;
 
 import eu.janinko.etsza.ai.Callbacks;
 import eu.janinko.etsza.ai.AI;

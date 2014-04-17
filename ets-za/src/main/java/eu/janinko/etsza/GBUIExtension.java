@@ -1,8 +1,13 @@
 
 package eu.janinko.etsza;
 
+import eu.janinko.etsza.primitives.PrintAgentInfo;
+import eu.janinko.etsza.primitives.SetSensors;
+import eu.janinko.etsza.primitives.SetActuators;
+import eu.janinko.etsza.primitives.AIPerform;
+import eu.janinko.etsza.primitives.Tick;
 import eu.janinko.etsza.ai.AI;
-import eu.janinko.etsza.command.*;
+import eu.janinko.etsza.primitives.*;
 import org.nlogo.api.DefaultClassManager;
 import org.nlogo.api.ExtensionException;
 import org.nlogo.api.PrimitiveManager;
