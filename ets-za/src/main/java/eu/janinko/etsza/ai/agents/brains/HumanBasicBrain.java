@@ -1,28 +1,31 @@
 
 package eu.janinko.etsza.ai.agents.brains;
 
-import eu.janinko.etsza.ai.Callbacks.Actuators;
-import eu.janinko.etsza.ai.Callbacks.Sensors;
-import eu.janinko.etsza.wrapper.Turtle;
+import eu.janinko.etsza.ai.AI;
+import eu.janinko.etsza.ai.agents.Actions;
+import eu.janinko.etsza.ai.agents.Actions.Action;
+import eu.janinko.etsza.ai.agents.Human;
 
 /**
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class HumanBasicBrain implements Brain{
+    private final Human owner;
+
+    public HumanBasicBrain(Human owner, AI ai) {
+        this.owner = owner;
+    }
 
     @Override
-    public void perform(Sensors s, Actuators a) {
-        if(s.zombiesAround() == 0){
-            return;
+    public Action perform() {
+        if(owner.getAroundZ() == 0){
+            return Actions.idle();
         }
-        for(Turtle t : s.see()){
-            if(!t.isHuman()){
-                a.rotate(20.0);
-                return;
-            }
+        if(owner.getZombiesAhead(20,6) > 0){
+            return Actions.rotate(20);
         }
-        a.move();
+        return Actions.move();
     }
     
 }

@@ -12,9 +12,11 @@ import java.util.HashMap;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class Agents {
-    HashMap<Long, Zombie> zombies = new HashMap<>();
-    HashMap<Long, Human> humans = new HashMap<>();
-    AI ai;
+    private AI ai;
+    private HashMap<Long, Zombie> zombies = new HashMap<>();
+    private HashMap<Long, Human> humans = new HashMap<>();
+    private String hbrain = "BasicBrain";
+    private String zbrain = "BasicBrain";
 
     Agents(AI ai) {
         this.ai = ai;
@@ -39,5 +41,10 @@ public class Agents {
         }
         a.updateAgent(t);
         return a;
+    }
+
+    public void setDefaultBrains(String hbrain, String zbrain) {
+        this.hbrain = hbrain;
+        this.zbrain = zbrain;
     }
 }

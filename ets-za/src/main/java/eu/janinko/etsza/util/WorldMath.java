@@ -17,6 +17,25 @@ public class WorldMath {
         widthH = width / 2;
         heightH = height / 2;
     }
+    
+    public static double angleDiff(double a1, double a2){
+        while(a1 > 360) a1 -= 360;
+        while(a1 < 0) a1 += 360;
+        while(a2 > 360) a2 -= 360;
+        while(a2 < 0) a2 += 360;
+        double diff = Math.abs(a1 - a2);
+        while(diff > 180){
+            diff = 360 - diff;
+        }
+        return diff;
+    }
+    
+    public static double angleSum(double a1, double a2){
+        double r = a1 + a2;
+        while(r > 360) r -= 360;
+        while(r < 0) r += 360;
+        return r;
+    }
 
     public double distance(double fx, double fy, double tx, double ty){
         double dx = Math.abs(tx - fx);

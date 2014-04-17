@@ -7,7 +7,7 @@ import eu.janinko.etsza.primitives.SetActuators;
 import eu.janinko.etsza.primitives.AIPerform;
 import eu.janinko.etsza.primitives.Tick;
 import eu.janinko.etsza.ai.AI;
-import eu.janinko.etsza.primitives.*;
+import eu.janinko.etsza.primitives.SelectBrains;
 import org.nlogo.api.DefaultClassManager;
 import org.nlogo.api.ExtensionException;
 import org.nlogo.api.PrimitiveManager;
@@ -25,6 +25,7 @@ public class GBUIExtension extends DefaultClassManager {
         pm.addPrimitive("set-actuators", new SetActuators(ai));
         pm.addPrimitive("set-sensors", new SetSensors(ai));
         pm.addPrimitive("tick", new Tick(ai));
+        pm.addPrimitive("select-brains", new SelectBrains(ai));
     }
 
     @Override

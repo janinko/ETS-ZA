@@ -2,18 +2,16 @@
 package eu.janinko.etsza.ai.agents.brains;
 
 import eu.janinko.etsza.ai.AI;
-import eu.janinko.etsza.ai.Callbacks;
+import eu.janinko.etsza.ai.agents.Actions;
+import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.agents.Human;
 import eu.janinko.etsza.ai.agents.memory.ZombieMemory;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
-import eu.janinko.etsza.wrapper.Turtle;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,10 +20,8 @@ import java.util.logging.Logger;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class HumanMemoryBrain implements Brain{
-    private AI ai;
-    private Human owner;
-    
-    private HashMap<Long, ZombieMemory> zombies = new HashMap<>();
+    private final AI ai;
+    private final Human owner;
 
     public HumanMemoryBrain(Human owner, AI ai) {
         this.ai = ai;
@@ -33,34 +29,21 @@ public class HumanMemoryBrain implements Brain{
     }
 
     @Override
-    public void perform(Callbacks.Sensors s, Callbacks.Actuators a) {
-        for(Turtle t : s.see()){
-            if(!t.isHuman()){
-                if(zombies.containsKey(t.getId())){
-                    zombies.get(t.getId()).update(t, ai);
-                }else{
-                    zombies.put(t.getId(), new ZombieMemory(t, ai));
-                }
-            }
-        }
+    public Action perform() {
+        Map<Long, ZombieMemory> zombies = owner.getMemories().getAll(ZombieMemory.class);
         
-        if(s.zombiesAround() == 0){
+        if(owner.getAroundZ() == 0){
             //if(owner.getId() == 1) System.out.println(owner.getId() + ": I sense nobody, turning right.");
-            a.rotate(ai.getConfig().getSeeCone());
-            return;
+            return Actions.rotate((int) ai.getConfig().getSeeCone());
         }
         
         double desired = getAngle();
         double heading = owner.getHeading();
-        double diff = Math.abs(desired - heading);
-        if(diff > 180){
-            diff = 360 - diff;
-        }
+        double diff = WorldMath.angleDiff(desired, heading);
         double margin = ai.getConfig().getSeeCone() / 6;
         if(diff < margin){ // heading probably the right way
             //if(owner.getId() == 1) System.out.println(owner.getId() + ": I want to face "+ desired + ", facing " + heading + ", moving forward.");
-            a.move();
-            return;
+            return Actions.move();
         }
         
         double r = desired - heading;
@@ -68,7 +51,7 @@ public class HumanMemoryBrain implements Brain{
             r += 360;
         }
         //if(owner.getId() == 1) System.out.println(owner.getId() + ": I want to face "+ desired + "°, facing " + heading + "°, turning right " + r + "°");
-        a.rotate(r);
+        return Actions.rotate((int) Math.round(r));
     }
     
     public double getAngle(){
@@ -124,6 +107,7 @@ public class HumanMemoryBrain implements Brain{
     }
     
     public double getDanger(double x, double y){
+        Map<Long, ZombieMemory> zombies = owner.getMemories().getAll(ZombieMemory.class);
         double distanceParam = 1 / ai.getConfig().getZombieSpeed();
         double agingParam = 20;
         long time = ai.getTime();
