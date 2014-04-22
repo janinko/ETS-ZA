@@ -28,6 +28,7 @@ public class Agents {
             a = humans.get(t.getId());
             if(a == null){
                 Human h = new Human(t, ai);
+				h.setBrain(hbrain);
                 humans.put(t.getId(), h);
                 a = h;
             }
@@ -35,6 +36,7 @@ public class Agents {
             a = zombies.get(t.getId());
             if(a == null){
                 Zombie z = new Zombie(t, ai);
+				z.setBrain(zbrain);
                 zombies.put(t.getId(), z);
                 a = z;
             }
@@ -42,6 +44,14 @@ public class Agents {
         a.updateAgent(t);
         return a;
     }
+	
+	public Human getHuman(long id){
+		return humans.get(id);
+	}
+	
+	public Zombie getZombie(long id){
+		return zombies.get(id);
+	}
 
     public void setDefaultBrains(String hbrain, String zbrain) {
         this.hbrain = hbrain;
