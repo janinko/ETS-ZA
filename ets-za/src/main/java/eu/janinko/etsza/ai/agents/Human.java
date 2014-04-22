@@ -1,7 +1,6 @@
 package eu.janinko.etsza.ai.agents;
 
 import eu.janinko.etsza.ai.AI;
-import eu.janinko.etsza.ai.Callbacks;
 import eu.janinko.etsza.ai.Callbacks.Actuators;
 import eu.janinko.etsza.ai.Callbacks.Sensors;
 import eu.janinko.etsza.ai.agents.Actions.Action;
@@ -15,7 +14,6 @@ import eu.janinko.etsza.ai.agents.memory.ZombieMemory;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Turtle;
-import javax.naming.OperationNotSupportedException;
 import org.nlogo.api.Context;
 
 /**
@@ -68,6 +66,9 @@ public class Human extends DefaultAgent {
                 a.rotate((double) rotate.getDegree());
                 return;
             }
+			case Idle:{
+				return;
+			}
             default:{
                 throw new UnsupportedOperationException("Unknown action: " + action);
             }

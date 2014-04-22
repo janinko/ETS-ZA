@@ -5,14 +5,14 @@ import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.Callbacks.Actuators;
 import eu.janinko.etsza.ai.Callbacks.Sensors;
 import eu.janinko.etsza.ai.agents.Actions.Action;
-import eu.janinko.etsza.ai.agents.Actions.Rotate;
 import static eu.janinko.etsza.ai.agents.Actions.Type.Move;
 import eu.janinko.etsza.ai.agents.brains.ZombieBasicBrain;
 import eu.janinko.etsza.ai.agents.memory.HumanMemory;
-import eu.janinko.etsza.ai.agents.memory.ZombieMemory;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Turtle;
+import java.util.HashSet;
+import java.util.Set;
 import org.nlogo.api.Context;
 
 /**
@@ -57,7 +57,15 @@ public class Zombie extends DefaultAgent{
                 a.rotate((double) rotate.getDegree());
                 return;
             }
-            default:{
+			case Idle:{
+				return;
+			}
+			case Attack:{
+				Actions.Attack attack = (Actions.Attack) action;
+				a.attack(attack.getId());
+				return;
+			}
+            default:{	
                 throw new UnsupportedOperationException("Unknown action: " + action);
             }
                 
@@ -82,7 +90,7 @@ public class Zombie extends DefaultAgent{
         return aroundH;
     }
 
-    public int getHumansAhead(double cone, double distance) {
+    public int countHumansAhead(double cone, double distance) {
         int count = 0;
         for(HumanMemory h : memories.getAll(HumanMemory.class).values()){
             if(ai.getTime() != h.getDate()) continue;
@@ -93,5 +101,19 @@ public class Zombie extends DefaultAgent{
             count++;
         }
         return count;
+    }
+	
+
+    public Set<HumanMemory> getHumansAhead(double cone, double distance) {
+		Set<HumanMemory> ret = new HashSet<>();
+        for(HumanMemory h : memories.getAll(HumanMemory.class).values()){
+            if(ai.getTime() != h.getDate()) continue;
+            Vector v = new Vector(posX, posY, h.getPosx(), h.getPosy());
+            
+            if(v.size() > distance) continue;
+            if(WorldMath.angleDiff(v.angle(), heading) > cone) continue;
+			ret.add(h);
+        }
+        return ret;
     }
 }
