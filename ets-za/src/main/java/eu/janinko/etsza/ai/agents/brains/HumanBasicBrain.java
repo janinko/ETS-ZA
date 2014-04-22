@@ -10,11 +10,10 @@ import eu.janinko.etsza.ai.agents.Human;
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-public class HumanBasicBrain implements Brain{
-    private final Human owner;
+public class HumanBasicBrain extends DefaultBrain<Human>{
 
     public HumanBasicBrain(Human owner, AI ai) {
-        this.owner = owner;
+		super(owner, ai);
     }
 
     @Override

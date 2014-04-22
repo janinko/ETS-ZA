@@ -13,13 +13,10 @@ import java.util.ArrayDeque;
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-public class HumanSpaceSearchBrain implements Brain{
-    private final AI ai;
-    private final Human owner;
+public class HumanSpaceSearchBrain extends DefaultBrain<Human>{
 
     public HumanSpaceSearchBrain(Human owner, AI ai) {
-        this.ai = ai;
-        this.owner = owner;
+		super(owner, ai);
     }
 
     @Override
@@ -44,6 +41,7 @@ public class HumanSpaceSearchBrain implements Brain{
                 queue.add(step.next(Actions.rotate(i)));
             }
         }
+		return null;
     }
     
     

@@ -19,13 +19,10 @@ import java.util.logging.Logger;
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-public class HumanMemoryBrain implements Brain{
-    private final AI ai;
-    private final Human owner;
+public class HumanMemoryBrain extends DefaultBrain<Human>{
 
     public HumanMemoryBrain(Human owner, AI ai) {
-        this.ai = ai;
-        this.owner = owner;
+		super(owner, ai);
     }
 
     @Override
