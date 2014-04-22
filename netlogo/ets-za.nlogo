@@ -1,5 +1,6 @@
 breed [humans human]
 breed [zombies zombie]
+breed [halos halo]
 
 extensions [ gbui ]
 
@@ -19,6 +20,7 @@ zombies-own [
 to setup
   clear-all
   set-default-shape turtles "default" ;; arrow
+  set-default-shape halos "60cone"
   
   let tmove task [
     ifelse breed = zombies
@@ -40,16 +42,18 @@ to setup
   
   
   let tcan-attack task [
-    can-attack ?1
+    can-attack turtle ?1
   ]
   
   ; inflict damage equal to the agents TTL, representing its strength
-  ; ?1 = agent being attacked
+  ; ?1 = agent id being attacked
   let tattack task [
+    let cislo int ?1
     let damage TTL
-    if can-attack ?1 [
-      ask ?1 [ set TTL (TTL - damage) ]
-      ask ?1 [ set color blue ]
+    let target turtle cislo
+    if can-attack target [
+      ask target [ set TTL (TTL - damage) ]
+      ask target [ set color blue ]
     ]
   ]
   
@@ -63,7 +67,9 @@ to setup
   set zombie-population round (total-population * (zombie-population-percent / 100))
   create-humans human-population [ setup-human ]
   create-zombies zombie-population [ setup-zombie ]
-  ask turtles [ set TTL 1000 ]
+  ask humans [ set TTL 1000 ]
+  ask zombies [ set TTL 1000 ]
+  ask human 1 [ make-halo ]
   reset-ticks
 end
 
@@ -101,7 +107,10 @@ end
 
 ; reap the dead
 to reap
-  ask turtles [
+  ask zombies [
+    if TTL <= 0 [ die ]
+  ]
+  ask humans [
     if TTL <= 0 [ die ]
   ]
 end
@@ -126,7 +135,7 @@ to decay
 end
 
 to-report can-attack [ x ]
-  report attack-enabled and (distance x) <= 0.1
+  report attack-enabled and (distance x) <= 1
 end
   
 to-report color-it
@@ -135,7 +144,31 @@ to-report color-it
        set color white
      ]
   ]
-  report turtles in-cone 6 60
+  report (turtle-set zombies humans) in-cone 6 60
+end
+
+
+
+
+
+
+to make-halo  ;; runner procedure
+  ;; when you use HATCH, the new turtle inherits the
+  ;; characteristics of the parent.  so the halo will
+  ;; be the same color as the turtle it encircles (unless
+  ;; you add code to change it
+  hatch-halos 1
+  [ set size 12
+    ;; Use an RGB color to make halo three fourths transparent
+    set color lput 64 extract-rgb color
+    ;; set thickness of halo to half a patch
+    __set-line-thickness 0.1
+    ;; We create an invisible directed link from the runner
+    ;; to the halo.  Using tie means that whenever the
+    ;; runner moves, the halo moves with it.
+    create-link-from myself
+    [ tie
+      hide-link ] ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -347,6 +380,14 @@ default
 true
 0
 Polygon -7500403 true true 150 5 40 250 150 205 260 250
+
+60cone
+true
+0
+Circle -7500403 false true 0 0 300
+Line -7500403 true 150 150 75 20
+Line -7500403 true 150 150 225 20
+Circle -7500403 false true 75 75 150
 
 airplane
 true
@@ -575,6 +616,11 @@ Circle -16777216 true false 30 30 240
 Circle -7500403 true true 60 60 180
 Circle -16777216 true false 90 90 120
 Circle -7500403 true true 120 120 60
+
+thin ring
+true
+0
+Circle -7500403 false true -2 -2 302
 
 tree
 false

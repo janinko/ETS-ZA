@@ -88,8 +88,8 @@ public class Callbacks {
             return ret;
         }
 
-        public boolean canAttack(Turtle turtle) {
-            return (Boolean) canAttack.report(ctx, new Object[] {turtle.getNLTurtle()});
+        public boolean canAttack(Long id) {
+            return (Boolean) canAttack.report(ctx, new Object[] {id});
         }
     }
     
@@ -106,13 +106,12 @@ public class Callbacks {
             rotate.perform(ctx, new Object[] {i});
         }
         
-        
         public void move(){
             move.perform(ctx, new Object[] {});
         }
 
-        public void attack(Turtle agent) {
-            attack.perform(ctx, new Object[] {agent.getNLTurtle()});
+        public void attack(long id) {
+            attack.perform(ctx, new Object[] {(double) id});
         }
     }
 }
