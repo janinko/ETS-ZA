@@ -29,6 +29,26 @@ public class WorldMath {
         }
         return diff;
     }
+	
+	public static int normalizeAngle(int angle){
+		while(angle >= 360){
+			angle -= 360;
+		}
+		while(angle < 0){
+			angle += 360;
+		}
+		return angle;
+	}
+	
+	public static double normalizeAngle(double angle){
+		while(angle >= 360){
+			angle -= 360;
+		}
+		while(angle < 0){
+			angle += 360;
+		}
+		return angle;
+	}
     
     public static double angleSum(double a1, double a2){
         double r = a1 + a2;
