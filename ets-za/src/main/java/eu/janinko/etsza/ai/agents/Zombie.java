@@ -7,6 +7,7 @@ import eu.janinko.etsza.ai.Callbacks.Sensors;
 import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.agents.Actions.RotateAndMove;
 import eu.janinko.etsza.ai.agents.brains.ZombieBasicBrain;
+import eu.janinko.etsza.ai.agents.brains.ZombieChaseBrain;
 import eu.janinko.etsza.ai.agents.memory.HumanMemory;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
@@ -32,6 +33,7 @@ public class Zombie extends DefaultAgent{
     public void setBrain(String brainId) {
         switch(brainId){
             case "BasicBrain": brain = new ZombieBasicBrain(this, ai); return;
+            case "ChaseBrain": brain = new ZombieChaseBrain(this, ai); return;
             default: throw new IllegalArgumentException("Unknown brain id");
         }
     }
