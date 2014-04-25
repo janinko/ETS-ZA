@@ -34,7 +34,7 @@ public class Turtle {
         return (double) turtle.getVariable(AgentVariableNumbers.VAR_HEADING);
     }
 
-    public org.nlogo.api.Turtle getNLTurtle() {
-        return turtle;
+    public double getTTL(){
+        return (double) turtle.getVariable(AgentVariableNumbers.VAR_PENMODE + 1);
     }
 }

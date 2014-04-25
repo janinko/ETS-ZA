@@ -25,12 +25,20 @@ import org.nlogo.api.Context;
 public class Human extends DefaultAgent {
     private int aroundZ;
 
+    private double ttl;
+
     public Human(Turtle turtle, AI ai) {
         super(turtle, ai);
         brain = new HumanMemoryBrain(this, ai);
         utilities.add(new DangerUtility(0, ai));
         
         memories.addMemoryClass(ZombieMemory.class);
+    }
+
+    @Override
+    public void updateAgent(Turtle turtle) {
+        super.updateAgent(turtle);
+        ttl = turtle.getTTL();
     }
 
     @Override
@@ -122,5 +130,9 @@ public class Human extends DefaultAgent {
             return;
 
         memories.forget(ZombieMemory.class, turtle.getId());
+    }
+
+    public double getTTL() {
+        return ttl;
     }
 }

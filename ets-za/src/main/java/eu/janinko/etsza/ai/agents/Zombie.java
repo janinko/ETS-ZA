@@ -23,10 +23,18 @@ import org.nlogo.api.Context;
 public class Zombie extends DefaultAgent{
     private int aroundH;
 
+    private double ttl;
+
     public Zombie(Turtle turtle, AI ai) {
         super(turtle, ai);
         
         memories.addMemoryClass(HumanMemory.class);
+    }
+
+    @Override
+    public void updateAgent(Turtle turtle) {
+        super.updateAgent(turtle);
+        ttl = turtle.getTTL();
     }
 
     @Override
@@ -130,5 +138,9 @@ public class Zombie extends DefaultAgent{
         if (!turtle.isHuman())
             return;
         memories.forget(HumanMemory.class, turtle.getId());
+    }
+
+    public double getTTL() {
+        return ttl;
     }
 }
