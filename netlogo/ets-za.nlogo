@@ -113,10 +113,10 @@ end
 ; reap the dead
 to reap
   ask zombies [
-    if TTL <= 0 [ die ]
+    reap2
   ]
   ask humans [
-    if TTL <= 0 [ die ]
+    reap2
   ]
 end
 
@@ -152,8 +152,23 @@ to-report color-it
   report (turtle-set zombies humans) in-cone see-distance see-cone
 end
 
-
-
+to reap2 
+    if TTL <= 0 [
+      let rx xcor
+      let ry ycor
+      let dying who
+      ask ( turtle-set zombies humans ) in-radius see-distance [
+        if who != dying [
+          let absangl atan (rx - xcor) (ry - ycor)
+          let relangl abs subtract-headings heading absangl
+          if relangl < see-cone [
+            gbui:inform "die" turtle dying
+          ]
+        ]
+      ]
+      
+      die ]
+end
 
 
 
