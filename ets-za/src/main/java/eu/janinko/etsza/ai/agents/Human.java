@@ -5,6 +5,7 @@ import eu.janinko.etsza.ai.Callbacks.Actuators;
 import eu.janinko.etsza.ai.Callbacks.Sensors;
 import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.agents.Actions.Rotate;
+import eu.janinko.etsza.ai.agents.Actions.RotateAndMove;
 import static eu.janinko.etsza.ai.agents.Actions.Type.Rotate;
 import eu.janinko.etsza.ai.agents.brains.HumanBasicBrain;
 import eu.janinko.etsza.ai.agents.brains.HumanMemoryBrain;
@@ -69,6 +70,12 @@ public class Human extends DefaultAgent {
 			case Idle:{
 				return;
 			}
+            case RotateAndMove: {
+                RotateAndMove rotateAndMove = (RotateAndMove) action;
+                a.rotate(rotateAndMove.getDegree());
+                a.move();
+                return;
+            }
             default:{
                 throw new UnsupportedOperationException("Unknown action: " + action);
             }

@@ -34,11 +34,8 @@ public class ZombieBasicBrain extends DefaultBrain<Zombie>{
             return Actions.rotate(20);
         }else{
             if(r.nextInt(3)==0){
-                return Actions.rotate(WorldMath.normalizeAngle(r.nextInt(41)-20));
+                return Actions.rotateAndMove(r.nextInt(41)-20);
             }else{
-                // if(s.canAttack(t))
-                //     a.attack(t);
-                // else
                 return Actions.move();
             }
         }

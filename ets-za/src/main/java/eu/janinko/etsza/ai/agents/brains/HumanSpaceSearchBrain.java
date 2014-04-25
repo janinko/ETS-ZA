@@ -5,6 +5,7 @@ import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Actions;
 import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.agents.Actions.Rotate;
+import eu.janinko.etsza.ai.agents.Actions.RotateAndMove;
 import eu.janinko.etsza.ai.agents.Human;
 import eu.janinko.etsza.ai.model.WorldModel;
 import java.util.ArrayDeque;
@@ -36,9 +37,8 @@ public class HumanSpaceSearchBrain extends DefaultBrain<Human>{
             }
             
             queue.add(step.next(Actions.idle()));
-            queue.add(step.next(Actions.move()));
             for(int i=0; i<360; i+=10){
-                queue.add(step.next(Actions.rotate(i)));
+                queue.add(step.next(Actions.rotateAndMove(i)));
             }
         }
 		return null;
@@ -69,7 +69,7 @@ public class HumanSpaceSearchBrain extends DefaultBrain<Human>{
             WorldModel nwm;
             switch(action.getType()){
                 case Idle: nwm = wm.idle(); break;
-                case Move: nwm = wm.move(); break;
+                case RotateAndMove: nwm = wm.rotate(((RotateAndMove) action).getDegree()); wm.move(); break;
                 case Rotate: nwm = wm.rotate(((Rotate) action).getDegree()); break;
                 default: throw new IllegalArgumentException("Unexpected action type: " + action);
             }

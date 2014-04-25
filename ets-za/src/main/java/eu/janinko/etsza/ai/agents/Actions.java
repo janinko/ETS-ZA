@@ -9,6 +9,7 @@ public class Actions {
     public enum Type{
         Move,
         Rotate,
+        RotateAndMove,
 		Attack,
         Idle;
     }
@@ -31,6 +32,10 @@ public class Actions {
         return rotates[degree];
     }
     
+    public static RotateAndMove rotateAndMove(double degree){
+        return new RotateAndMove(degree);
+    }
+
     public static Attack attack(long id){
         return new Attack(id);
     }
@@ -66,6 +71,21 @@ public class Actions {
         }
 
         public int getDegree() {
+            return degree;
+        }
+    }
+    public static class RotateAndMove implements Action{
+        private final double degree;
+        private RotateAndMove(double degree){
+            this.degree = degree;
+        };
+
+        @Override
+        public Type getType() {
+            return Type.RotateAndMove;
+        }
+
+        public double getDegree() {
             return degree;
         }
     }

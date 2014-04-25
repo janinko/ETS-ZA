@@ -36,19 +36,8 @@ public class HumanMemoryBrain extends DefaultBrain<Human>{
         
         double desired = getAngle();
         double heading = owner.getHeading();
-        double diff = WorldMath.angleDiff(desired, heading);
-        double margin = ai.getConfig().getSeeCone() / 6;
-        if(diff < margin){ // heading probably the right way
-            //if(owner.getId() == 1) System.out.println(owner.getId() + ": I want to face "+ desired + ", facing " + heading + ", moving forward.");
-            return Actions.move();
-        }
-        
-        double r = desired - heading;
-        if(r < 0){
-            r += 360;
-        }
-        //if(owner.getId() == 1) System.out.println(owner.getId() + ": I want to face "+ desired + "°, facing " + heading + "°, turning right " + r + "°");
-        return Actions.rotate((int) Math.round(r));
+
+        return Actions.rotateAndMove(desired - heading);
     }
     
     public double getAngle(){

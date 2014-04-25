@@ -5,7 +5,7 @@ import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.Callbacks.Actuators;
 import eu.janinko.etsza.ai.Callbacks.Sensors;
 import eu.janinko.etsza.ai.agents.Actions.Action;
-import static eu.janinko.etsza.ai.agents.Actions.Type.Move;
+import eu.janinko.etsza.ai.agents.Actions.RotateAndMove;
 import eu.janinko.etsza.ai.agents.brains.ZombieBasicBrain;
 import eu.janinko.etsza.ai.agents.memory.HumanMemory;
 import eu.janinko.etsza.util.Vector;
@@ -60,6 +60,12 @@ public class Zombie extends DefaultAgent{
 			case Idle:{
 				return;
 			}
+            case RotateAndMove: {
+                RotateAndMove rotateAndMove = (RotateAndMove) action;
+                a.rotate(rotateAndMove.getDegree());
+                a.move();
+                return;
+            }
 			case Attack:{
 				Actions.Attack attack = (Actions.Attack) action;
 				a.attack(attack.getId());
