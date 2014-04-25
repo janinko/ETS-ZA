@@ -30,6 +30,9 @@ public class WorldMath {
         return diff;
     }
 	
+	/**
+	 * Returns angle in range [0,360).
+	 */
 	public static int normalizeAngle(int angle){
 		while(angle >= 360){
 			angle -= 360;
@@ -40,6 +43,9 @@ public class WorldMath {
 		return angle;
 	}
 	
+	/**
+	 * Returns angle in range [0,360).
+	 */
 	public static double normalizeAngle(double angle){
 		while(angle >= 360){
 			angle -= 360;

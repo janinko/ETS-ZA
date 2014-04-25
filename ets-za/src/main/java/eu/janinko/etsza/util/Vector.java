@@ -20,18 +20,13 @@ public class Vector {
     public Vector(double angle, double size){
         dy = Math.cos(angle / 180 * Math.PI) * size;
         double ldx = Math.sqrt(size*size - dy*dy);
-        while(angle > 360){
-            angle -= 360;
-        }
-        while(angle < 0){
-            angle += 360;
-        }
+        angle = WorldMath.normalizeAngle(angle);
         if(angle > 180){
             ldx = -ldx;
         }
         dx = ldx;
     }
-    
+
     public double size(){
         double in = dx*dx + dy*dy;
         return Math.sqrt(in);
