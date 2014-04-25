@@ -1,15 +1,14 @@
-
 package eu.janinko.etsza;
 
+import eu.janinko.etsza.ai.AI;
+import eu.janinko.etsza.primitives.AIPerform;
 import eu.janinko.etsza.primitives.Inform;
 import eu.janinko.etsza.primitives.PrintAgentInfo;
-import eu.janinko.etsza.primitives.SetSensors;
+import eu.janinko.etsza.primitives.SelectBrains;
 import eu.janinko.etsza.primitives.SetActuators;
-import eu.janinko.etsza.primitives.AIPerform;
+import eu.janinko.etsza.primitives.SetSensors;
 import eu.janinko.etsza.primitives.SetSettings;
 import eu.janinko.etsza.primitives.Tick;
-import eu.janinko.etsza.ai.AI;
-import eu.janinko.etsza.primitives.SelectBrains;
 import org.nlogo.api.DefaultClassManager;
 import org.nlogo.api.ExtensionException;
 import org.nlogo.api.PrimitiveManager;
@@ -18,6 +17,7 @@ import org.nlogo.api.PrimitiveManager;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class GBUIExtension extends DefaultClassManager {
+
     AI ai = new AI();
 
     @Override
