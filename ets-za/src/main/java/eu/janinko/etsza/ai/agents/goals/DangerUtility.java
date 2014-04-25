@@ -13,12 +13,11 @@ import java.util.Collection;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class DangerUtility implements Utility{
-    private static final double sigma = 1;
-    private final double desiredDanger;
+    private final double acceptedDanger;
     private final AI ai;
 
-    public DangerUtility(double desiredDanger, AI ai) {
-        this.desiredDanger = desiredDanger;
+    public DangerUtility(double acceptedDanger, AI ai) {
+        this.acceptedDanger = acceptedDanger;
         this.ai = ai;
     }
     
@@ -29,25 +28,28 @@ public class DangerUtility implements Utility{
     }
     
     private double dangerToUtility(double danger){
-        double diff = Math.abs(desiredDanger - danger);
-        return Math.pow(Math.E, -(diff*diff)/(2*sigma*sigma));
+		if (danger <= acceptedDanger) return 0;
+		return (acceptedDanger - danger) / (acceptedDanger - 1);
     }
     
     public double getDanger(double x, double y, Collection<ZombieMemory> zombies){
-        double distanceParam = 1 / ai.getConfig().getZombieSpeed();
-        double agingParam = 20;
+        double maxDistance = ai.getConfig().getZombieSpeed() * 100;
+        double agingParam = 50;
         long time = ai.getTime();
         WorldMath wm = new WorldMath(ai.getConfig().getWidth(), ai.getConfig().getHeight());
         
-        double ret = 0;
+        double ret = 1;
         for(ZombieMemory z : zombies){
             long age = time - z.getDate();
-            if(age > 50) continue;
-            double timemodif = agingParam / (agingParam + age);
-            double danger = distanceParam / (distanceParam + wm.distance(x, y, z.getPosx(), z.getPosy()));
-            ret += danger * timemodif;
+            if(age > agingParam) continue;
+			double distance = wm.distance(x, y, z.getPosx(), z.getPosy());
+			if(distance > maxDistance) continue;
+            double timemodif = 1 - Math.pow(age / agingParam, 2);
+            double distmodif = distance / maxDistance;
+
+            ret *= timemodif * distmodif;
         }
-        return ret;
+        return 1 - ret;
     }
 
     @Override
@@ -55,4 +57,8 @@ public class DangerUtility implements Utility{
         Collection<ZombieMemory> zombies = model.getMemories().getAll(ZombieMemory.class).values();
         return dangerToUtility(getDanger(model.getPosx(), model.getPosy(), zombies));
     }
+
+	public double getAcceptedDanger() {
+		return acceptedDanger;
+	}
 }
