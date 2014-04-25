@@ -116,4 +116,11 @@ public class Zombie extends DefaultAgent{
         }
         return ret;
     }
+
+    @Override
+    protected void die(Turtle turtle) {
+        if (!turtle.isHuman())
+            return;
+        memories.forget(HumanMemory.class, turtle.getId());
+    }
 }

@@ -22,4 +22,6 @@ public interface Agent {
     double getPosY();
 
     double getHeading();
+
+    public void inform(String info, Turtle turtle);
 }

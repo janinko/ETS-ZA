@@ -58,4 +58,15 @@ public abstract class DefaultAgent implements Agent{
     public Memories getMemories() {
         return memories;
     }
+
+    @Override
+    public void inform(String info, Turtle turtle) {
+        switch (info) {
+            case "die": die(turtle); return;
+            default:
+                throw new IllegalArgumentException("Unknown info " + info);
+        }
+    }
+
+    protected abstract void die(Turtle turtle);
 }

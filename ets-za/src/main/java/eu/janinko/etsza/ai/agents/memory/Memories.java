@@ -46,4 +46,10 @@ public class Memories {
         if(map == null) throw new IllegalArgumentException("Untracked memory " + memory.getClass().getName());
         map.put(id, memory);
     }
+
+    public <K extends Memory> void forget(Class<K> clazz, long id) {
+        HashMap<Long, Memory> map = memories.get(clazz);
+        if (map == null) return;
+        map.remove(id);
+    }
 }

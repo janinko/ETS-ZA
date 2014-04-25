@@ -106,4 +106,12 @@ public class Human extends DefaultAgent {
         }
         return count;
     }
+
+    @Override
+    protected void die(Turtle turtle) {
+        if (turtle.isHuman())
+            return;
+
+        memories.forget(ZombieMemory.class, turtle.getId());
+    }
 }
