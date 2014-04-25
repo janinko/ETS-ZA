@@ -7,6 +7,7 @@ extensions [ gbui ]
 globals [
   human-population
   zombie-population
+  see-cone
 ]
 
 humans-own [  
@@ -19,9 +20,13 @@ zombies-own [
 
 to setup
   clear-all
+  set see-cone 60
+  
   set-default-shape turtles "default" ;; arrow
   set-default-shape halos "60cone"
   
+  gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed world-width world-height attack-distance
+
   let tmove task [
     ifelse breed = zombies
       [ move-z ]
@@ -31,10 +36,10 @@ to setup
      right ?1
   ]
   let tcount-z task [
-     count zombies in-radius 3
+     count zombies in-radius sense-distance
   ]
   let tcount-h task [
-     count humans in-radius 3
+     count humans in-radius sense-distance
   ]
   let tsee task [
      color-it
@@ -69,7 +74,7 @@ to setup
   create-zombies zombie-population [ setup-zombie ]
   ask humans [ set TTL 1000 ]
   ask zombies [ set TTL 1000 ]
-  ask human 1 [ make-halo ]
+  ask human 1 [ make-halo ] ;;  zvyrazneni cloveka c. 1
   reset-ticks
 end
 
@@ -96,12 +101,12 @@ to step
 end
 
 to move-z
-  forward 0.05
+  forward zombie-speed
   ;;battle
 end
 
 to move-h
-  forward 0.1
+  forward human-speed
   ;;battle
 end
 
@@ -135,16 +140,16 @@ to decay
 end
 
 to-report can-attack [ x ]
-  report attack-enabled and (distance x) <= 1
+  report attack-enabled and is-turtle? x and (distance x) <= attack-distance
 end
   
 to-report color-it
   if who = 1 [
-     ask zombies in-cone 6 60 [
+     ask zombies in-cone see-distance see-cone [
        set color white
      ]
   ]
-  report (turtle-set zombies humans) in-cone 6 60
+  report (turtle-set zombies humans) in-cone see-distance see-cone
 end
 
 
@@ -158,7 +163,7 @@ to make-halo  ;; runner procedure
   ;; be the same color as the turtle it encircles (unless
   ;; you add code to change it
   hatch-halos 1
-  [ set size 12
+  [ set size (see-distance * 2)
     ;; Use an RGB color to make halo three fourths transparent
     set color lput 64 extract-rgb color
     ;; set thickness of halo to half a patch
@@ -199,10 +204,10 @@ ticks
 30.0
 
 BUTTON
-63
-19
-137
-52
+40
+20
+114
+53
 Setup
 setup
 NIL
@@ -216,10 +221,10 @@ NIL
 1
 
 SLIDER
-38
-81
-272
-114
+40
+65
+415
+98
 total-population
 total-population
 0
@@ -231,10 +236,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-43
-153
-417
-186
+40
+105
+414
+138
 zombie-population-percent
 zombie-population-percent
 0
@@ -246,10 +251,10 @@ zombie-population-percent
 HORIZONTAL
 
 BUTTON
-195
-28
-260
-61
+125
+20
+190
+53
 Step
 step
 NIL
@@ -263,40 +268,40 @@ NIL
 1
 
 SLIDER
-130
-251
-365
-284
-zombie-movement-speed
-zombie-movement-speed
-0
-100
-46
+40
+165
+185
+198
+zombie-speed
+zombie-speed
+0.01
 1
+0.05
+0.01
 1
 NIL
 HORIZONTAL
 
 SLIDER
-91
-339
-326
-372
-human-movement-speed
-human-movement-speed
-0
-100
-50
+40
+205
+185
+238
+human-speed
+human-speed
+0.01
 1
+0.1
+0.01
 1
 NIL
 HORIZONTAL
 
 BUTTON
-312
-31
-375
-64
+200
+20
+263
+53
 Run
 step
 T
@@ -310,17 +315,17 @@ NIL
 1
 
 PLOT
-139
-456
-339
-606
+40
+455
+410
+605
 plot 1
 time
 count
 0.0
-10.0
+1000.0
 0.0
-10.0
+100.0
 true
 false
 "" ""
@@ -329,15 +334,60 @@ PENS
 "#zombies" 1.0 0 -10899396 true "" "plot count zombies"
 
 SWITCH
-57
-202
-223
-235
+270
+165
+415
+198
 attack-enabled
 attack-enabled
 0
 1
 -1000
+
+SLIDER
+40
+250
+185
+283
+see-distance
+see-distance
+1
+20
+6
+0.5
+1
+NIL
+HORIZONTAL
+
+SLIDER
+40
+285
+185
+318
+sense-distance
+sense-distance
+1
+20
+3
+0.5
+1
+NIL
+HORIZONTAL
+
+SLIDER
+270
+205
+415
+238
+attack-distance
+attack-distance
+0
+10
+1
+0.1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -713,5 +763,5 @@ Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 
 @#$#@#$#@
-0
+1
 @#$#@#$#@

@@ -54,5 +54,9 @@ public class AI {
     public WorldConfig getConfig() {
         return wc;
     }
+
+	public void setConfig(WorldConfig wc) {
+		this.wc = wc;
+	}
     
 }

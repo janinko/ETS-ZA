@@ -11,8 +11,31 @@ public class WorldConfig {
     private double senseDistance = 3;
     private double zombieSpeed = 0.05;
     private double humanSpeed = 0.1;
-    private double width = 30;
-    private double height = 30;
+    private double width = 43;
+    private double height = 26;
+	private double attackDistance = 1;
+
+	public WorldConfig() {
+	}
+
+	public WorldConfig(
+			double seeDistance,
+			double seeCone,
+			double senseDistance,
+			double zombieSpeed,
+			double humanSpeed,
+			double width,
+			double height,
+			double attackDistance) {
+		this.seeDistance = seeDistance;
+		this.seeCone = seeCone;
+		this.senseDistance = senseDistance;
+		this.zombieSpeed = zombieSpeed;
+		this.humanSpeed = humanSpeed;
+		this.width = width;
+		this.height = height;
+		this.attackDistance = attackDistance;
+	}
 
     public double getSeeDistance() {
         return seeDistance;
@@ -41,5 +64,9 @@ public class WorldConfig {
     public double getHeight() {
         return height;
     }
+
+	public double getAttackDistance() {
+		return attackDistance;
+	}
     
 }

@@ -5,6 +5,7 @@ import eu.janinko.etsza.primitives.PrintAgentInfo;
 import eu.janinko.etsza.primitives.SetSensors;
 import eu.janinko.etsza.primitives.SetActuators;
 import eu.janinko.etsza.primitives.AIPerform;
+import eu.janinko.etsza.primitives.SetSettings;
 import eu.janinko.etsza.primitives.Tick;
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.primitives.SelectBrains;
@@ -26,6 +27,7 @@ public class GBUIExtension extends DefaultClassManager {
         pm.addPrimitive("set-sensors", new SetSensors(ai));
         pm.addPrimitive("tick", new Tick(ai));
         pm.addPrimitive("select-brains", new SelectBrains(ai));
+        pm.addPrimitive("set-settings", new SetSettings(ai));
     }
 
     @Override
