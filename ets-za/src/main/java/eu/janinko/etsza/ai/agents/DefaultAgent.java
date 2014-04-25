@@ -59,6 +59,10 @@ public abstract class DefaultAgent implements Agent{
         return memories;
     }
 
+	public HashSet<Utility> getUtilities() {
+		return utilities;
+	}
+
     @Override
     public void inform(String info, Turtle turtle) {
         switch (info) {
