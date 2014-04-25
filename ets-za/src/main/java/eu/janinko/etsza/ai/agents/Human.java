@@ -9,6 +9,7 @@ import eu.janinko.etsza.ai.agents.Actions.RotateAndMove;
 import static eu.janinko.etsza.ai.agents.Actions.Type.Rotate;
 import eu.janinko.etsza.ai.agents.brains.HumanBasicBrain;
 import eu.janinko.etsza.ai.agents.brains.HumanMemoryBrain;
+import eu.janinko.etsza.ai.agents.brains.HumanPathfindingBrain;
 import eu.janinko.etsza.ai.agents.goals.DangerUtility;
 import eu.janinko.etsza.ai.agents.goals.Utility;
 import eu.janinko.etsza.ai.agents.memory.ZombieMemory;
@@ -37,6 +38,7 @@ public class Human extends DefaultAgent {
         switch(brainId){
             case "BasicBrain": brain = new HumanBasicBrain(this, ai); return;
             case "MemoryBrain": brain = new HumanMemoryBrain(this, ai); return;
+            case "PathfindingBrain": brain = new HumanPathfindingBrain(this, ai); return;
             default: throw new IllegalArgumentException("Unknown brain id");
         }
     }
