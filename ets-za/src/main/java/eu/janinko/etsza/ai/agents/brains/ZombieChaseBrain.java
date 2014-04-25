@@ -43,19 +43,21 @@ public class ZombieChaseBrain extends DefaultBrain<Zombie>{
 				dist = d;
 			}
 		}
-		
+
 		if(nearest == null){ // Idont't know abou any human or all the memories are old.
+            //if(owner.getId() == 99) System.out.println(owner.getId() + ": I don't see anything.");
 			if(owner.getAroundH() > 0){ // Around me is a human.
 				// I'l try to look around for him.
                 return Actions.rotate((int) cfg.getSeeCone());
 			}else{ // Around me isn't any human, I'll walk randomly.
 				if(r.nextInt(4)==0){
-					return Actions.rotateAndMove(WorldMath.normalizeAngle(r.nextInt(41)-20));
+                    return Actions.rotateAndMove(WorldMath.normalizeAngle((r.nextDouble() - 0.5) * 60));
 				}else{
 					return Actions.move();
 				}
 			}
 		}
+        //if(owner.getId() == 99) System.out.println(owner.getId() + ": I see " + nearest.getId() + " in " + dist);
 		
 		// I can attack the neareast human.
 		if(dist <= cfg.getAttackDistance()){
@@ -64,13 +66,15 @@ public class ZombieChaseBrain extends DefaultBrain<Zombie>{
 		
 		// Around me is a human and the nearest human I know about isn't around me.
 		if(owner.getAroundH() > 0 && dist > cfg.getSenseDistance() + cfg.getZombieSpeed()*360/cfg.getSeeCone()){
+            //if(owner.getId() == 99) System.out.println(owner.getId() + ": There is nearer one");
 			// I'll try to look around for the neearer one.
             return Actions.rotate((int) cfg.getSeeCone());
 		}
 		
-		Vector v = new Vector(x, y, nearest.getPosx(), nearest.getPosy());
 		double heading = owner.getHeading();
-		double turn = WorldMath.normalizeAngle(v.angle() - heading);
+        double angle = wm.angle(x, y, nearest.getPosx(), nearest.getPosy());
+        double turn = angle - heading;
+        // if (owner.getId() == 99) System.out.println(owner.getId() + ": chasing in " + turn);
 		return Actions.rotateAndMove((int)turn);
 	}
 	

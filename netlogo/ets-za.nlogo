@@ -75,7 +75,8 @@ to setup
   create-zombies zombie-population [ setup-zombie ]
   ask humans [ set TTL 1000 ]
   ask zombies [ set TTL 1000 ]
-  ask human 1 [ make-halo ] ;;  zvyrazneni cloveka c. 1
+  ask turtle 1 [ make-halo ] ;;  zvyrazneni cloveka c. 1
+  ask turtle 99 [ make-halo ] ;;  zvyrazneni zombie c. 99
   reset-ticks
 end
 
