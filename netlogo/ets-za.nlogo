@@ -26,6 +26,7 @@ to setup
   set-default-shape halos "60cone"
   
   gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed world-width world-height attack-distance
+  gbui:select-brains "BasicBrain" "ChaseBrain"
 
   let tmove task [
     ifelse breed = zombies
