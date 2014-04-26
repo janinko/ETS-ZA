@@ -37,6 +37,14 @@ public class Turtle implements AgentWrapper{
     }
 
     public double getTTL(){
-        return (double) turtle.getVariable(AgentVariableNumbers.VAR_PENMODE + 1);
+        return getCustomVariable(1);
+    }
+
+    public boolean isInfected(){
+        return isHuman() && getCustomVariable(2) >= 0;
+    }
+
+    private double getCustomVariable(int i){
+        return (double) turtle.getVariable(AgentVariableNumbers.VAR_PENMODE + i);
     }
 }

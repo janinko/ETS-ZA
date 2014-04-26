@@ -9,6 +9,7 @@ import eu.janinko.etsza.wrapper.Turtle;
  * @author Jakub Senko <jsenko@mail.muni.cz>
  */
 public class MemoryOfHuman extends MemoryOfTurtle implements Memory {
+    boolean infected;
 
     public MemoryOfHuman(Turtle human, AI ai) {
         super(human, ai.getTime());
@@ -26,8 +27,12 @@ public class MemoryOfHuman extends MemoryOfTurtle implements Memory {
         if (human.getId() != id) {
             throw new IllegalArgumentException("Provided turtle doesn't have same id.");
         }
+        infected = human.isInfected();
+        super.update(human, ai.getTime());
+    }
 
-        update(human, ai.getTime());
+    public boolean isInfected() {
+        return infected;
     }
 
 }
