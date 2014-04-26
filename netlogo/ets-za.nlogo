@@ -11,6 +11,7 @@ globals [
   base-TTL
   z-food-color
   h-food-color
+  food-TTL
   h-current-food-count
 ]
 
@@ -24,11 +25,12 @@ zombies-own [
 
 to setup
   clear-all
-  set see-cone 60
+  set see-cone 90
   
-  
+  set base-TTL 1000
   set z-food-color 113
   set h-food-color 123
+  set food-TTL base-TTL
   setup-h-food
   
   
@@ -74,7 +76,7 @@ to setup
   
   gbui:set-sensors tcount-z tcount-h tsee tsee-patches tcan-attack
   gbui:set-actuators tmove trotate tattack
-  set base-TTL 1000
+  
   set human-population round (total-population * (1 - zombie-population-percent / 100))
   set zombie-population round (total-population * (zombie-population-percent / 100))
   create-humans human-population [ setup-human ]
@@ -84,6 +86,22 @@ to setup
   ask turtle 1 [ make-halo ] ;;  zvyrazneni cloveka c. 1
   ask turtle 99 [ make-halo ] ;;  zvyrazneni zombie c. 99
   reset-ticks
+end
+
+
+to step
+  gbui:tick
+  ask humans [
+    h-eat
+    gbui:ai-perform
+  ]
+  ask zombies [
+    z-eat
+    gbui:ai-perform
+  ]
+  decay
+  reap
+  tick
 end
 
 ; ===== FOOD =====
@@ -107,8 +125,30 @@ to-report patch-is-h-food
   report pcolor = h-food-color
 end
 
+to-report patch-is-z-food
+  report pcolor = z-food-color
+end
+
 to patch-set-z-food
   set pcolor z-food-color
+end
+
+; ===== EAT =====
+
+; eat human food
+to h-eat
+  if is-human? self and patch-is-h-food [
+    set TTL (TTL + food-TTL)
+    set pcolor black
+  ]
+end
+
+; eat zombie food
+to z-eat
+  if is-zombie? self and patch-is-z-food [
+    set TTL (TTL + food-TTL)
+    set pcolor black
+  ]
 end
 
 ; ===== ATTACK =====
@@ -142,14 +182,7 @@ to setup-zombie
 end
 
 
-to step
-  gbui:tick
-  ask humans [ gbui:ai-perform ]
-  ask zombies [ gbui:ai-perform ]
-  decay
-  reap
-  tick
-end
+
 
 to move-z
   forward zombie-speed
@@ -494,7 +527,7 @@ h-food-count
 h-food-count
 0
 20
-2
+5
 1
 1
 NIL
