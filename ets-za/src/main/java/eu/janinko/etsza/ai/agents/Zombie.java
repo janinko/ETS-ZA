@@ -8,6 +8,8 @@ import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.agents.Actions.RotateAndMove;
 import eu.janinko.etsza.ai.agents.brains.ZombieBasicBrain;
 import eu.janinko.etsza.ai.agents.brains.ZombieChaseBrain;
+import eu.janinko.etsza.ai.agents.goals.Canibalism;
+import eu.janinko.etsza.ai.agents.goals.Eat;
 import eu.janinko.etsza.ai.agents.memory.HumanMemory;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
@@ -22,6 +24,9 @@ import org.nlogo.api.Context;
  */
 public class Zombie extends DefaultAgent{
     private int aroundH;
+    
+    private Eat gEat;
+    private Canibalism uCanibalism;
 
     private double ttl;
 
@@ -29,6 +34,8 @@ public class Zombie extends DefaultAgent{
         super(turtle, ai);
         
         memories.addMemoryClass(HumanMemory.class);
+        gEat = new Eat(ai, 1);
+        uCanibalism = new Canibalism(0, ai);
     }
 
     @Override
@@ -142,5 +149,13 @@ public class Zombie extends DefaultAgent{
 
     public double getTTL() {
         return ttl;
+    }
+
+    public Eat getGoalEat() {
+        return gEat;
+    }
+
+    public Canibalism getCanibalism() {
+        return uCanibalism;
     }
 }

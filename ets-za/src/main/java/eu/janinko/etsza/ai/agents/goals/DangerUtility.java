@@ -12,7 +12,7 @@ import java.util.Collection;
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-public class DangerUtility implements Utility{
+public class DangerUtility implements Utility<Human>{
     private final double acceptedDanger;
     private final AI ai;
 
@@ -52,7 +52,7 @@ public class DangerUtility implements Utility{
         return 1 - ret;
     }
 
-    @Override
+    //@Override
     public double getUtilityWhen(WorldModel model) {
         Collection<ZombieMemory> zombies = model.getMemories().getAll(ZombieMemory.class).values();
         return dangerToUtility(getDanger(model.getPosx(), model.getPosy(), zombies));

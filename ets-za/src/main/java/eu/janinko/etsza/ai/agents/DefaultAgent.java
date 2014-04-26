@@ -3,6 +3,7 @@ package eu.janinko.etsza.ai.agents;
 
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.brains.Brain;
+import eu.janinko.etsza.ai.agents.goals.Goal;
 import eu.janinko.etsza.ai.agents.goals.Utility;
 import eu.janinko.etsza.ai.agents.memory.Memories;
 import eu.janinko.etsza.wrapper.Turtle;
@@ -18,7 +19,6 @@ public abstract class DefaultAgent implements Agent{
     protected long id;
     protected double posX, posY;
     protected double heading;
-    protected HashSet<Utility> utilities = new HashSet<>();
     protected Memories memories = new Memories();
 
     public DefaultAgent(Turtle turtle, AI ai) {
@@ -58,10 +58,6 @@ public abstract class DefaultAgent implements Agent{
     public Memories getMemories() {
         return memories;
     }
-
-	public HashSet<Utility> getUtilities() {
-		return utilities;
-	}
 
     @Override
     public void inform(String info, Turtle turtle) {

@@ -25,12 +25,13 @@ import org.nlogo.api.Context;
 public class Human extends DefaultAgent {
     private int aroundZ;
 
+    DangerUtility uDanger;
     private double ttl;
 
     public Human(Turtle turtle, AI ai) {
         super(turtle, ai);
         brain = new HumanMemoryBrain(this, ai);
-        utilities.add(new DangerUtility(0, ai));
+        uDanger = new DangerUtility(0, ai);
         
         memories.addMemoryClass(ZombieMemory.class);
     }
@@ -55,9 +56,7 @@ public class Human extends DefaultAgent {
     public void perform(Context ctx) {
         if(id == 1){
             System.out.println("Utilities:");
-            for(Utility u : utilities){
-                System.out.println(u.getClass().getName() + ": " + u.getCurrentUtility(this));
-            }
+            System.out.println("DangerUtility: " + uDanger.getCurrentUtility(this));
         }
         Sensors s = ai.getCallbacks().getSensors(ctx);
         Actuators a = ai.getCallbacks().getActuators(ctx);
@@ -134,5 +133,9 @@ public class Human extends DefaultAgent {
 
     public double getTTL() {
         return ttl;
+    }
+
+    public DangerUtility getDangerUtility() {
+        return uDanger;
     }
 }

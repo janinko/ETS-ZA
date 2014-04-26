@@ -40,13 +40,8 @@ public class HumanPathfindingBrain extends DefaultBrain<Human>{
 
     @Override
     public Action perform() {
-		DangerUtility du = null;
-		for(Utility utility : owner.getUtilities()){
-			if( utility instanceof DangerUtility){
-				du = (DangerUtility) utility;
-				break;
-			}
-		}
+		DangerUtility du = owner.getDangerUtility();
+
 		if(du == null){
 			return Actions.idle();
 		}
