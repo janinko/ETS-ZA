@@ -1,5 +1,5 @@
 
-package eu.janinko.etsza.ai.agents.goals;
+package eu.janinko.etsza.ai.goals;
 
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Zombie;

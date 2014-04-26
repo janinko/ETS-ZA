@@ -1,9 +1,9 @@
 
 package eu.janinko.etsza.ai.agents;
 
-import eu.janinko.etsza.ai.agents.goals.Goal;
-import eu.janinko.etsza.ai.agents.goals.Utility;
-import eu.janinko.etsza.ai.agents.memory.Memories;
+import eu.janinko.etsza.ai.goals.Goal;
+import eu.janinko.etsza.ai.goals.Utility;
+import eu.janinko.etsza.ai.memory.Memories;
 import eu.janinko.etsza.wrapper.Turtle;
 import java.util.List;
 import org.nlogo.api.Context;

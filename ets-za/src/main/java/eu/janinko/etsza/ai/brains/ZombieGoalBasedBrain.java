@@ -1,14 +1,14 @@
 
-package eu.janinko.etsza.ai.agents.brains;
+package eu.janinko.etsza.ai.brains;
 
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.WorldConfig;
 import eu.janinko.etsza.ai.agents.Actions;
 import eu.janinko.etsza.ai.agents.Zombie;
-import eu.janinko.etsza.ai.agents.goals.Canibalism;
-import eu.janinko.etsza.ai.agents.goals.Eat;
-import eu.janinko.etsza.ai.agents.goals.Plan;
-import eu.janinko.etsza.ai.agents.goals.Plan.Step;
+import eu.janinko.etsza.ai.goals.Canibalism;
+import eu.janinko.etsza.ai.goals.Eat;
+import eu.janinko.etsza.ai.goals.Plan;
+import eu.janinko.etsza.ai.goals.Plan.Step;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.Random;
 import java.util.Set;

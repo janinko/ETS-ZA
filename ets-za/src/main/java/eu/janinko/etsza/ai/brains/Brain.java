@@ -1,4 +1,4 @@
-package eu.janinko.etsza.ai.agents.brains;
+package eu.janinko.etsza.ai.brains;
 
 import eu.janinko.etsza.ai.agents.Actions.Action;
 

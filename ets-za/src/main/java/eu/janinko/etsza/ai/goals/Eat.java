@@ -1,13 +1,13 @@
 
-package eu.janinko.etsza.ai.agents.goals;
+package eu.janinko.etsza.ai.goals;
 
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.WorldConfig;
 import eu.janinko.etsza.ai.agents.Zombie;
-import eu.janinko.etsza.ai.agents.goals.Plan.Attack;
-import eu.janinko.etsza.ai.agents.goals.Plan.Move;
-import eu.janinko.etsza.ai.agents.memory.HumanMemory;
-import eu.janinko.etsza.ai.agents.memory.ZombieMemory;
+import eu.janinko.etsza.ai.goals.Plan.Attack;
+import eu.janinko.etsza.ai.goals.Plan.Move;
+import eu.janinko.etsza.ai.memory.HumanMemory;
+import eu.janinko.etsza.ai.memory.ZombieMemory;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.Collection;
 import java.util.HashSet;

@@ -1,12 +1,12 @@
 
-package eu.janinko.etsza.ai.agents.brains;
+package eu.janinko.etsza.ai.brains;
 
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Actions;
 import eu.janinko.etsza.ai.agents.Agent;
-import eu.janinko.etsza.ai.agents.goals.Goal;
-import eu.janinko.etsza.ai.agents.goals.Plan;
-import eu.janinko.etsza.ai.agents.goals.Utility;
+import eu.janinko.etsza.ai.goals.Goal;
+import eu.janinko.etsza.ai.goals.Plan;
+import eu.janinko.etsza.ai.goals.Utility;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.HashSet;
 import java.util.Set;

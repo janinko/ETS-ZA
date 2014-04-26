@@ -1,11 +1,11 @@
 
-package eu.janinko.etsza.ai.agents.brains;
+package eu.janinko.etsza.ai.brains;
 
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Actions;
 import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.agents.Human;
-import eu.janinko.etsza.ai.agents.memory.ZombieMemory;
+import eu.janinko.etsza.ai.memory.ZombieMemory;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import java.io.BufferedWriter;

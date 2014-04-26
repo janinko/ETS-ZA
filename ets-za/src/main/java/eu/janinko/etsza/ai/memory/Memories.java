@@ -1,5 +1,5 @@
 
-package eu.janinko.etsza.ai.agents.memory;
+package eu.janinko.etsza.ai.memory;
 
 import java.util.Collections;
 import java.util.HashMap;

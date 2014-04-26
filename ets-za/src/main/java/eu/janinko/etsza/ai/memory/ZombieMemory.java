@@ -1,5 +1,5 @@
 
-package eu.janinko.etsza.ai.agents.memory;
+package eu.janinko.etsza.ai.memory;
 
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.wrapper.Turtle;
@@ -8,15 +8,15 @@ import eu.janinko.etsza.wrapper.Turtle;
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-public class HumanMemory implements Memory{
+public class ZombieMemory implements Memory{
     private long id;
     private double posx;
     private double posy;
     private long date;
 
-    public HumanMemory(Turtle human, AI ai) {
-        if(!human.isHuman()){
-            throw new IllegalArgumentException("Provided turtle isn't human.");
+    public ZombieMemory(Turtle human, AI ai) {
+        if(human.isHuman()){
+            throw new IllegalArgumentException("Provided turtle isn't zombie.");
         }
         id = human.getId();
         posx = human.getPosX();
@@ -25,8 +25,8 @@ public class HumanMemory implements Memory{
     }
     
     final public void update(Turtle human, AI ai){
-        if(!human.isHuman()){
-            throw new IllegalArgumentException("Provided turtle isn't human.");
+        if(human.isHuman()){
+            throw new IllegalArgumentException("Provided turtle isn't zombie.");
         }
         if(human.getId() != id){
             throw new IllegalArgumentException("Provided turtle doesn't have same id.");
@@ -54,8 +54,8 @@ public class HumanMemory implements Memory{
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 61 * hash + (int) (this.id ^ (this.id >>> 32));
+        int hash = 3;
+        hash = 29 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
 
@@ -67,7 +67,7 @@ public class HumanMemory implements Memory{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final HumanMemory other = (HumanMemory) obj;
+        final ZombieMemory other = (ZombieMemory) obj;
         if (this.id != other.id) {
             return false;
         }

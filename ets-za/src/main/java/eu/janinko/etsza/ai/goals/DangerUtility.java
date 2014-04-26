@@ -1,9 +1,9 @@
 
-package eu.janinko.etsza.ai.agents.goals;
+package eu.janinko.etsza.ai.goals;
 
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Human;
-import eu.janinko.etsza.ai.agents.memory.ZombieMemory;
+import eu.janinko.etsza.ai.memory.ZombieMemory;
 import eu.janinko.etsza.ai.model.WorldModel;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.Collection;

@@ -4,7 +4,7 @@ package eu.janinko.etsza.ai.model;
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.WorldConfig;
 import eu.janinko.etsza.ai.agents.Agent;
-import eu.janinko.etsza.ai.agents.memory.Memories;
+import eu.janinko.etsza.ai.memory.Memories;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 

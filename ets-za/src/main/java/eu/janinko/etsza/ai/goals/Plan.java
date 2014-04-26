@@ -1,5 +1,5 @@
 
-package eu.janinko.etsza.ai.agents.goals;
+package eu.janinko.etsza.ai.goals;
 
 import java.util.ArrayList;
 import java.util.List;
