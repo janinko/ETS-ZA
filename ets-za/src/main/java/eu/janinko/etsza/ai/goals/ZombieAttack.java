@@ -65,6 +65,7 @@ public class ZombieAttack implements Goal<Zombie>{
         int aheadInSenseArea = 0;
         Set<Plan> plans = new HashSet<>();
 		for(MemoryOfHuman h : humans){
+			if(h.isInfected()) continue;
 			long age = ai.getTime() - h.getDate();
 			if(age > 50) continue;
 			double d = wm.distance(x, y, h.getPosX(), h.getPosY()) + cfg.getHumanSpeed() * age;

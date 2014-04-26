@@ -7,6 +7,7 @@ import eu.janinko.etsza.ai.agents.Human;
 import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.ai.goals.steps.Attack;
 import eu.janinko.etsza.ai.goals.steps.Move;
+import eu.janinko.etsza.ai.memory.MemoryOfHuman;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.Collection;
 import java.util.HashSet;
@@ -45,6 +46,7 @@ public class HumanAttack implements Goal<Human>{
     @Override
     public Set<Plan> getPlans(Human human){
 		Collection<MemoryOfZombie> zombies = human.getMemories().getAll(MemoryOfZombie.class).values();
+		Collection<MemoryOfHuman> humans = human.getMemories().getAll(MemoryOfHuman.class).values();
 		WorldConfig cfg = ai.getConfig();
 		WorldMath wm = ai.getWorldMath();
 
@@ -70,6 +72,24 @@ public class HumanAttack implements Goal<Human>{
             }
             plans.add(p);
 		}
+        for (MemoryOfHuman h : humans) {
+            if (!h.isInfected()) continue;
+            long age = ai.getTime() - h.getDate();
+            if (age > 30) continue;
+            double d = wm.distance(x, y, h.getPosX(), h.getPosY());
+            Plan p = new Plan();
+            if (d <= cfg.getAttackDistance()) {
+                p.add(new Attack(h.getId(), false));
+                p.setLinking(priority);
+            } else {
+                Move m = new Move(h.getPosX(), h.getPosY(), d);
+                p.add(m);
+                p.add(new Attack(h.getId(), false));
+                double steps = 1 / (d / speed + 1);
+                p.setLinking(steps * priority);
+            }
+            plans.add(p);
+        }
         return plans;
     }
 }
