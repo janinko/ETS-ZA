@@ -13,6 +13,7 @@ import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.ai.goals.HumanAttack;
 import eu.janinko.etsza.ai.goals.HumanEat;
 import eu.janinko.etsza.ai.memory.MemoryOfFood;
+import eu.janinko.etsza.ai.memory.MemoryOfHuman;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Patch;
@@ -39,8 +40,9 @@ public class Human extends DefaultAgent {
 
         goals.add(new HumanAttack(ai, 0.6));
         goals.add(new HumanEat(ai, 1));
-        
+
         memories.addMemoryClass(MemoryOfZombie.class);
+        memories.addMemoryClass(MemoryOfHuman.class);
         memories.addMemoryClass(MemoryOfFood.class);
     }
 
@@ -81,12 +83,19 @@ public class Human extends DefaultAgent {
     
     private void sense(Sensors s){
         for(Turtle t : s.see()){
-            if(!t.isHuman()){
-                Long zid = t.getId();
-                if(memories.contains(MemoryOfZombie.class, zid)){
-                    memories.get(MemoryOfZombie.class, zid).update(t, ai);
+            Long tid = t.getId();
+            if(t.isHuman()){
+                if(id == tid) continue;
+                if(memories.contains(MemoryOfHuman.class, tid)){
+                    memories.get(MemoryOfHuman.class, tid).update(t, ai);
                 }else{
-                    memories.put(new MemoryOfZombie(t, ai), zid);
+                    memories.put(new MemoryOfHuman(t, ai), tid);
+                }
+            }else{
+                if(memories.contains(MemoryOfZombie.class, tid)){
+                    memories.get(MemoryOfZombie.class, tid).update(t, ai);
+                }else{
+                    memories.put(new MemoryOfZombie(t, ai), tid);
                 }
             }
         }
