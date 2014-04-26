@@ -33,10 +33,18 @@ public class Patch implements AgentWrapper{
     }
 
     public double getZFood(){
-        return (double) patch.getVariable(AgentVariableNumbers.VAR_PLABELCOLOR + 1);
+        if((double) patch.getVariable(AgentVariableNumbers.VAR_PCOLOR) == 113){
+            return 1;
+        }else{
+            return 0;
+        }
     }
 
     public double getHFood(){
-        return (double) patch.getVariable(AgentVariableNumbers.VAR_PLABELCOLOR + 2);
+        if((double) patch.getVariable(AgentVariableNumbers.VAR_PCOLOR) == 123){
+            return 1;
+        }else{
+            return 0;
+        }
     }
 }
