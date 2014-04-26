@@ -7,7 +7,7 @@ import org.nlogo.api.AgentVariableNumbers;
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-public class Turtle {
+public class Turtle implements AgentWrapper{
     org.nlogo.api.Turtle turtle;
 
     public Turtle(org.nlogo.api.Turtle turtle) {
@@ -22,10 +22,12 @@ public class Turtle {
         return turtle.id();
     }
 
+    @Override
     public double getPosX() {
         return (double) turtle.getVariable(AgentVariableNumbers.VAR_XCOR);
     }
 
+    @Override
     public double getPosY() {
         return (double) turtle.getVariable(AgentVariableNumbers.VAR_YCOR);
     }

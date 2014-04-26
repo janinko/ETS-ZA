@@ -22,11 +22,12 @@ public class SetSensors extends DefaultCommand {
     }
 
     /**
-     * gbui:set-sensors arond-z around-h see
+     * gbui:set-sensors arond-z around-h see seePatches canAttack
      */
     @Override
     public Syntax getSyntax() {
         return Syntax.commandSyntax(new int[] { Syntax.ReporterTaskType(),
+                                                Syntax.ReporterTaskType(),
                                                 Syntax.ReporterTaskType(),
                                                 Syntax.ReporterTaskType(),
                                                 Syntax.ReporterTaskType()});
@@ -38,7 +39,8 @@ public class SetSensors extends DefaultCommand {
         cb.setAroundZ(args[0].getReporterTask());
         cb.setAroundH(args[1].getReporterTask());
         cb.setSee(args[2].getReporterTask());
-        cb.setCanAttack(args[3].getReporterTask());
+        cb.setSeePatches(args[3].getReporterTask());
+        cb.setCanAttack(args[4].getReporterTask());
     }
     
 }

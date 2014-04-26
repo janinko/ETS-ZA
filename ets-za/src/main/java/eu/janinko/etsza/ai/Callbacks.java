@@ -1,5 +1,7 @@
 package eu.janinko.etsza.ai;
 
+import eu.janinko.etsza.wrapper.AgentWrapper;
+import eu.janinko.etsza.wrapper.Patch;
 import eu.janinko.etsza.wrapper.Turtle;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +25,7 @@ public class Callbacks {
     ReporterTask aroundZ;
     ReporterTask aroundH;
     ReporterTask see;
+    ReporterTask seePatches;
     ReporterTask canAttack;
 
 
@@ -52,6 +55,10 @@ public class Callbacks {
 
     public void setCanAttack(ReporterTask canAttack) {
         this.canAttack = canAttack;
+    }
+
+    public void setSeePatches(ReporterTask seePatches) {
+        this.seePatches = seePatches;
     }
 
     public Sensors getSensors(Context ctx){
@@ -84,6 +91,15 @@ public class Callbacks {
             AgentSet agents = (AgentSet) see.report(ctx, new Object[0]);
             for(Agent agent : agents.agents()){
                 ret.add(new Turtle((org.nlogo.api.Turtle) agent));
+            }
+            return ret;
+        }
+
+        public Set<Patch> seePatches(){
+            Set<Patch> ret = new HashSet<>();
+            AgentSet agents = (AgentSet) see.report(ctx, new Object[0]);
+            for(Agent agent : agents.agents()){
+                ret.add(new Patch((org.nlogo.api.Patch) agent));
             }
             return ret;
         }

@@ -47,6 +47,9 @@ to setup
     color-it
      
   ]
+  let tsee-patches task [
+    report patches in-cone see-distance see-cone
+  ]
   
   
   let tcan-attack task [
@@ -68,7 +71,7 @@ to setup
   
   
   
-  gbui:set-sensors tcount-z tcount-h tsee tcan-attack
+  gbui:set-sensors tcount-z tcount-h tsee tsee-patches tcan-attack
   gbui:set-actuators tmove trotate tattack
   set base-TTL 1000
   set human-population round (total-population * (1 - zombie-population-percent / 100))
