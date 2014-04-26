@@ -9,8 +9,8 @@ import eu.janinko.etsza.ai.brains.HumanGoalBasedBrain;
 import eu.janinko.etsza.ai.brains.HumanMemoryBrain;
 import eu.janinko.etsza.ai.brains.HumanPathfindingBrain;
 import eu.janinko.etsza.ai.goals.DangerUtility;
-import eu.janinko.etsza.ai.goals.KillZombie;
 import eu.janinko.etsza.ai.memory.MemoryOfZombie;
+import eu.janinko.etsza.ai.goals.HumanAttack;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Turtle;
@@ -34,7 +34,7 @@ public class Human extends DefaultAgent {
 
         utilities.add(new DangerUtility(0, ai));
         
-        goals.add(new KillZombie(ai, 0.8));
+        goals.add(new HumanAttack(ai, 0.8));
         
         memories.addMemoryClass(MemoryOfZombie.class);
     }

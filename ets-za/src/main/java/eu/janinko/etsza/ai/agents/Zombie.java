@@ -9,9 +9,9 @@ import eu.janinko.etsza.ai.brains.basic.ZombieBasicBrain;
 import eu.janinko.etsza.ai.brains.ZombieChaseBrain;
 import eu.janinko.etsza.ai.brains.ZombieGoalBasedBrain;
 import eu.janinko.etsza.ai.goals.Canibalism;
-import eu.janinko.etsza.ai.goals.Eat;
 import eu.janinko.etsza.ai.memory.MemoryOfHuman;
 import eu.janinko.etsza.ai.memory.MemoryOfZombie;
+import eu.janinko.etsza.ai.goals.ZombieAttack;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Turtle;
@@ -36,7 +36,7 @@ public class Zombie extends DefaultAgent{
 
         utilities.add(new Canibalism(0, ai));
 
-        goals.add(new Eat(ai, 1));
+        goals.add(new ZombieAttack(ai, 1));
     }
 
     @Override

@@ -4,9 +4,9 @@ package eu.janinko.etsza.ai.goals;
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.WorldConfig;
 import eu.janinko.etsza.ai.agents.Human;
-import eu.janinko.etsza.ai.goals.Plan.Attack;
-import eu.janinko.etsza.ai.goals.Plan.Move;
 import eu.janinko.etsza.ai.memory.MemoryOfZombie;
+import eu.janinko.etsza.ai.goals.steps.Attack;
+import eu.janinko.etsza.ai.goals.steps.Move;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.Collection;
 import java.util.HashSet;
@@ -16,13 +16,13 @@ import java.util.Set;
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-public class KillZombie implements Goal<Human>{
+public class HumanAttack implements Goal<Human>{
     private AI ai;
     private double priority;
 
     private static final double maxTTL = 1000;
 
-    public KillZombie(AI ai, double priority) {
+    public HumanAttack(AI ai, double priority) {
         this.ai = ai;
         this.priority = priority;
     }
