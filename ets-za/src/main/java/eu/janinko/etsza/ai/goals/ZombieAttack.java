@@ -4,10 +4,11 @@ package eu.janinko.etsza.ai.goals;
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.WorldConfig;
 import eu.janinko.etsza.ai.agents.Zombie;
-import eu.janinko.etsza.ai.memory.MemoryOfHuman;
-import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.ai.goals.steps.Attack;
 import eu.janinko.etsza.ai.goals.steps.Move;
+import eu.janinko.etsza.ai.goals.steps.Rotate;
+import eu.janinko.etsza.ai.memory.MemoryOfHuman;
+import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.Collection;
 import java.util.HashSet;
@@ -61,11 +62,15 @@ public class ZombieAttack implements Goal<Zombie>{
             afterTTL = ttl + maxTTL / 2;
         }
 
+        int aheadInSenseArea = 0;
         Set<Plan> plans = new HashSet<>();
 		for(MemoryOfHuman h : humans){
 			long age = ai.getTime() - h.getDate();
 			if(age > 50) continue;
 			double d = wm.distance(x, y, h.getPosX(), h.getPosY()) + cfg.getHumanSpeed() * age;
+            if(d <= cfg.getSenseDistance()){
+                aheadInSenseArea++;
+            }
             Plan p = new Plan();
             if(d <= cfg.getAttackDistance()){
                 p.add(new Attack(h.getId(), true));
@@ -82,7 +87,13 @@ public class ZombieAttack implements Goal<Zombie>{
             }
             plans.add(p);
 		}
-		for(MemoryOfZombie z : zombies){
+        if(zombie.getAroundH() > aheadInSenseArea){
+            Plan p = new Plan();
+            p.add(new Rotate(cfg.getSeeCone()));
+            p.setLinking(1);
+            plans.add(p);
+        }
+		/*for(MemoryOfZombie z : zombies){
 			long age = ai.getTime() - z.getDate();
 			if(age > 30) continue;
 			double d = wm.distance(x, y, z.getPosX(), z.getPosY());
@@ -101,7 +112,7 @@ public class ZombieAttack implements Goal<Zombie>{
                 }
             }
             plans.add(p);
-		}
+		}*/
         return plans;
     }
 }
