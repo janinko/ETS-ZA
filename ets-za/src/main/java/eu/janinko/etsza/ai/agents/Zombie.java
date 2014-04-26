@@ -67,35 +67,12 @@ public class Zombie extends DefaultAgent{
         act(action, a);
     }
     
-    private void act(Action action, Actuators a){
-        switch(action.getType()){
-            case Move:{
-                a.move();
-                return;
+    @Override
+    protected void act(Action action, Actuators a) {
+        switch (action.getType()) {
+            default: {
+                super.act(action, a);
             }
-            case Rotate:{
-                Actions.Rotate rotate = (Actions.Rotate) action;
-                a.rotate((double) rotate.getDegree());
-                return;
-            }
-			case Idle:{
-				return;
-			}
-            case RotateAndMove: {
-                RotateAndMove rotateAndMove = (RotateAndMove) action;
-                a.rotate(rotateAndMove.getDegree());
-                a.move();
-                return;
-            }
-			case Attack:{
-				Actions.Attack attack = (Actions.Attack) action;
-				a.attack(attack.getId());
-				return;
-			}
-            default:{	
-                throw new UnsupportedOperationException("Unknown action: " + action);
-            }
-                
         }
     }
     

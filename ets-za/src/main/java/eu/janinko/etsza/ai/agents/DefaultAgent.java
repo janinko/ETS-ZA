@@ -2,6 +2,7 @@
 package eu.janinko.etsza.ai.agents;
 
 import eu.janinko.etsza.ai.AI;
+import eu.janinko.etsza.ai.Callbacks;
 import eu.janinko.etsza.ai.agents.brains.Brain;
 import eu.janinko.etsza.ai.agents.goals.Goal;
 import eu.janinko.etsza.ai.agents.goals.Utility;
@@ -57,6 +58,38 @@ public abstract class DefaultAgent implements Agent{
     @Override
     public Memories getMemories() {
         return memories;
+    }
+
+    protected void act(Actions.Action action, Callbacks.Actuators a) {
+        switch (action.getType()) {
+            case Move: {
+                a.move();
+                return;
+            }
+            case Rotate: {
+                Actions.Rotate rotate = (Actions.Rotate) action;
+                a.rotate((double) rotate.getDegree());
+                return;
+            }
+            case Idle: {
+                return;
+            }
+            case RotateAndMove: {
+                Actions.RotateAndMove rotateAndMove = (Actions.RotateAndMove) action;
+                a.rotate(rotateAndMove.getDegree());
+                a.move();
+                return;
+            }
+            case Attack: {
+                Actions.Attack attack = (Actions.Attack) action;
+                a.attack(attack.getId());
+                return;
+            }
+            default: {
+                throw new UnsupportedOperationException("Unknown action: " + action);
+            }
+
+        }
     }
 
     @Override
