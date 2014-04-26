@@ -48,7 +48,7 @@ to setup
      
   ]
   let tsee-patches task [
-    report patches in-cone see-distance see-cone
+    patches in-cone see-distance see-cone
   ]
   
   

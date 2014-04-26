@@ -97,7 +97,7 @@ public class Callbacks {
 
         public Set<Patch> seePatches(){
             Set<Patch> ret = new HashSet<>();
-            AgentSet agents = (AgentSet) see.report(ctx, new Object[0]);
+            AgentSet agents = (AgentSet) seePatches.report(ctx, new Object[0]);
             for(Agent agent : agents.agents()){
                 ret.add(new Patch((org.nlogo.api.Patch) agent));
             }
