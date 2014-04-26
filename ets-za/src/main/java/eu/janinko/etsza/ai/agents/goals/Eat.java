@@ -43,6 +43,7 @@ public class Eat implements Goal<Zombie>{
         return ttl / maxTTL;
     }
 
+    @Override
     public Set<Plan> getPlans(Zombie zombie){
 
 		Collection<HumanMemory> humans = zombie.getMemories().getAll(HumanMemory.class).values();

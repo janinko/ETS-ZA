@@ -2,6 +2,7 @@
 package eu.janinko.etsza.ai.agents.goals;
 
 import eu.janinko.etsza.ai.agents.Agent;
+import java.util.Set;
 
 /**
  *
@@ -22,4 +23,5 @@ public interface Goal<K extends Agent> {
      */
     double getSatisfaction(K agnet);
 
+    Set<Plan> getPlans(K agent);
 }
