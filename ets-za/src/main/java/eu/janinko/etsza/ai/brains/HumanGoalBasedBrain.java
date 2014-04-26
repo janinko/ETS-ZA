@@ -28,9 +28,9 @@ public class HumanGoalBasedBrain extends DefaultGoalBasedBrain<Human>{
             return Actions.rotate((int) cfg.getSeeCone());
         }
         if(owner.countZombiesAhead(20, 6) > 0){
-            return Actions.rotate(20);
+            return Actions.rotate(r.nextBoolean() ? 20 : -20);
         }
-        return Actions.move();
+        return Actions.rotateAndMove((r.nextDouble()-0.5)*20);
     }
 	
 	
