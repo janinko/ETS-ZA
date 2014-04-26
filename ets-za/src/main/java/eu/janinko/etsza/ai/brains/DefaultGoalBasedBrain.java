@@ -4,8 +4,11 @@ package eu.janinko.etsza.ai.brains;
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Actions;
 import eu.janinko.etsza.ai.agents.Agent;
+import eu.janinko.etsza.ai.goals.steps.Attack;
 import eu.janinko.etsza.ai.goals.Goal;
+import eu.janinko.etsza.ai.goals.steps.Move;
 import eu.janinko.etsza.ai.goals.Plan;
+import eu.janinko.etsza.ai.goals.steps.Step;
 import eu.janinko.etsza.ai.goals.Utility;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.HashSet;
@@ -46,15 +49,15 @@ public abstract class DefaultGoalBasedBrain<T extends Agent> extends DefaultBrai
             return noGoal();
         }
         if(owner.getId() == 1 || owner.getId() == 99) System.out.println(owner.getId() + ": Wining plan: " + plan);
-        Plan.Step step = plan.getSteps().get(0);
+        Step step = plan.getSteps().get(0);
 
         WorldMath wm = ai.getWorldMath();
 
-        if(step instanceof Plan.Attack){
-            Plan.Attack a = (Plan.Attack) step;
+        if(step instanceof Attack){
+            Attack a = (Attack) step;
             return Actions.attack(a.getTarget());
-        }else if( step instanceof Plan.Move){
-            Plan.Move m = (Plan.Move) step;
+        }else if( step instanceof Move){
+            Move m = (Move) step;
             double x = owner.getPosX();
             double y = owner.getPosY();
             double heading = owner.getHeading();

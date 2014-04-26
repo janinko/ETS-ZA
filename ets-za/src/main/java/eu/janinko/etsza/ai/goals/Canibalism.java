@@ -1,6 +1,8 @@
 
 package eu.janinko.etsza.ai.goals;
 
+import eu.janinko.etsza.ai.goals.steps.Attack;
+import eu.janinko.etsza.ai.goals.steps.Step;
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Zombie;
 
@@ -25,9 +27,9 @@ public class Canibalism implements Utility<Zombie>{
 
     @Override
     public void updatePlan(Plan plan, Zombie agent) {
-        for (Plan.Step step : plan.getSteps()) {
-            if (step instanceof Plan.Attack) {
-                Plan.Attack a = (Plan.Attack) step;
+        for (Step step : plan.getSteps()) {
+            if (step instanceof Attack) {
+                Attack a = (Attack) step;
                 if (!a.isTargetHuman()) {
                     plan.setLinking(plan.getLiking() * canibalismRate);
                 }

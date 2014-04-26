@@ -1,6 +1,8 @@
 
 package eu.janinko.etsza.ai.goals;
 
+import eu.janinko.etsza.ai.goals.steps.Move;
+import eu.janinko.etsza.ai.goals.steps.Step;
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Human;
 import eu.janinko.etsza.ai.memory.MemoryOfZombie;
@@ -64,9 +66,9 @@ public class DangerUtility implements Utility<Human>{
 
     @Override
     public void updatePlan(Plan plan, Human agent) {
-        for (Plan.Step step : plan.getSteps()) {
-            if (step instanceof Plan.Move) {
-                Plan.Move m = (Plan.Move) step;
+        for (Step step : plan.getSteps()) {
+            if (step instanceof Move) {
+                Move m = (Move) step;
                 double danger = getDanger(m.getTx(), m.getTy(), agent.getMemories().getAll(MemoryOfZombie.class).values());
                 plan.setLinking(plan.getLiking() * dangerToUtility(danger));
             }

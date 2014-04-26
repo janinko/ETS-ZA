@@ -1,6 +1,7 @@
 
 package eu.janinko.etsza.ai.goals;
 
+import eu.janinko.etsza.ai.goals.steps.Step;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,62 +51,4 @@ public class Plan implements Comparable<Plan>{
         return sb.toString();
     }
 
-    public interface Step{
-        double getLiking();
-    }
-    public static class Move implements Step{
-        private final double tx, ty;
-        private final double distance;
-
-        public Move(double tx, double ty, double distance) {
-            this.tx = tx;
-            this.ty = ty;
-            this.distance = distance;
-        }
-
-        public double getTx() {
-            return tx;
-        }
-
-        public double getTy() {
-            return ty;
-        }
-
-        @Override
-        public String toString() {
-            return "Move{" + "tx=" + tx + ", ty=" + ty + ", distance=" + distance + '}';
-        }
-
-        @Override
-        public double getLiking() {
-            return 1 / (distance + 1);
-        }
-    }
-    public static class Attack implements Step{
-        private final long target;
-        private final boolean isHuman;
-
-        public Attack(long target, boolean isHuman) {
-            this.target = target;
-            this.isHuman = isHuman;
-        }
-
-        public boolean isTargetHuman() {
-            return isHuman;
-        }
-
-        public long getTarget() {
-            return target;
-        }
-
-        @Override
-        public String toString() {
-            return "Attack{" + "target=" + target + ", isHuman=" + isHuman + '}';
-        }
-
-        @Override
-        public double getLiking() {
-            return 1;
-        }
-    }
 }
