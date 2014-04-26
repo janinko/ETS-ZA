@@ -5,7 +5,7 @@ import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.Callbacks.Actuators;
 import eu.janinko.etsza.ai.Callbacks.Sensors;
 import eu.janinko.etsza.ai.agents.Actions.Action;
-import eu.janinko.etsza.ai.brains.ZombieBasicBrain;
+import eu.janinko.etsza.ai.brains.basic.ZombieBasicBrain;
 import eu.janinko.etsza.ai.brains.ZombieChaseBrain;
 import eu.janinko.etsza.ai.brains.ZombieGoalBasedBrain;
 import eu.janinko.etsza.ai.goals.Canibalism;

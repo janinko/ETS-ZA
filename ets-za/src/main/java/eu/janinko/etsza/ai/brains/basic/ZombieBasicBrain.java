@@ -1,10 +1,11 @@
 
-package eu.janinko.etsza.ai.brains;
+package eu.janinko.etsza.ai.brains.basic;
 
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Actions;
 import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.agents.Zombie;
+import eu.janinko.etsza.ai.brains.DefaultBrain;
 import eu.janinko.etsza.ai.memory.HumanMemory;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.Random;
@@ -13,7 +14,7 @@ import java.util.Random;
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-public class ZombieBasicBrain extends DefaultBrain<Zombie>{
+public class ZombieBasicBrain extends DefaultBrain<Zombie> {
     private Random r;
 
     public ZombieBasicBrain(Zombie owner, AI ai){

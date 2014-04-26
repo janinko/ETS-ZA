@@ -1,16 +1,18 @@
 
-package eu.janinko.etsza.ai.brains;
+package eu.janinko.etsza.ai.brains.basic;
 
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Actions;
 import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.agents.Human;
+import eu.janinko.etsza.ai.brains.DefaultBrain;
+import eu.janinko.etsza.ai.memory.ZombieMemory;
 
 /**
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-public class HumanBasicBrain extends DefaultBrain<Human>{
+public class HumanBasicBrain extends DefaultBrain<Human> {
 
     public HumanBasicBrain(Human owner, AI ai) {
 		super(owner, ai);
@@ -18,6 +20,7 @@ public class HumanBasicBrain extends DefaultBrain<Human>{
 
     @Override
     public Action perform() {
+
         if(owner.getAroundZ() == 0){
             return Actions.idle();
         }

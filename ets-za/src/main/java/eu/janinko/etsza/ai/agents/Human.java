@@ -4,7 +4,7 @@ import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.Callbacks.Actuators;
 import eu.janinko.etsza.ai.Callbacks.Sensors;
 import eu.janinko.etsza.ai.agents.Actions.Action;
-import eu.janinko.etsza.ai.brains.HumanBasicBrain;
+import eu.janinko.etsza.ai.brains.basic.HumanBasicBrain;
 import eu.janinko.etsza.ai.brains.HumanGoalBasedBrain;
 import eu.janinko.etsza.ai.brains.HumanMemoryBrain;
 import eu.janinko.etsza.ai.brains.HumanPathfindingBrain;

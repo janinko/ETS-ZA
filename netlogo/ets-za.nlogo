@@ -9,6 +9,9 @@ globals [
   zombie-population
   see-cone
   base-TTL
+  z-food-color
+  h-food-color
+  h-current-food-count
 ]
 
 humans-own [  
@@ -23,11 +26,17 @@ to setup
   clear-all
   set see-cone 60
   
+  
+  set z-food-color 113
+  set h-food-color 123
+  setup-h-food
+  
+  
   set-default-shape turtles "default" ;; arrow
   set-default-shape halos "60cone"
   
   gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed world-width world-height attack-distance
-  gbui:select-brains "BasicBrain" "ChaseBrain"
+  gbui:select-brains "BasicBrain" "BasicBrain"
 
   let tmove task [
     ifelse breed = zombies
@@ -85,6 +94,32 @@ to setup
   reset-ticks
 end
 
+; ===== FOOD =====
+
+to setup-h-food
+  while [h-current-food-count < h-food-count] [
+    ask one-of patches [
+      if not patch-is-h-food [
+        patch-set-h-food  
+        set h-current-food-count (h-current-food-count + 1)
+      ]
+    ]
+  ]
+end
+
+to patch-set-h-food
+  set pcolor h-food-color
+end
+
+to-report patch-is-h-food
+  report pcolor = h-food-color
+end
+
+to patch-set-z-food
+  set pcolor z-food-color
+end
+
+; =====
 
 to setup-human
   setxy random-xcor random-ycor
@@ -120,13 +155,19 @@ end
 ; reap the dead
 to reap
   ask zombies [
-    reap2
+    info-death
     color-TTL 54 55 56 57
   ]
   ask humans [
-    reap2
-    color-TTL 14 15 16 17
+    ifelse (TTL <= 0) [      
+      info-death
+      patch-set-z-food
+      die
+    ][
+      color-TTL 14 15 16 17
+    ]
   ]
+
 end
 
 ; color agent accorging to the TTL
@@ -186,22 +227,19 @@ to-report color-it
   report (turtle-set zombies humans) in-cone see-distance see-cone
 end
 
-to reap2 
-    if TTL <= 0 [
-      let rx xcor
-      let ry ycor
-      let dying who
-      ask ( turtle-set zombies humans ) in-radius see-distance [
-        if who != dying [
-          let absangl atan (rx - xcor) (ry - ycor)
-          let relangl abs subtract-headings heading absangl
-          if relangl < see-cone [
-            gbui:inform "die" turtle dying
-          ]
-        ]
+to info-death
+  let rx xcor
+  let ry ycor
+  let dying who
+  ask ( turtle-set zombies humans ) in-radius see-distance [
+    if who != dying [
+      let absangl atan (rx - xcor) (ry - ycor)
+      let relangl abs subtract-headings heading absangl
+      if relangl < see-cone [
+        gbui:inform "die" turtle dying
       ]
-      
-      die ]
+    ]
+  ]
 end
 
 
@@ -434,6 +472,21 @@ attack-distance
 10
 1
 0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+270
+250
+447
+283
+h-food-count
+h-food-count
+0
+20
+2
+1
 1
 NIL
 HORIZONTAL
