@@ -10,8 +10,7 @@ import eu.janinko.etsza.ai.brains.HumanMemoryBrain;
 import eu.janinko.etsza.ai.brains.HumanPathfindingBrain;
 import eu.janinko.etsza.ai.goals.DangerUtility;
 import eu.janinko.etsza.ai.goals.KillZombie;
-import eu.janinko.etsza.ai.memory.HumanMemory;
-import eu.janinko.etsza.ai.memory.ZombieMemory;
+import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Turtle;
@@ -37,7 +36,7 @@ public class Human extends DefaultAgent {
         
         goals.add(new KillZombie(ai, 0.8));
         
-        memories.addMemoryClass(ZombieMemory.class);
+        memories.addMemoryClass(MemoryOfZombie.class);
     }
 
     @Override
@@ -79,10 +78,10 @@ public class Human extends DefaultAgent {
         for(Turtle t : s.see()){
             if(!t.isHuman()){
                 Long zid = t.getId();
-                if(memories.contains(ZombieMemory.class, zid)){
-                    memories.get(ZombieMemory.class, zid).update(t, ai);
+                if(memories.contains(MemoryOfZombie.class, zid)){
+                    memories.get(MemoryOfZombie.class, zid).update(t, ai);
                 }else{
-                    memories.put(new ZombieMemory(t, ai), zid);
+                    memories.put(new MemoryOfZombie(t, ai), zid);
                 }
             }
         }
@@ -95,9 +94,9 @@ public class Human extends DefaultAgent {
 
     public int countZombiesAhead(double cone, double distance) {
         int count = 0;
-        for(ZombieMemory z : memories.getAll(ZombieMemory.class).values()){
+        for(MemoryOfZombie z : memories.getAll(MemoryOfZombie.class).values()){
             if(ai.getTime() != z.getDate()) continue;
-            Vector v = new Vector(posX, posY, z.getPosx(), z.getPosy());
+            Vector v = new Vector(posX, posY, z.getPosX(), z.getPosY());
             
             if(v.size() > distance) continue;
             if(WorldMath.angleDiff(v.angle(), heading) > cone) continue;
@@ -106,11 +105,11 @@ public class Human extends DefaultAgent {
         return count;
     }
 
-    public Set<ZombieMemory> getZombiesAhead(double cone, double distance) {
-        Set<ZombieMemory> ret = new HashSet<>();
-        for(ZombieMemory h : memories.getAll(ZombieMemory.class).values()){
+    public Set<MemoryOfZombie> getZombiesAhead(double cone, double distance) {
+        Set<MemoryOfZombie> ret = new HashSet<>();
+        for(MemoryOfZombie h : memories.getAll(MemoryOfZombie.class).values()){
             if(ai.getTime() != h.getDate()) continue;
-            Vector v = new Vector(posX, posY, h.getPosx(), h.getPosy());
+            Vector v = new Vector(posX, posY, h.getPosX(), h.getPosY());
 
             if(v.size() > distance) continue;
             if(WorldMath.angleDiff(v.angle(), heading) > cone) continue;
@@ -124,7 +123,7 @@ public class Human extends DefaultAgent {
         if (turtle.isHuman())
             return;
 
-        memories.forget(ZombieMemory.class, turtle.getId());
+        memories.forget(MemoryOfZombie.class, turtle.getId());
     }
 
     public double getTTL() {

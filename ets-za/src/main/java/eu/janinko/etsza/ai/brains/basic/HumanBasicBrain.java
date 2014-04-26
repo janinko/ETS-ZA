@@ -6,7 +6,7 @@ import eu.janinko.etsza.ai.agents.Actions;
 import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.agents.Human;
 import eu.janinko.etsza.ai.brains.DefaultBrain;
-import eu.janinko.etsza.ai.memory.ZombieMemory;
+import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 
 /**
  *
@@ -21,7 +21,7 @@ public class HumanBasicBrain extends DefaultBrain<Human> {
     @Override
     public Action perform() {
 
-        for(ZombieMemory m : owner.getZombiesAhead(360, 1)){
+        for(MemoryOfZombie m : owner.getZombiesAhead(360, 1)){
             System.out.println("attacking: " + m.getId());
             return Actions.attack(m.getId());
         }

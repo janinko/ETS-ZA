@@ -2,21 +2,12 @@
 package eu.janinko.etsza.primitives;
 
 import eu.janinko.etsza.ai.AI;
-import org.nlogo.api.AgentVariableNumbers;
-import org.nlogo.api.AgentVariables;
-import org.nlogo.api.Argument;
-import org.nlogo.api.Context;
-import org.nlogo.api.DefaultCommand;
-import org.nlogo.api.ExtensionException;
-import org.nlogo.api.LogoException;
-import org.nlogo.api.Syntax;
-import org.nlogo.api.Turtle;
+import org.nlogo.api.*;
 
 /**
- *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-public class PrintAgentInfo extends DefaultCommand{
+public class PrintAgentInfo extends DefaultCommand {
     private AI ai;
 
     public PrintAgentInfo(AI ai) {
@@ -25,13 +16,13 @@ public class PrintAgentInfo extends DefaultCommand{
 
     @Override
     public Syntax getSyntax() {
-        return Syntax.commandSyntax(new int[] { Syntax.TurtleType()});
+        return Syntax.commandSyntax(new int[]{Syntax.TurtleType()});
     }
 
     @Override
     public void perform(Argument[] argmnts, Context cntxt) throws ExtensionException, LogoException {
         AgentVariables.getImplicitLinkVariables();
-        for(Argument arg : argmnts){
+        for (Argument arg : argmnts) {
             System.out.println("Argument: " + arg);
             Turtle t = arg.getTurtle();
             System.out.println("  Agent: " + t);
@@ -50,15 +41,15 @@ public class PrintAgentInfo extends DefaultCommand{
             System.out.println("    VAR_SIZE: " + vars[AgentVariableNumbers.VAR_SIZE]);
             System.out.println("    VAR_PENSIZE: " + vars[AgentVariableNumbers.VAR_PENSIZE]);
             System.out.println("    VAR_PENMODE: " + vars[AgentVariableNumbers.VAR_PENMODE]);
-            for(int i=13; i < vars.length; i++){
-                System.out.println("    CUSTOM_VAR_"+i+": " + vars[i]);
+            for (int i = 13; i < vars.length; i++) {
+                System.out.println("    CUSTOM_VAR_" + i + ": " + vars[i]);
             }
-            for(Object v : t.variables()){
+            for (Object v : t.variables()) {
                 System.out.println("  variable: " + v);
             }
             System.out.println();
         }
-        
+
     }
-    
+
 }

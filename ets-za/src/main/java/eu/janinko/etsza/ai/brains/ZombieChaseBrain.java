@@ -5,8 +5,7 @@ import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.WorldConfig;
 import eu.janinko.etsza.ai.agents.Actions;
 import eu.janinko.etsza.ai.agents.Zombie;
-import eu.janinko.etsza.ai.memory.HumanMemory;
-import eu.janinko.etsza.util.Vector;
+import eu.janinko.etsza.ai.memory.MemoryOfHuman;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.Collection;
 import java.util.Random;
@@ -25,19 +24,19 @@ public class ZombieChaseBrain extends DefaultBrain<Zombie>{
 
 	@Override
 	public Actions.Action perform() {
-		Collection<HumanMemory> humans = owner.getMemories().getAll(HumanMemory.class).values();
+		Collection<MemoryOfHuman> humans = owner.getMemories().getAll(MemoryOfHuman.class).values();
 		WorldConfig cfg = ai.getConfig();
 		WorldMath wm = ai.getWorldMath();
 		
 		double x = owner.getPosX();
 		double y = owner.getPosY();
 		
-		HumanMemory nearest = null;
+		MemoryOfHuman nearest = null;
 		double dist = Double.MAX_VALUE;
-		for(HumanMemory h : humans){ // Select the nearest human I know about.
+		for(MemoryOfHuman h : humans){ // Select the nearest human I know about.
 			long age = ai.getTime() - h.getDate();
 			if(age > 50) continue;
-			double d = wm.distance(x, y, h.getPosx(), h.getPosy()) + cfg.getHumanSpeed() * age;
+			double d = wm.distance(x, y, h.getPosX(), h.getPosY()) + cfg.getHumanSpeed() * age;
 			if(d < dist){
 				nearest = h;
 				dist = d;
@@ -72,7 +71,7 @@ public class ZombieChaseBrain extends DefaultBrain<Zombie>{
 		}
 		
 		double heading = owner.getHeading();
-        double angle = wm.angle(x, y, nearest.getPosx(), nearest.getPosy());
+        double angle = wm.angle(x, y, nearest.getPosX(), nearest.getPosY());
         double turn = angle - heading;
         // if (owner.getId() == 99) System.out.println(owner.getId() + ": chasing in " + turn);
 		return Actions.rotateAndMove((int)turn);

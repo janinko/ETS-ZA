@@ -4,11 +4,9 @@ package eu.janinko.etsza.ai.goals;
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.WorldConfig;
 import eu.janinko.etsza.ai.agents.Human;
-import eu.janinko.etsza.ai.agents.Zombie;
 import eu.janinko.etsza.ai.goals.Plan.Attack;
 import eu.janinko.etsza.ai.goals.Plan.Move;
-import eu.janinko.etsza.ai.memory.HumanMemory;
-import eu.janinko.etsza.ai.memory.ZombieMemory;
+import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.Collection;
 import java.util.HashSet;
@@ -46,7 +44,7 @@ public class KillZombie implements Goal<Human>{
 
     @Override
     public Set<Plan> getPlans(Human human){
-		Collection<ZombieMemory> zombies = human.getMemories().getAll(ZombieMemory.class).values();
+		Collection<MemoryOfZombie> zombies = human.getMemories().getAll(MemoryOfZombie.class).values();
 		WorldConfig cfg = ai.getConfig();
 		WorldMath wm = ai.getWorldMath();
 
@@ -55,16 +53,16 @@ public class KillZombie implements Goal<Human>{
         double speed = cfg.getHumanSpeed();
 
         Set<Plan> plans = new HashSet<>();
-		for(ZombieMemory z : zombies){
+		for(MemoryOfZombie z : zombies){
 			long age = ai.getTime() - z.getDate();
 			if(age > 30) continue;
-			double d = wm.distance(x, y, z.getPosx(), z.getPosy());
+			double d = wm.distance(x, y, z.getPosX(), z.getPosY());
             Plan p = new Plan();
             if(d <= cfg.getAttackDistance()){
                 p.add(new Attack(z.getId(), false));
                 p.setLinking(priority);
             }else{
-                Move m = new Move(z.getPosx(), z.getPosy(), d);
+                Move m = new Move(z.getPosX(), z.getPosY(), d);
                 p.add(m);
                 p.add(new Attack(z.getId(), false));
                 double steps = 1 / (d / speed + 1);

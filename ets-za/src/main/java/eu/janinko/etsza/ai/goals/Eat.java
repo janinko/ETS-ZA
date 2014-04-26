@@ -6,8 +6,8 @@ import eu.janinko.etsza.ai.WorldConfig;
 import eu.janinko.etsza.ai.agents.Zombie;
 import eu.janinko.etsza.ai.goals.Plan.Attack;
 import eu.janinko.etsza.ai.goals.Plan.Move;
-import eu.janinko.etsza.ai.memory.HumanMemory;
-import eu.janinko.etsza.ai.memory.ZombieMemory;
+import eu.janinko.etsza.ai.memory.MemoryOfHuman;
+import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.Collection;
 import java.util.HashSet;
@@ -46,8 +46,8 @@ public class Eat implements Goal<Zombie>{
     @Override
     public Set<Plan> getPlans(Zombie zombie){
 
-		Collection<HumanMemory> humans = zombie.getMemories().getAll(HumanMemory.class).values();
-		Collection<ZombieMemory> zombies = zombie.getMemories().getAll(ZombieMemory.class).values();
+		Collection<MemoryOfHuman> humans = zombie.getMemories().getAll(MemoryOfHuman.class).values();
+		Collection<MemoryOfZombie> zombies = zombie.getMemories().getAll(MemoryOfZombie.class).values();
 		WorldConfig cfg = ai.getConfig();
 		WorldMath wm = ai.getWorldMath();
 
@@ -62,16 +62,16 @@ public class Eat implements Goal<Zombie>{
         }
 
         Set<Plan> plans = new HashSet<>();
-		for(HumanMemory h : humans){
+		for(MemoryOfHuman h : humans){
 			long age = ai.getTime() - h.getDate();
 			if(age > 50) continue;
-			double d = wm.distance(x, y, h.getPosx(), h.getPosy()) + cfg.getHumanSpeed() * age;
+			double d = wm.distance(x, y, h.getPosX(), h.getPosY()) + cfg.getHumanSpeed() * age;
             Plan p = new Plan();
             if(d <= cfg.getAttackDistance()){
                 p.add(new Attack(h.getId(), true));
                 p.setLinking(getStatisfaction(afterTTL) * priority);
             }else{
-                p.add(new Move(h.getPosx(), h.getPosy(), d));
+                p.add(new Move(h.getPosX(), h.getPosY(), d));
                 p.add(new Attack(h.getId(), true));
                 double steps = d / speed;
                 if(steps >= ttl){
@@ -82,16 +82,16 @@ public class Eat implements Goal<Zombie>{
             }
             plans.add(p);
 		}
-		for(ZombieMemory z : zombies){
+		for(MemoryOfZombie z : zombies){
 			long age = ai.getTime() - z.getDate();
 			if(age > 30) continue;
-			double d = wm.distance(x, y, z.getPosx(), z.getPosy());
+			double d = wm.distance(x, y, z.getPosX(), z.getPosY());
             Plan p = new Plan();
             if(d <= cfg.getAttackDistance()){
                 p.add(new Attack(z.getId(), false));
                 p.setLinking(getStatisfaction(afterTTL) * priority);
             }else{
-                p.add(new Move(z.getPosx(), z.getPosy(), d));
+                p.add(new Move(z.getPosX(), z.getPosY(), d));
                 p.add(new Attack(z.getId(), false));
                 double steps = d / speed;
                 if(steps >= ttl){

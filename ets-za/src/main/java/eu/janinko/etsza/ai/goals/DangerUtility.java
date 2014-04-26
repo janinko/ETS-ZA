@@ -3,7 +3,7 @@ package eu.janinko.etsza.ai.goals;
 
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Human;
-import eu.janinko.etsza.ai.memory.ZombieMemory;
+import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.ai.model.WorldModel;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.Collection;
@@ -23,7 +23,7 @@ public class DangerUtility implements Utility<Human>{
     
     @Override
     public double getCurrentUtility(Human h){
-        Collection<ZombieMemory> zombies = h.getMemories().getAll(ZombieMemory.class).values();
+        Collection<MemoryOfZombie> zombies = h.getMemories().getAll(MemoryOfZombie.class).values();
         return dangerToUtility(getDanger(h.getPosX(), h.getPosY(), zombies));
     }
     
@@ -32,17 +32,17 @@ public class DangerUtility implements Utility<Human>{
 		return (acceptedDanger - danger) / (acceptedDanger - 1);
     }
     
-    public double getDanger(double x, double y, Collection<ZombieMemory> zombies){
+    public double getDanger(double x, double y, Collection<MemoryOfZombie> zombies){
         double maxDistance = ai.getConfig().getZombieSpeed() * 100;
         double agingParam = 50;
         long time = ai.getTime();
         WorldMath wm = new WorldMath(ai.getConfig().getWidth(), ai.getConfig().getHeight());
         
         double ret = 1;
-        for(ZombieMemory z : zombies){
+        for(MemoryOfZombie z : zombies){
             long age = time - z.getDate();
             if(age > agingParam) continue;
-			double distance = wm.distance(x, y, z.getPosx(), z.getPosy());
+			double distance = wm.distance(x, y, z.getPosX(), z.getPosY());
 			if(distance > maxDistance) continue;
             double timemodif = 1 - Math.pow(age / agingParam, 2);
             double distmodif = distance / maxDistance;
@@ -54,7 +54,7 @@ public class DangerUtility implements Utility<Human>{
 
     //@Override
     public double getUtilityWhen(WorldModel model) {
-        Collection<ZombieMemory> zombies = model.getMemories().getAll(ZombieMemory.class).values();
+        Collection<MemoryOfZombie> zombies = model.getMemories().getAll(MemoryOfZombie.class).values();
         return dangerToUtility(getDanger(model.getPosx(), model.getPosy(), zombies));
     }
 
@@ -67,7 +67,7 @@ public class DangerUtility implements Utility<Human>{
         for (Plan.Step step : plan.getSteps()) {
             if (step instanceof Plan.Move) {
                 Plan.Move m = (Plan.Move) step;
-                double danger = getDanger(m.getTx(), m.getTy(), agent.getMemories().getAll(ZombieMemory.class).values());
+                double danger = getDanger(m.getTx(), m.getTy(), agent.getMemories().getAll(MemoryOfZombie.class).values());
                 plan.setLinking(plan.getLiking() * dangerToUtility(danger));
             }
         }

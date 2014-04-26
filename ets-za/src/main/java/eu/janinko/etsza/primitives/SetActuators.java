@@ -1,17 +1,11 @@
 
 package eu.janinko.etsza.primitives;
 
-import eu.janinko.etsza.ai.Callbacks;
 import eu.janinko.etsza.ai.AI;
-import org.nlogo.api.Argument;
-import org.nlogo.api.Context;
-import org.nlogo.api.DefaultCommand;
-import org.nlogo.api.ExtensionException;
-import org.nlogo.api.LogoException;
-import org.nlogo.api.Syntax;
+import eu.janinko.etsza.ai.Callbacks;
+import org.nlogo.api.*;
 
 /**
- *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class SetActuators extends DefaultCommand {
@@ -26,9 +20,9 @@ public class SetActuators extends DefaultCommand {
      */
     @Override
     public Syntax getSyntax() {
-        return Syntax.commandSyntax(new int[] { Syntax.CommandTaskType(),
-                                                Syntax.CommandTaskType(),
-                                                Syntax.CommandTaskType()});
+        return Syntax.commandSyntax(new int[]{Syntax.CommandTaskType(),
+                Syntax.CommandTaskType(),
+                Syntax.CommandTaskType()});
     }
 
     @Override
@@ -38,5 +32,5 @@ public class SetActuators extends DefaultCommand {
         cb.setRotate(args[1].getCommandTask());
         cb.setAttack(args[2].getCommandTask());
     }
-    
+
 }

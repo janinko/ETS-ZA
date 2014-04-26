@@ -6,8 +6,7 @@ import eu.janinko.etsza.ai.agents.Actions;
 import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.agents.Human;
 import eu.janinko.etsza.ai.goals.DangerUtility;
-import eu.janinko.etsza.ai.goals.Utility;
-import eu.janinko.etsza.ai.memory.ZombieMemory;
+import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public class HumanPathfindingBrain extends DefaultBrain<Human>{
 		
 		double sx = owner.getPosX();
 		double sy = owner.getPosY();
-		Collection<ZombieMemory> zombies = owner.getMemories().getAll(ZombieMemory.class).values();
+		Collection<MemoryOfZombie> zombies = owner.getMemories().getAll(MemoryOfZombie.class).values();
 		
 		Step start = new Step(sx, sy, du.getDanger(sx, sy, zombies));
 		Step target = guessTarget(start, du, zombies);
@@ -76,7 +75,7 @@ public class HumanPathfindingBrain extends DefaultBrain<Human>{
 		return Actions.rotateAndMove(v.angle() - heading);
     }
 	
-	private Step guessTarget(Step start, DangerUtility du, Collection<ZombieMemory> zombies){
+	private Step guessTarget(Step start, DangerUtility du, Collection<MemoryOfZombie> zombies){
 		PriorityQueue<Step> queue = new PriorityQueue<>(100, new GuessComparator());
 		queue.add(start);
 		
@@ -97,7 +96,7 @@ public class HumanPathfindingBrain extends DefaultBrain<Human>{
 	}
 	
 	
-	private Step aStar(Step start, Step target, DangerUtility du, Collection<ZombieMemory> zombies){
+	private Step aStar(Step start, Step target, DangerUtility du, Collection<MemoryOfZombie> zombies){
 		double width = ai.getConfig().getWidth();
 		double height = ai.getConfig().getHeight();
 		
@@ -138,7 +137,7 @@ public class HumanPathfindingBrain extends DefaultBrain<Human>{
 			this(x, y, danger, 0, null);
 		}
 
-		private Step move(Vector v, DangerUtility du, Collection<ZombieMemory> zombies) {
+		private Step move(Vector v, DangerUtility du, Collection<MemoryOfZombie> zombies) {
 			return new Step(x + v.dx(), y + v.dy(), du.getDanger(x, y, zombies), depth + 1, this );
 		}
 		

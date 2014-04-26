@@ -2,15 +2,9 @@
 package eu.janinko.etsza.primitives;
 
 import eu.janinko.etsza.ai.AI;
-import org.nlogo.api.Argument;
-import org.nlogo.api.Context;
-import org.nlogo.api.DefaultCommand;
-import org.nlogo.api.ExtensionException;
-import org.nlogo.api.LogoException;
-import org.nlogo.api.Syntax;
+import org.nlogo.api.*;
 
 /**
- *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class SelectBrains extends DefaultCommand {
@@ -35,5 +29,5 @@ public class SelectBrains extends DefaultCommand {
         String zbrain = args[1].getString();
         ai.getAgents().setDefaultBrains(hbrain, zbrain);
     }
-    
+
 }

@@ -10,8 +10,8 @@ import eu.janinko.etsza.ai.brains.ZombieChaseBrain;
 import eu.janinko.etsza.ai.brains.ZombieGoalBasedBrain;
 import eu.janinko.etsza.ai.goals.Canibalism;
 import eu.janinko.etsza.ai.goals.Eat;
-import eu.janinko.etsza.ai.memory.HumanMemory;
-import eu.janinko.etsza.ai.memory.ZombieMemory;
+import eu.janinko.etsza.ai.memory.MemoryOfHuman;
+import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Turtle;
@@ -31,8 +31,8 @@ public class Zombie extends DefaultAgent{
     public Zombie(Turtle turtle, AI ai) {
         super(turtle, ai);
 
-        memories.addMemoryClass(HumanMemory.class);
-        memories.addMemoryClass(ZombieMemory.class);
+        memories.addMemoryClass(MemoryOfHuman.class);
+        memories.addMemoryClass(MemoryOfZombie.class);
 
         utilities.add(new Canibalism(0, ai));
 
@@ -78,17 +78,17 @@ public class Zombie extends DefaultAgent{
         for(Turtle t : s.see()){
             Long tid = t.getId();
             if(t.isHuman()){
-                if(memories.contains(HumanMemory.class, tid)){
-                    memories.get(HumanMemory.class, tid).update(t, ai);
+                if(memories.contains(MemoryOfHuman.class, tid)){
+                    memories.get(MemoryOfHuman.class, tid).update(t, ai);
                 }else{
-                    memories.put(new HumanMemory(t, ai), tid);
+                    memories.put(new MemoryOfHuman(t, ai), tid);
                 }
             }else{
                 if(tid == id) continue;
-                if(memories.contains(ZombieMemory.class, tid)){
-                    memories.get(ZombieMemory.class, tid).update(t, ai);
+                if(memories.contains(MemoryOfZombie.class, tid)){
+                    memories.get(MemoryOfZombie.class, tid).update(t, ai);
                 }else{
-                    memories.put(new ZombieMemory(t, ai), tid);
+                    memories.put(new MemoryOfZombie(t, ai), tid);
                 }
             }
         }
@@ -101,9 +101,9 @@ public class Zombie extends DefaultAgent{
 
     public int countHumansAhead(double cone, double distance) {
         int count = 0;
-        for(HumanMemory h : memories.getAll(HumanMemory.class).values()){
+        for(MemoryOfHuman h : memories.getAll(MemoryOfHuman.class).values()){
             if(ai.getTime() != h.getDate()) continue;
-            Vector v = new Vector(posX, posY, h.getPosx(), h.getPosy());
+            Vector v = new Vector(posX, posY, h.getPosX(), h.getPosY());
             
             if(v.size() > distance) continue;
             if(WorldMath.angleDiff(v.angle(), heading) > cone) continue;
@@ -113,11 +113,11 @@ public class Zombie extends DefaultAgent{
     }
 	
 
-    public Set<HumanMemory> getHumansAhead(double cone, double distance) {
-		Set<HumanMemory> ret = new HashSet<>();
-        for(HumanMemory h : memories.getAll(HumanMemory.class).values()){
+    public Set<MemoryOfHuman> getHumansAhead(double cone, double distance) {
+		Set<MemoryOfHuman> ret = new HashSet<>();
+        for(MemoryOfHuman h : memories.getAll(MemoryOfHuman.class).values()){
             if(ai.getTime() != h.getDate()) continue;
-            Vector v = new Vector(posX, posY, h.getPosx(), h.getPosy());
+            Vector v = new Vector(posX, posY, h.getPosX(), h.getPosY());
             
             if(v.size() > distance) continue;
             if(WorldMath.angleDiff(v.angle(), heading) > cone) continue;
@@ -130,7 +130,7 @@ public class Zombie extends DefaultAgent{
     protected void die(Turtle turtle) {
         if (!turtle.isHuman())
             return;
-        memories.forget(HumanMemory.class, turtle.getId());
+        memories.forget(MemoryOfHuman.class, turtle.getId());
     }
 
     public double getTTL() {

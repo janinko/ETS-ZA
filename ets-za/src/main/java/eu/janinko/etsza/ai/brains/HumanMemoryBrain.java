@@ -5,7 +5,7 @@ import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Actions;
 import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.agents.Human;
-import eu.janinko.etsza.ai.memory.ZombieMemory;
+import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import java.io.BufferedWriter;
@@ -27,7 +27,7 @@ public class HumanMemoryBrain extends DefaultBrain<Human>{
 
     @Override
     public Action perform() {
-        Map<Long, ZombieMemory> zombies = owner.getMemories().getAll(ZombieMemory.class);
+        Map<Long, MemoryOfZombie> zombies = owner.getMemories().getAll(MemoryOfZombie.class);
         
         if(owner.getAroundZ() == 0){
             //if(owner.getId() == 1) System.out.println(owner.getId() + ": I sense nobody, turning right.");
@@ -48,9 +48,9 @@ public class HumanMemoryBrain extends DefaultBrain<Human>{
         double heading = owner.getHeading();
         
         
-        /*for(ZombieMemory z : zombies.values()){
+        /*for(MemoryOfZombie z : zombies.values()){
             long age = ai.getTime() - z.getDate();
-            if(owner.getId() == 1) System.out.println(owner.getId() + ": Zombie " +z.getId()+ " at "+ z.getPosx() + ", " + z.getPosy() + " was there in " + age + " ticks.");
+            if(owner.getId() == 1) System.out.println(owner.getId() + ": Zombie " +z.getId()+ " at "+ z.getPosX() + ", " + z.getPosY() + " was there in " + age + " ticks.");
         }*/
         
         if(owner.getId() == 1) printDanger();
@@ -93,18 +93,18 @@ public class HumanMemoryBrain extends DefaultBrain<Human>{
     }
     
     public double getDanger(double x, double y){
-        Map<Long, ZombieMemory> zombies = owner.getMemories().getAll(ZombieMemory.class);
+        Map<Long, MemoryOfZombie> zombies = owner.getMemories().getAll(MemoryOfZombie.class);
         double distanceParam = 1 / ai.getConfig().getZombieSpeed();
         double agingParam = 20;
         long time = ai.getTime();
         WorldMath wm = new WorldMath(ai.getConfig().getWidth(), ai.getConfig().getHeight());
         
         double ret = 0;
-        for(ZombieMemory z : zombies.values()){
+        for(MemoryOfZombie z : zombies.values()){
             long age = time - z.getDate();
             if(age > 50) continue;
             double timemodif = agingParam / (agingParam + age);
-            double danger = distanceParam / (distanceParam + wm.distance(x, y, z.getPosx(), z.getPosy()));
+            double danger = distanceParam / (distanceParam + wm.distance(x, y, z.getPosX(), z.getPosY()));
             ret += danger * timemodif;
         }
         return ret;

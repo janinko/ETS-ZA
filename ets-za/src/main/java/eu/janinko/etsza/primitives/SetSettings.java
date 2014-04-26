@@ -1,18 +1,11 @@
 
 package eu.janinko.etsza.primitives;
 
-import eu.janinko.etsza.ai.Callbacks;
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.WorldConfig;
-import org.nlogo.api.Argument;
-import org.nlogo.api.Context;
-import org.nlogo.api.DefaultCommand;
-import org.nlogo.api.ExtensionException;
-import org.nlogo.api.LogoException;
-import org.nlogo.api.Syntax;
+import org.nlogo.api.*;
 
 /**
- *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class SetSettings extends DefaultCommand {
@@ -27,27 +20,27 @@ public class SetSettings extends DefaultCommand {
      */
     @Override
     public Syntax getSyntax() {
-        return Syntax.commandSyntax(new int[] { Syntax.NumberType(),
-                                                Syntax.NumberType(),
-                                                Syntax.NumberType(),
-                                                Syntax.NumberType(),
-                                                Syntax.NumberType(),
-                                                Syntax.NumberType(),
-                                                Syntax.NumberType(),
-                                                Syntax.NumberType()});
+        return Syntax.commandSyntax(new int[]{Syntax.NumberType(),
+                Syntax.NumberType(),
+                Syntax.NumberType(),
+                Syntax.NumberType(),
+                Syntax.NumberType(),
+                Syntax.NumberType(),
+                Syntax.NumberType(),
+                Syntax.NumberType()});
     }
 
     @Override
     public void perform(Argument[] args, Context ctx) throws ExtensionException, LogoException {
-		WorldConfig wc = new WorldConfig(args[0].getDoubleValue(),
-				args[1].getDoubleValue(),
-				args[2].getDoubleValue(),
-				args[3].getDoubleValue(),
-				args[4].getDoubleValue(),
-				args[5].getDoubleValue(),
-				args[6].getDoubleValue(),
-				args[7].getDoubleValue());
-		ai.setConfig(wc);
+        WorldConfig wc = new WorldConfig(args[0].getDoubleValue(),
+                args[1].getDoubleValue(),
+                args[2].getDoubleValue(),
+                args[3].getDoubleValue(),
+                args[4].getDoubleValue(),
+                args[5].getDoubleValue(),
+                args[6].getDoubleValue(),
+                args[7].getDoubleValue());
+        ai.setConfig(wc);
     }
-    
+
 }
