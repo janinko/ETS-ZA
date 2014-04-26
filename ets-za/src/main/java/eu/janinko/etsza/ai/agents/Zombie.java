@@ -11,6 +11,7 @@ import eu.janinko.etsza.ai.agents.brains.ZombieChaseBrain;
 import eu.janinko.etsza.ai.agents.goals.Canibalism;
 import eu.janinko.etsza.ai.agents.goals.Eat;
 import eu.janinko.etsza.ai.agents.memory.HumanMemory;
+import eu.janinko.etsza.ai.agents.memory.ZombieMemory;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Turtle;
@@ -32,8 +33,9 @@ public class Zombie extends DefaultAgent{
 
     public Zombie(Turtle turtle, AI ai) {
         super(turtle, ai);
-        
+
         memories.addMemoryClass(HumanMemory.class);
+        memories.addMemoryClass(ZombieMemory.class);
         gEat = new Eat(ai, 1);
         uCanibalism = new Canibalism(0, ai);
     }
@@ -97,12 +99,19 @@ public class Zombie extends DefaultAgent{
     
     private void sense(Sensors s){
         for(Turtle t : s.see()){
+            Long tid = t.getId();
             if(t.isHuman()){
-                Long hid = t.getId();
-                if(memories.contains(HumanMemory.class, hid)){
-                    memories.get(HumanMemory.class, hid).update(t, ai);
+                if(memories.contains(HumanMemory.class, tid)){
+                    memories.get(HumanMemory.class, tid).update(t, ai);
                 }else{
-                    memories.put(new HumanMemory(t, ai), hid);
+                    memories.put(new HumanMemory(t, ai), tid);
+                }
+            }else{
+                if(tid == id) continue;
+                if(memories.contains(ZombieMemory.class, tid)){
+                    memories.get(ZombieMemory.class, tid).update(t, ai);
+                }else{
+                    memories.put(new ZombieMemory(t, ai), tid);
                 }
             }
         }
