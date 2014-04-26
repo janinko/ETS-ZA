@@ -4,9 +4,6 @@ import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.Callbacks.Actuators;
 import eu.janinko.etsza.ai.Callbacks.Sensors;
 import eu.janinko.etsza.ai.agents.Actions.Action;
-import eu.janinko.etsza.ai.agents.Actions.Rotate;
-import eu.janinko.etsza.ai.agents.Actions.RotateAndMove;
-import static eu.janinko.etsza.ai.agents.Actions.Type.Rotate;
 import eu.janinko.etsza.ai.agents.brains.HumanBasicBrain;
 import eu.janinko.etsza.ai.agents.brains.HumanGoalBasedBrain;
 import eu.janinko.etsza.ai.agents.brains.HumanMemoryBrain;
@@ -26,16 +23,15 @@ import org.nlogo.api.Context;
 public class Human extends DefaultAgent {
     private int aroundZ;
 
-    private KillZombie gKill;
-
-    DangerUtility uDanger;
     private double ttl;
 
     public Human(Turtle turtle, AI ai) {
         super(turtle, ai);
         brain = new HumanMemoryBrain(this, ai);
-        uDanger = new DangerUtility(0, ai);
-        gKill = new KillZombie(ai, 0.8);
+
+        utilities.add(new DangerUtility(0, ai));
+        
+        goals.add(new KillZombie(ai, 0.8));
         
         memories.addMemoryClass(ZombieMemory.class);
     }
@@ -59,10 +55,6 @@ public class Human extends DefaultAgent {
     
     @Override
     public void perform(Context ctx) {
-        if(id == 1){
-            System.out.println("Utilities:");
-            System.out.println("DangerUtility: " + uDanger.getCurrentUtility(this));
-        }
         Sensors s = ai.getCallbacks().getSensors(ctx);
         Actuators a = ai.getCallbacks().getActuators(ctx);
         sense(s);
@@ -120,13 +112,5 @@ public class Human extends DefaultAgent {
 
     public double getTTL() {
         return ttl;
-    }
-
-    public DangerUtility getDangerUtility() {
-        return uDanger;
-    }
-
-    public KillZombie getGoalKill() {
-        return gKill;
     }
 }

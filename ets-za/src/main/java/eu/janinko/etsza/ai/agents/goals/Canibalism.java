@@ -23,4 +23,16 @@ public class Canibalism implements Utility<Zombie>{
         return canibalismRate;
     }
 
+    @Override
+    public void updatePlan(Plan plan, Zombie agent) {
+        for (Plan.Step step : plan.getSteps()) {
+            if (step instanceof Plan.Attack) {
+                Plan.Attack a = (Plan.Attack) step;
+                if (!a.isTargetHuman()) {
+                    plan.setLinking(plan.getLiking() * canibalismRate);
+                }
+            }
+        }
+    }
+
 }

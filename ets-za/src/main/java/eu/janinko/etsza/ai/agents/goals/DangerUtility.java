@@ -61,4 +61,15 @@ public class DangerUtility implements Utility<Human>{
 	public double getAcceptedDanger() {
 		return acceptedDanger;
 	}
+
+    @Override
+    public void updatePlan(Plan plan, Human agent) {
+        for (Plan.Step step : plan.getSteps()) {
+            if (step instanceof Plan.Move) {
+                Plan.Move m = (Plan.Move) step;
+                double danger = getDanger(m.getTx(), m.getTy(), agent.getMemories().getAll(ZombieMemory.class).values());
+                plan.setLinking(plan.getLiking() * dangerToUtility(danger));
+            }
+        }
+    }
 }

@@ -11,4 +11,6 @@ public interface Utility<K extends Agent> {
 
     double getCurrentUtility(K h);
     //double getUtilityWhen(WorldModel model);
+
+    void updatePlan(Plan plan, K agent);
 }

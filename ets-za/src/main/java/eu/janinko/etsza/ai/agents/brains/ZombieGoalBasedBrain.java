@@ -18,7 +18,7 @@ import java.util.TreeSet;
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-public class ZombieGoalBasedBrain extends DefaultBrain<Zombie>{
+public class ZombieGoalBasedBrain extends DefaultGoalBasedBrain<Zombie>{
     private Random r;
 
 	public ZombieGoalBasedBrain(Zombie owner, AI ai) {
@@ -26,60 +26,8 @@ public class ZombieGoalBasedBrain extends DefaultBrain<Zombie>{
         r = ai.getRandom();
 	}
 
-	@Override
-	public Actions.Action perform() {
-        Eat eat = owner.getGoalEat();
-        Canibalism canibalism = owner.getCanibalism();
-        Set<Plan> plans = eat.getPlans(owner);
-
-		if(plans.isEmpty()){ // Idont't have any plan.
-            return noGoal();
-		}
-
-        TreeSet<Plan> sortedPlans = new TreeSet<>();
-        for(Plan plan : plans){
-            for(Step step : plan.getSteps()){
-                if(step instanceof Plan.Attack){
-                    Plan.Attack a = (Plan.Attack) step;
-                    if(!a.isTargetHuman()){
-                        plan.setLinking(plan.getLiking() * canibalism.getCurrentUtility(owner));
-                    }
-                }
-            }
-            sortedPlans.add(plan);
-        }
-
-        Plan plan = sortedPlans.last();
-        Step step = plan.getSteps().get(0);
-
-        if(plan.getLiking() <= 0){
-            return noGoal();
-        }
-        if(owner.getId() == 99) System.out.println(owner.getId() + ": Wining plan: " + plan);
-
-
-		WorldMath wm = ai.getWorldMath();
-        
-        if(step instanceof Plan.Attack){
-            Plan.Attack a = (Plan.Attack) step;
-            return Actions.attack(a.getTarget());
-        }else if( step instanceof Plan.Move){
-            Plan.Move m = (Plan.Move) step;
-            double x = owner.getPosX();
-            double y = owner.getPosY();
-            double heading = owner.getHeading();
-
-            double angle = wm.angle(x, y, m.getTx(), m.getTy());
-            double turn = angle - heading;
-
-            // if (owner.getId() == 99) System.out.println(owner.getId() + ": chasing in " + turn);
-            return Actions.rotateAndMove((int)turn);
-        }else{
-            throw new IllegalArgumentException("Unknown plan step " + step);
-        }
-	}
-
-    private Actions.Action noGoal(){
+    @Override
+    protected Actions.Action noGoal(){
 		WorldConfig cfg = ai.getConfig();
         //if(owner.getId() == 99) System.out.println(owner.getId() + ": I don't see anything.");
         if (owner.getAroundH() > 0) { // Around me is a human.

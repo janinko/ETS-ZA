@@ -40,6 +40,7 @@ public class HumanPathfindingBrain extends DefaultBrain<Human>{
 
     @Override
     public Action perform() {
+        return Actions.idle();/*
 		DangerUtility du = owner.getDangerUtility();
 
 		if(du == null){
@@ -92,6 +93,7 @@ public class HumanPathfindingBrain extends DefaultBrain<Human>{
 		long et = System.nanoTime();
 		System.out.println("Computed " + counter + " steps in " + ((et - st)/ 1000000) + " ms.");
 		return last;
+        */
 	}
 	
 	

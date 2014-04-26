@@ -8,7 +8,8 @@ import eu.janinko.etsza.ai.agents.goals.Goal;
 import eu.janinko.etsza.ai.agents.goals.Utility;
 import eu.janinko.etsza.ai.agents.memory.Memories;
 import eu.janinko.etsza.wrapper.Turtle;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,6 +22,8 @@ public abstract class DefaultAgent implements Agent{
     protected double posX, posY;
     protected double heading;
     protected Memories memories = new Memories();
+    protected List<Utility> utilities = new ArrayList<>();
+    protected List<Goal> goals = new ArrayList<>();
 
     public DefaultAgent(Turtle turtle, AI ai) {
         this.ai = ai;
@@ -37,6 +40,7 @@ public abstract class DefaultAgent implements Agent{
         heading = turtle.getHeading();
     }
 
+    @Override
     public long getId() {
         return id;
     }
@@ -51,6 +55,7 @@ public abstract class DefaultAgent implements Agent{
         return posY;
     }
 
+    @Override
     public double getHeading() {
         return heading;
     }
@@ -102,4 +107,14 @@ public abstract class DefaultAgent implements Agent{
     }
 
     protected abstract void die(Turtle turtle);
+
+    @Override
+    public List<Utility> getUtilities() {
+        return utilities;
+    }
+
+    @Override
+    public List<Goal> getGoals() {
+        return goals;
+    }
 }
