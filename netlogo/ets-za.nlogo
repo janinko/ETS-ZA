@@ -8,6 +8,7 @@ globals [
   human-population
   zombie-population
   see-cone
+  base-TTL
 ]
 
 humans-own [  
@@ -43,7 +44,8 @@ to setup
      count humans in-radius sense-distance
   ]
   let tsee task [
-     color-it
+    color-it
+     
   ]
   
   
@@ -59,7 +61,7 @@ to setup
     let target turtle cislo
     if can-attack target [
       ask target [ set TTL (TTL - damage) ]
-      ask target [ set color blue ]
+      ; ask target [ set color blue ]
     ]
   ]
   
@@ -68,13 +70,13 @@ to setup
   
   gbui:set-sensors tcount-z tcount-h tsee tcan-attack
   gbui:set-actuators tmove trotate tattack
-  
+  set base-TTL 1000
   set human-population round (total-population * (1 - zombie-population-percent / 100))
   set zombie-population round (total-population * (zombie-population-percent / 100))
   create-humans human-population [ setup-human ]
   create-zombies zombie-population [ setup-zombie ]
-  ask humans [ set TTL 1000 ]
-  ask zombies [ set TTL 1000 ]
+  ask humans [ set TTL base-TTL ]
+  ask zombies [ set TTL base-TTL ]
   ask turtle 1 [ make-halo ] ;;  zvyrazneni cloveka c. 1
   ask turtle 99 [ make-halo ] ;;  zvyrazneni zombie c. 99
   reset-ticks
@@ -83,13 +85,13 @@ end
 
 to setup-human
   setxy random-xcor random-ycor
-  set color 27
+  set color 14
 end
 
 
 to setup-zombie
   setxy random-xcor random-ycor
-  set color green
+  set color 54
 end
 
 
@@ -116,26 +118,53 @@ end
 to reap
   ask zombies [
     reap2
+    color-TTL 54 55 56 57
   ]
   ask humans [
     reap2
+    color-TTL 14 15 16 17
   ]
 end
 
-to battle
-  let hs humans-here
-  let zs zombies-here
-  let hc count hs
-  let zc count zs
-  ifelse hc = zc [
-    ask hs [ die ]
-    ask zs [ die ]
-  ][
-    ifelse hc < zc
-      [ ask hs [ die ] ]
-      [ ask zs [ die ] ]
-  ]
+; color agent accorging to the TTL
+; ?1 agent
+; colors:
+; ?2 100% health
+; ?3 75% health
+; ?4 50% health
+; ?5 25% health
+to color-TTL [ a b c d ]
+  ;ask ?1 [
+    ifelse TTL > (0.75 * base-TTL) [
+      set color a 
+    ][
+      ifelse TTL > (0.5 * base-TTL) [
+        set color b
+      ][
+        ifelse TTL > (0.25 * base-TTL) [
+          set color c
+        ][
+          set color d
+        ]
+      ]
+    ]
+  ;]
 end
+
+;to battle
+;  let hs humans-here
+;  let zs zombies-here
+;  let hc count hs
+;  let zc count zs
+;  ifelse hc = zc [
+;    ask hs [ die ]
+;    ask zs [ die ]
+;  ][
+;    ifelse hc < zc
+;      [ ask hs [ die ] ]
+;      [ ask zs [ die ] ]
+;  ]
+;end
 
 to decay
   ask zombies [ set TTL (TTL - 1) ]
@@ -148,7 +177,7 @@ end
 to-report color-it
   if who = 1 [
      ask zombies in-cone see-distance see-cone [
-       set color white
+       ; set color white
      ]
   ]
   report (turtle-set zombies humans) in-cone see-distance see-cone
