@@ -8,10 +8,11 @@ import eu.janinko.etsza.ai.agents.Actions.Rotate;
 import eu.janinko.etsza.ai.agents.Actions.RotateAndMove;
 import static eu.janinko.etsza.ai.agents.Actions.Type.Rotate;
 import eu.janinko.etsza.ai.agents.brains.HumanBasicBrain;
+import eu.janinko.etsza.ai.agents.brains.HumanGoalBasedBrain;
 import eu.janinko.etsza.ai.agents.brains.HumanMemoryBrain;
 import eu.janinko.etsza.ai.agents.brains.HumanPathfindingBrain;
 import eu.janinko.etsza.ai.agents.goals.DangerUtility;
-import eu.janinko.etsza.ai.agents.goals.Utility;
+import eu.janinko.etsza.ai.agents.goals.KillZombie;
 import eu.janinko.etsza.ai.agents.memory.ZombieMemory;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
@@ -25,6 +26,8 @@ import org.nlogo.api.Context;
 public class Human extends DefaultAgent {
     private int aroundZ;
 
+    private KillZombie gKill;
+
     DangerUtility uDanger;
     private double ttl;
 
@@ -32,6 +35,7 @@ public class Human extends DefaultAgent {
         super(turtle, ai);
         brain = new HumanMemoryBrain(this, ai);
         uDanger = new DangerUtility(0, ai);
+        gKill = new KillZombie(ai, 0.8);
         
         memories.addMemoryClass(ZombieMemory.class);
     }
@@ -48,6 +52,7 @@ public class Human extends DefaultAgent {
             case "BasicBrain": brain = new HumanBasicBrain(this, ai); return;
             case "MemoryBrain": brain = new HumanMemoryBrain(this, ai); return;
             case "PathfindingBrain": brain = new HumanPathfindingBrain(this, ai); return;
+            case "GoalBrain": brain = new HumanGoalBasedBrain(this, ai); return;
             default: throw new IllegalArgumentException("Unknown brain id");
         }
     }
@@ -119,5 +124,9 @@ public class Human extends DefaultAgent {
 
     public DangerUtility getDangerUtility() {
         return uDanger;
+    }
+
+    public KillZombie getGoalKill() {
+        return gKill;
     }
 }
