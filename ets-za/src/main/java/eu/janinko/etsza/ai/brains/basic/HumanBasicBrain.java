@@ -21,10 +21,15 @@ public class HumanBasicBrain extends DefaultBrain<Human> {
     @Override
     public Action perform() {
 
+        for(ZombieMemory m : owner.getZombiesAhead(360, 1)){
+            System.out.println("attacking: " + m.getId());
+            return Actions.attack(m.getId());
+        }
+
         if(owner.getAroundZ() == 0){
             return Actions.idle();
         }
-        if(owner.getZombiesAhead(20,6) > 0){
+        if(owner.countZombiesAhead(20, 6) > 0){
             return Actions.rotate(20);
         }
         return Actions.move();

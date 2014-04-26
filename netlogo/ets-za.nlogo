@@ -60,21 +60,13 @@ to setup
     patches in-cone see-distance see-cone
   ]
   
-  
   let tcan-attack task [
     can-attack turtle ?1
   ]
   
-  ; inflict damage equal to the agents TTL, representing its strength
-  ; ?1 = agent id being attacked
+  
   let tattack task [
-    let cislo int ?1
-    let damage TTL
-    let target turtle cislo
-    if can-attack target [
-      ask target [ set TTL (TTL - damage) ]
-      ; ask target [ set color blue ]
-    ]
+    attack (turtle ?1) TTL
   ]
   
   
@@ -119,6 +111,23 @@ to patch-set-z-food
   set pcolor z-food-color
 end
 
+; ===== ATTACK =====
+
+to-report can-attack [ x ]
+  report attack-enabled and is-turtle? x and (distance x) <= attack-distance
+end
+
+; inflict damage equal to the agents TTL, representing its strength
+; target = agent being attacked
+; damage = damage
+to attack [ target damage ]
+  if can-attack target [
+    ask target [
+      set TTL (TTL - damage)
+    ]
+  ]    
+end
+
 ; =====
 
 to setup-human
@@ -155,8 +164,12 @@ end
 ; reap the dead
 to reap
   ask zombies [
-    info-death
-    color-TTL 54 55 56 57
+    ifelse (TTL <= 0) [
+      info-death      
+      die
+    ][
+      color-TTL 54 55 56 57
+    ]
   ]
   ask humans [
     ifelse (TTL <= 0) [      
@@ -212,10 +225,6 @@ end
 
 to decay
   ask zombies [ set TTL (TTL - 1) ]
-end
-
-to-report can-attack [ x ]
-  report attack-enabled and is-turtle? x and (distance x) <= attack-distance
 end
   
 to-report color-it

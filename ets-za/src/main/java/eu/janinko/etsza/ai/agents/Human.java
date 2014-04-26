@@ -10,11 +10,15 @@ import eu.janinko.etsza.ai.brains.HumanMemoryBrain;
 import eu.janinko.etsza.ai.brains.HumanPathfindingBrain;
 import eu.janinko.etsza.ai.goals.DangerUtility;
 import eu.janinko.etsza.ai.goals.KillZombie;
+import eu.janinko.etsza.ai.memory.HumanMemory;
 import eu.janinko.etsza.ai.memory.ZombieMemory;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Turtle;
 import org.nlogo.api.Context;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -89,7 +93,7 @@ public class Human extends DefaultAgent {
         return aroundZ;
     }
 
-    public int getZombiesAhead(double cone, double distance) {
+    public int countZombiesAhead(double cone, double distance) {
         int count = 0;
         for(ZombieMemory z : memories.getAll(ZombieMemory.class).values()){
             if(ai.getTime() != z.getDate()) continue;
@@ -100,6 +104,19 @@ public class Human extends DefaultAgent {
             count++;
         }
         return count;
+    }
+
+    public Set<ZombieMemory> getZombiesAhead(double cone, double distance) {
+        Set<ZombieMemory> ret = new HashSet<>();
+        for(ZombieMemory h : memories.getAll(ZombieMemory.class).values()){
+            if(ai.getTime() != h.getDate()) continue;
+            Vector v = new Vector(posX, posY, h.getPosx(), h.getPosy());
+
+            if(v.size() > distance) continue;
+            if(WorldMath.angleDiff(v.angle(), heading) > cone) continue;
+            ret.add(h);
+        }
+        return ret;
     }
 
     @Override
