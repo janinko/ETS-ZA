@@ -17,6 +17,7 @@ globals [
 
 humans-own [  
   TTL ; represents health of a human, number of tick after which he dies
+  infection-timeout ; if the value is < 0 the human is not infected
 ]
 
 zombies-own [  
@@ -81,7 +82,10 @@ to setup
   set zombie-population round (total-population * (zombie-population-percent / 100))
   create-humans human-population [ setup-human ]
   create-zombies zombie-population [ setup-zombie ]
-  ask humans [ set TTL base-TTL ]
+  ask humans [
+    set TTL base-TTL
+    set infection-timeout -1
+  ]
   ask zombies [ set TTL base-TTL ]
   ask turtle 1 [ make-halo ] ;;  zvyrazneni cloveka c. 1
   ask turtle 99 [ make-halo ] ;;  zvyrazneni zombie c. 99
@@ -93,13 +97,14 @@ to step
   gbui:tick
   ask humans [
     h-eat
+    check-turn-into-zombie
     gbui:ai-perform
   ]
   ask zombies [
     z-eat
     gbui:ai-perform
   ]
-  decay
+  decay  
   reap
   tick
 end
@@ -164,8 +169,42 @@ to attack [ target damage ]
   if can-attack target [
     ask target [
       set TTL (TTL - damage)
+      try-infect-when-attacking
     ]
   ]    
+end
+
+
+; ===== INFECT =====
+
+to-report is-infected
+  report infection-timeout >= 0
+end
+
+; infect with certain probability with each attack -- remove this honza if you want infect to be an action
+; but even then the probability may remain
+to try-infect-when-attacking
+  if (random 100) < infection-probability [
+    infect
+  ]
+end
+
+; infect target human
+to infect
+  if is-human? self and not is-infected [
+    set infection-timeout 200
+  ]
+end
+
+to check-turn-into-zombie
+  if is-human? self and is-infected [
+    ifelse infection-timeout = 0 [
+      print "Human turned into a zombie!"
+      set breed zombies
+    ][
+      set infection-timeout (infection-timeout - 1)
+    ]    
+  ]
 end
 
 ; =====
@@ -210,7 +249,11 @@ to reap
       patch-set-z-food
       die
     ][
-      color-TTL 14 15 16 17
+      ifelse is-infected [
+        color-TTL 44 45 46 47
+      ][
+        color-TTL 14 15 16 17
+      ]
     ]
   ]
 
@@ -531,6 +574,21 @@ h-food-count
 1
 1
 NIL
+HORIZONTAL
+
+SLIDER
+255
+365
+467
+398
+infection-probability
+infection-probability
+0
+100
+100
+1
+1
+%
 HORIZONTAL
 
 @#$#@#$#@
