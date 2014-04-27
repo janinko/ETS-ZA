@@ -75,7 +75,7 @@ to setup
 
 ; ==== GBUI setting ====
   gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed world-width world-height attack-distance
-  gbui:select-brains "BasicBrain" "BasicBrain"
+  gbui:select-brains human-brain zombie-brain
   gbui:set-sensors tcount-z tcount-h tsee tsee-patches tcan-attack
   gbui:set-actuators tmove trotate tattack
 
@@ -521,9 +521,9 @@ HORIZONTAL
 
 SLIDER
 270
-250
-447
-283
+245
+415
+278
 h-food-count
 h-food-count
 0
@@ -535,10 +535,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-255
-365
-467
-398
+270
+285
+415
+318
 infection-probability
 infection-probability
 0
@@ -548,6 +548,26 @@ infection-probability
 1
 %
 HORIZONTAL
+
+CHOOSER
+40
+325
+185
+370
+human-brain
+human-brain
+"BasicBrain" "MemoryBrain" "GoalBrain"
+0
+
+CHOOSER
+40
+375
+185
+420
+zombie-brain
+zombie-brain
+"BasicBrain" "ChaseBrain" "GoalBrain"
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
