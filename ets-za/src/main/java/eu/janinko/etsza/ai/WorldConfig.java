@@ -14,6 +14,7 @@ public class WorldConfig {
     private double width = 43;
     private double height = 26;
 	private double attackDistance = 1;
+	private double maxTTL = 1000;
 
 	public WorldConfig() {
 	}
@@ -26,7 +27,8 @@ public class WorldConfig {
 			double humanSpeed,
 			double width,
 			double height,
-			double attackDistance) {
+			double attackDistance,
+			double maxTTL) {
 		this.seeDistance = seeDistance;
 		this.seeCone = seeCone;
 		this.senseDistance = senseDistance;
@@ -35,6 +37,7 @@ public class WorldConfig {
 		this.width = width;
 		this.height = height;
 		this.attackDistance = attackDistance;
+		this.maxTTL = maxTTL;
 	}
 
     public double getSeeDistance() {
@@ -68,5 +71,9 @@ public class WorldConfig {
 	public double getAttackDistance() {
 		return attackDistance;
 	}
+
+    public double getMaxTTL() {
+        return maxTTL;
+    }
     
 }

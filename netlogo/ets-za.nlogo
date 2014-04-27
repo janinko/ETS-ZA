@@ -74,7 +74,7 @@ to setup
   ]
 
 ; ==== GBUI setting ====
-  gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed world-width world-height attack-distance
+  gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed world-width world-height attack-distance base-TTL
   gbui:select-brains human-brain zombie-brain
   gbui:set-sensors tcount-z tcount-h tsee tsee-patches tcan-attack
   gbui:set-actuators tmove trotate tattack

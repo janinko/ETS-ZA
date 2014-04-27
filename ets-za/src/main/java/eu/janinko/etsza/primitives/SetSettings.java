@@ -16,11 +16,12 @@ public class SetSettings extends DefaultCommand {
     }
 
     /**
-     * gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed width height attackDistance
+     * gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed width height attackDistance maxTTL
      */
     @Override
     public Syntax getSyntax() {
         return Syntax.commandSyntax(new int[]{Syntax.NumberType(),
+                Syntax.NumberType(),
                 Syntax.NumberType(),
                 Syntax.NumberType(),
                 Syntax.NumberType(),
@@ -39,7 +40,8 @@ public class SetSettings extends DefaultCommand {
                 args[4].getDoubleValue(),
                 args[5].getDoubleValue(),
                 args[6].getDoubleValue(),
-                args[7].getDoubleValue());
+                args[7].getDoubleValue(),
+                args[8].getDoubleValue());
         ai.setConfig(wc);
     }
 
