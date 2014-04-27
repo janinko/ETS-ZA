@@ -239,7 +239,7 @@ to reap
       info-death      
       die
     ][
-      color-TTL 54 55 56 57
+      color-TTL 54
     ]
   ]
   ask humans [
@@ -249,38 +249,19 @@ to reap
       die
     ][
       ifelse is-infected [
-        color-TTL 44 45 46 47
+        color-TTL 44
       ][
-        color-TTL 14 15 16 17
+        color-TTL 14
       ]
     ]
   ]
-
 end
 
 ; color agent accorging to the TTL
-; ?1 agent
 ; colors:
-; ?2 100% health
-; ?3 75% health
-; ?4 50% health
-; ?5 25% health
-to color-TTL [ a b c d ]
-  ;ask ?1 [
-    ifelse TTL > (0.75 * base-TTL) [
-      set color a 
-    ][
-      ifelse TTL > (0.5 * base-TTL) [
-        set color b
-      ][
-        ifelse TTL > (0.25 * base-TTL) [
-          set color c
-        ][
-          set color d
-        ]
-      ]
-    ]
-  ;]
+; a 100% health
+to color-TTL [ a ]
+  set color a + (4 - 4 * TTL / base-TTL)
 end
 
 to decay
