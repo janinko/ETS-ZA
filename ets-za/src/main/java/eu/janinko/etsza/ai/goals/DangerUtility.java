@@ -23,7 +23,6 @@ public class DangerUtility implements Utility<Human>{
         this.ai = ai;
     }
     
-    @Override
     public double getCurrentUtility(Human h){
         Collection<MemoryOfZombie> zombies = h.getMemories().getAll(MemoryOfZombie.class).values();
         return dangerToUtility(getDanger(h.getPosX(), h.getPosY(), zombies));

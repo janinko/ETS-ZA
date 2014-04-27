@@ -20,7 +20,6 @@ public class Canibalism implements Utility<Zombie>{
         this.ai = ai;
     }
 
-    @Override
     public double getCurrentUtility(Zombie h) {
         return canibalismRate;
     }
