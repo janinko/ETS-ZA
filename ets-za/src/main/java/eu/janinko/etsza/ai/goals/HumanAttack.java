@@ -42,42 +42,33 @@ public class HumanAttack implements Goal<Human>{
 
 		double x = human.getPosX();
 		double y = human.getPosY();
-        double speed = cfg.getHumanSpeed();
+        double attackDist = cfg.getAttackDistance();
+        long time = ai.getTime();
 
         Set<Plan> plans = new HashSet<>();
 		for(MemoryOfZombie z : zombies){
-			long age = ai.getTime() - z.getDate();
+			long age = time - z.getDate();
 			if(age > 30) continue;
 			double d = wm.distance(x, y, z.getPosX(), z.getPosY());
             Plan p = new Plan();
-            if(d <= cfg.getAttackDistance()){
-                p.add(new Attack(z.getId(), false));
-                p.setLinking(priority);
-            }else{
-                Move m = new Move(z.getPosX(), z.getPosY(), d);
-                p.add(m);
-                p.add(new Attack(z.getId(), false));
-                double steps = 1 / (d / speed + 1);
-                p.setLinking(steps * priority);
+            if(d > attackDist){
+                p.add(new Move(z.getPosX(), z.getPosY(), d));
             }
+            p.add(new Attack(z.getId(), false));
+            p.setLinking(priority);
             plans.add(p);
 		}
         for (MemoryOfHuman h : humans) {
             if (!h.isInfected()) continue;
-            long age = ai.getTime() - h.getDate();
+            long age = time - h.getDate();
             if (age > 30) continue;
             double d = wm.distance(x, y, h.getPosX(), h.getPosY());
             Plan p = new Plan();
-            if (d <= cfg.getAttackDistance()) {
-                p.add(new Attack(h.getId(), false));
-                p.setLinking(priority);
-            } else {
-                Move m = new Move(h.getPosX(), h.getPosY(), d);
-                p.add(m);
-                p.add(new Attack(h.getId(), false));
-                double steps = 1 / (d / speed + 1);
-                p.setLinking(steps * priority);
+            if (d > attackDist) {
+                p.add(new Move(h.getPosX(), h.getPosY(), d));
             }
+            p.add(new Attack(h.getId(), false));
+            p.setLinking(priority);
             plans.add(p);
         }
         return plans;

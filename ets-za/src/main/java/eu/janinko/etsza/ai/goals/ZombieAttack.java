@@ -22,8 +22,6 @@ public class ZombieAttack implements Goal<Zombie>{
     private AI ai;
     private double priority;
 
-    private static final double maxTTL = 1000;
-
     public ZombieAttack(AI ai, double priority) {
         this.ai = ai;
         this.priority = priority;
@@ -32,11 +30,6 @@ public class ZombieAttack implements Goal<Zombie>{
     @Override
     public double getPriority() {
         return priority;
-    }
-
-    private double getStatisfaction(double ttl){
-        if(ttl > maxTTL) return 1;
-        return ttl / maxTTL;
     }
 
     @Override
@@ -49,44 +42,35 @@ public class ZombieAttack implements Goal<Zombie>{
 
 		double x = zombie.getPosX();
 		double y = zombie.getPosY();
-        double speed = cfg.getZombieSpeed();
+        double hspeed =  cfg.getHumanSpeed();
+        double attackDist = cfg.getAttackDistance();
+        double senseDist = cfg.getSenseDistance();
+        long time = ai.getTime();
 
         double ttl = zombie.getTTL();
-        double afterTTL = ttl * 2;
-        if(ttl > maxTTL/2){
-            afterTTL = ttl + maxTTL / 2;
-        }
 
         int aheadInSenseArea = 0;
         Set<Plan> plans = new HashSet<>();
 		for(MemoryOfHuman h : humans){
-			if(h.isInfected()) continue;
-			long age = ai.getTime() - h.getDate();
+			//if(h.isInfected() && ttl > 500) continue;
+			long age = time - h.getDate();
 			if(age > 50) continue;
-			double d = wm.distance(x, y, h.getPosX(), h.getPosY()) + cfg.getHumanSpeed() * age;
-            if(d <= cfg.getSenseDistance()){
+			double d = wm.distance(x, y, h.getPosX(), h.getPosY()) + hspeed * age;
+            if(d <= senseDist){
                 aheadInSenseArea++;
             }
             Plan p = new Plan();
-            if(d <= cfg.getAttackDistance()){
-                p.add(new Attack(h.getId(), true));
-                p.setLinking(getStatisfaction(afterTTL) * priority);
-            }else{
+            if(d > attackDist){
                 p.add(new Move(h.getPosX(), h.getPosY(), d));
-                p.add(new Attack(h.getId(), true));
-                double steps = d / speed;
-                if(steps >= ttl){
-                    p.setLinking(0);
-                }else{
-                    p.setLinking(getStatisfaction(afterTTL - steps) * priority);
-                }
             }
+            p.add(new Attack(h.getId(), true));
+            p.setLinking(priority);
             plans.add(p);
 		}
         if(zombie.getAroundH() > aheadInSenseArea){
             Plan p = new Plan();
             p.add(new Rotate(cfg.getSeeCone()));
-            p.setLinking(1);
+            p.setLinking(priority);
             plans.add(p);
         }
 		/*for(MemoryOfZombie z : zombies){
