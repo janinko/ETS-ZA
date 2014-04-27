@@ -1,10 +1,12 @@
 
-package eu.janinko.etsza.ai.goals;
+package eu.janinko.etsza.ai.goals.humans;
 
 import eu.janinko.etsza.ai.goals.steps.Move;
 import eu.janinko.etsza.ai.goals.steps.Step;
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Human;
+import eu.janinko.etsza.ai.goals.Plan;
+import eu.janinko.etsza.ai.goals.Utility;
 import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.ai.model.WorldModel;
 import eu.janinko.etsza.util.WorldMath;

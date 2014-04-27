@@ -1,8 +1,10 @@
 
-package eu.janinko.etsza.ai.goals;
+package eu.janinko.etsza.ai.goals.humans;
 
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Human;
+import eu.janinko.etsza.ai.goals.Goal;
+import eu.janinko.etsza.ai.goals.Plan;
 import eu.janinko.etsza.ai.goals.steps.Eat;
 import eu.janinko.etsza.ai.goals.steps.Move;
 import eu.janinko.etsza.ai.memory.MemoryOfFood;

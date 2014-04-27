@@ -1,10 +1,12 @@
 
-package eu.janinko.etsza.ai.goals;
+package eu.janinko.etsza.ai.goals.zombies;
 
 import eu.janinko.etsza.ai.goals.steps.Attack;
 import eu.janinko.etsza.ai.goals.steps.Step;
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.agents.Zombie;
+import eu.janinko.etsza.ai.goals.Plan;
+import eu.janinko.etsza.ai.goals.Utility;
 
 /**
  *
