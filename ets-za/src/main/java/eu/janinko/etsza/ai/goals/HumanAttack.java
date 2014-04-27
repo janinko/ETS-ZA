@@ -34,16 +34,6 @@ public class HumanAttack implements Goal<Human>{
     }
 
     @Override
-    public double getSatisfaction(Human human) {
-        return getStatisfaction(human.getTTL());
-    }
-
-    private double getStatisfaction(double ttl){
-        if(ttl > maxTTL) return 1;
-        return ttl / maxTTL;
-    }
-
-    @Override
     public Set<Plan> getPlans(Human human){
 		Collection<MemoryOfZombie> zombies = human.getMemories().getAll(MemoryOfZombie.class).values();
 		Collection<MemoryOfHuman> humans = human.getMemories().getAll(MemoryOfHuman.class).values();

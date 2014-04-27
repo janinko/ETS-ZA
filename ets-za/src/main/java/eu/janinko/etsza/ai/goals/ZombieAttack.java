@@ -34,11 +34,6 @@ public class ZombieAttack implements Goal<Zombie>{
         return priority;
     }
 
-    @Override
-    public double getSatisfaction(Zombie zombie) {
-        return getStatisfaction(zombie.getTTL());
-    }
-
     private double getStatisfaction(double ttl){
         if(ttl > maxTTL) return 1;
         return ttl / maxTTL;

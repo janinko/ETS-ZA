@@ -31,11 +31,6 @@ public class HumanEat implements Goal<Human>{
         return priority;
     }
 
-    @Override
-    public double getSatisfaction(Human human) {
-        return getStatisfaction(human.getTTL());
-    }
-
     private double getStatisfaction(double ttl){
         if(ttl > maxTTL) return 1;
         return ttl / maxTTL;
