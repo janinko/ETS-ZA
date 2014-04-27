@@ -1,6 +1,5 @@
 package eu.janinko.etsza.ai;
 
-import eu.janinko.etsza.wrapper.AgentWrapper;
 import eu.janinko.etsza.wrapper.Patch;
 import eu.janinko.etsza.wrapper.Turtle;
 import java.util.HashSet;
@@ -21,6 +20,7 @@ public class Callbacks {
     CommandTask move;
     CommandTask rotate;
     CommandTask attack;
+    CommandTask eat;
 
     ReporterTask aroundZ;
     ReporterTask aroundH;
@@ -35,6 +35,10 @@ public class Callbacks {
 
     public void setRotate(CommandTask commandTask) {
         rotate = commandTask;
+    }
+
+    public void setEat(CommandTask eat) {
+        this.eat = eat;
     }
 
     public void setAroundZ(ReporterTask reporterTask) {
@@ -121,9 +125,13 @@ public class Callbacks {
         public void rotate(Double i){
             rotate.perform(ctx, new Object[] {i});
         }
-        
+
         public void move(){
             move.perform(ctx, new Object[] {});
+        }
+
+        public void eat(){
+            eat.perform(ctx, new Object[] {});
         }
 
         public void attack(long id) {

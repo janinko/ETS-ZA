@@ -16,11 +16,12 @@ public class SetActuators extends DefaultCommand {
     }
 
     /**
-     * gbui:set-actuators move rotate
+     * gbui:set-actuators move rotate eat
      */
     @Override
     public Syntax getSyntax() {
         return Syntax.commandSyntax(new int[]{Syntax.CommandTaskType(),
+                Syntax.CommandTaskType(),
                 Syntax.CommandTaskType(),
                 Syntax.CommandTaskType()});
     }
@@ -31,6 +32,7 @@ public class SetActuators extends DefaultCommand {
         cb.setMove(args[0].getCommandTask());
         cb.setRotate(args[1].getCommandTask());
         cb.setAttack(args[2].getCommandTask());
+        cb.setEat(args[3].getCommandTask());
     }
 
 }

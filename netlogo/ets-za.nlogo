@@ -52,6 +52,11 @@ to setup
   let trotate task [
      right ?1
   ]
+  let teat task [
+    ifelse breed = zombies
+      [ z-eat ]
+      [ h-eat ]
+  ]
   let tattack task [
     attack (turtle ?1) ( TTL / 10)
   ]
@@ -77,7 +82,7 @@ to setup
   gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed world-width world-height attack-distance base-TTL
   gbui:select-brains human-brain zombie-brain
   gbui:set-sensors tcount-z tcount-h tsee tsee-patches tcan-attack
-  gbui:set-actuators tmove trotate tattack
+  gbui:set-actuators tmove trotate tattack teat
 
 
 ; ==== generate world ====
@@ -90,16 +95,14 @@ to setup
   reset-ticks
 end
 
-
+; ===== STEP =====
 to step
   gbui:tick
   ask humans [
-    h-eat
     check-turn-into-zombie
     gbui:ai-perform
   ]
   ask zombies [
-    z-eat
     gbui:ai-perform
   ]
   decay  

@@ -11,12 +11,18 @@ public class Actions {
         Rotate,
         RotateAndMove,
 		Attack,
+		Eat,
         Idle;
     }
-    
+
     private static final Move move = new Move();
     public static Move move(){
         return move;
+    }
+
+    private static final Eat eat = new Eat();
+    public static Eat eat(){
+        return eat;
     }
     
     private static final Idle idle = new Idle();
@@ -49,6 +55,14 @@ public class Actions {
         @Override
         public Type getType() {
             return Type.Move;
+        }
+    }
+    public static class Eat implements Action{
+        private Eat(){};
+
+        @Override
+        public Type getType() {
+            return Type.Eat;
         }
     }
     public static class Idle implements Action{
