@@ -144,14 +144,6 @@ public class Human extends DefaultAgent {
         return ret;
     }
 
-    @Override
-    protected void die(Turtle turtle) {
-        if (turtle.isHuman())
-            return;
-
-        memories.forget(MemoryOfZombie.class, turtle.getId());
-    }
-
     public double getTTL() {
         return ttl;
     }

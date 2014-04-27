@@ -7,6 +7,8 @@ import eu.janinko.etsza.ai.brains.Brain;
 import eu.janinko.etsza.ai.goals.Goal;
 import eu.janinko.etsza.ai.goals.Utility;
 import eu.janinko.etsza.ai.memory.Memories;
+import eu.janinko.etsza.ai.memory.MemoryOfHuman;
+import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.wrapper.Turtle;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,12 +103,24 @@ public abstract class DefaultAgent implements Agent{
     public void inform(String info, Turtle turtle) {
         switch (info) {
             case "die": die(turtle); return;
+            case "zombifie": zombifie(turtle); return;
             default:
                 throw new IllegalArgumentException("Unknown info " + info);
         }
     }
 
-    protected abstract void die(Turtle turtle);
+    protected void die(Turtle turtle){
+        if (turtle.isHuman()){
+            memories.forget(MemoryOfHuman.class, turtle.getId());
+        }else{
+            memories.forget(MemoryOfZombie.class, turtle.getId());
+        }
+    }
+
+    protected void zombifie(Turtle turtle) {
+        memories.forget(MemoryOfHuman.class, turtle.getId());
+        memories.put(new MemoryOfZombie(turtle, ai), turtle.getId());
+    }
 
     @Override
     public List<Utility> getUtilities() {

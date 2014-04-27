@@ -199,6 +199,7 @@ to check-turn-into-zombie
     ifelse infection-timeout = 0 [
       print "Human turned into a zombie!"
       set breed zombies
+      inform "zombifie"
     ][
       set infection-timeout (infection-timeout - 1)
     ]    
@@ -236,7 +237,7 @@ end
 to reap
   ask zombies [
     ifelse (TTL <= 0) [
-      info-death      
+      inform "die"
       die
     ][
       color-TTL 54
@@ -244,7 +245,7 @@ to reap
   ]
   ask humans [
     ifelse (TTL <= 0) [      
-      info-death
+      inform "die"
       patch-set-z-food
       die
     ][
@@ -268,7 +269,7 @@ to decay
   ask zombies [ set TTL (TTL - 1) ]
 end
 
-to info-death
+to inform [ info ]
   let rx xcor
   let ry ycor
   let dying who
@@ -277,7 +278,7 @@ to info-death
       let absangl atan (rx - xcor) (ry - ycor)
       let relangl abs subtract-headings heading absangl
       if relangl < see-cone [
-        gbui:inform "die" turtle dying
+        gbui:inform info turtle dying
       ]
     ]
   ]

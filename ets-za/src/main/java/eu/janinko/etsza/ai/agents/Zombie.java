@@ -143,13 +143,6 @@ public class Zombie extends DefaultAgent{
         return ret;
     }
 
-    @Override
-    protected void die(Turtle turtle) {
-        if (!turtle.isHuman())
-            return;
-        memories.forget(MemoryOfHuman.class, turtle.getId());
-    }
-
     public double getTTL() {
         return ttl;
     }
