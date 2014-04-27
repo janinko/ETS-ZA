@@ -12,6 +12,7 @@ import eu.janinko.etsza.ai.goals.DangerUtility;
 import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.ai.goals.HumanAttack;
 import eu.janinko.etsza.ai.goals.HumanEat;
+import eu.janinko.etsza.ai.goals.StayUtility;
 import eu.janinko.etsza.ai.memory.MemoryOfFood;
 import eu.janinko.etsza.ai.memory.MemoryOfHuman;
 import eu.janinko.etsza.util.Vector;
@@ -36,7 +37,8 @@ public class Human extends DefaultAgent {
         super(turtle, ai);
         brain = new HumanMemoryBrain(this, ai);
 
-        utilities.add(new DangerUtility(0, ai));
+        //utilities.add(new DangerUtility(0, ai));
+        utilities.add(new StayUtility(25, ai));
 
         goals.add(new HumanAttack(ai, 0.6));
         goals.add(new HumanEat(ai, 1));

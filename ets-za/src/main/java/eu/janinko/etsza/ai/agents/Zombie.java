@@ -9,6 +9,7 @@ import eu.janinko.etsza.ai.brains.basic.ZombieBasicBrain;
 import eu.janinko.etsza.ai.brains.ZombieChaseBrain;
 import eu.janinko.etsza.ai.brains.ZombieGoalBasedBrain;
 import eu.janinko.etsza.ai.goals.Canibalism;
+import eu.janinko.etsza.ai.goals.DontStarveUtility;
 import eu.janinko.etsza.ai.memory.MemoryOfHuman;
 import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.ai.goals.ZombieAttack;
@@ -39,8 +40,9 @@ public class Zombie extends DefaultAgent{
         memories.addMemoryClass(MemoryOfFood.class);
 
         utilities.add(new Canibalism(0, ai));
+        utilities.add(new DontStarveUtility(0.8, ai));
 
-        goals.add(new ZombieAttack(ai, 0.8));
+        goals.add(new ZombieAttack(ai, 0.9));
         goals.add(new ZombieEat(ai, 1));
     }
 
