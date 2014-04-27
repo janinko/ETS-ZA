@@ -9,8 +9,6 @@ globals [
   zombie-population
   see-cone
   base-TTL
-  z-food-color
-  h-food-color
   food-TTL
   h-current-food-count
 ]
@@ -24,6 +22,11 @@ zombies-own [
   TTL ; number of ticks after which the zombie dies
 ]
 
+patches-own [
+  z-food
+  h-food
+]
+
 ; ===== SETUP =====
 to setup
   clear-all
@@ -32,9 +35,7 @@ to setup
   set see-cone 90
 
   set base-TTL 1000
-  set z-food-color 113
-  set h-food-color 123
-  set food-TTL base-TTL
+  set food-TTL 500
 
   set human-population round (total-population * (1 - zombie-population-percent / 100))
   set zombie-population round (total-population * (zombie-population-percent / 100))
@@ -98,6 +99,7 @@ end
 ; ===== STEP =====
 to step
   gbui:tick
+  if random 20 = 1 [setup-h-food]
   ask humans [
     check-turn-into-zombie
     gbui:ai-perform
@@ -115,28 +117,46 @@ end
 to setup-h-food
   while [h-current-food-count < h-food-count] [
     ask one-of patches [
-      if not patch-is-h-food [
-        patch-set-h-food  
-        set h-current-food-count (h-current-food-count + 1)
-      ]
+      patch-set-h-food 2 
     ]
   ]
 end
 
-to patch-set-h-food
-  set pcolor h-food-color
+to patch-set-h-food [ amount ]
+  set h-food (h-food + amount)
+  set h-current-food-count (h-current-food-count + amount)
+  color-food-patch
 end
 
 to-report patch-is-h-food
-  report pcolor = h-food-color
+  report h-food > 0
 end
 
 to-report patch-is-z-food
-  report pcolor = z-food-color
+  report z-food > 0
 end
 
-to patch-set-z-food
-  set pcolor z-food-color
+to patch-set-z-food [ amount ]
+  set z-food (z-food + amount)
+  color-food-patch
+end
+
+to color-food-patch
+  let jidla (h-food + z-food)
+  ifelse jidla = 0 [
+    set pcolor black
+  ][ ; h-food and/or z-food > 0
+    let base 0
+    ifelse h-food > 0 and z-food > 0 [
+      set base 110
+    ][ ifelse h-food > 0 [
+      set base 120
+    ][ 
+      set base 100
+    ]]
+    let posun 10 - ((7 * jidla + 20) / (3 * jidla))
+    set pcolor base + posun
+  ]
 end
 
 ; ===== EAT =====
@@ -144,17 +164,25 @@ end
 ; eat human food
 to h-eat
   if is-human? self and patch-is-h-food [
-    set TTL (TTL + food-TTL)
-    set pcolor black
+    eat
+    set h-food (h-food - 1)
+    set h-current-food-count (h-current-food-count - 1)
+    color-food-patch
   ]
 end
 
 ; eat zombie food
 to z-eat
   if is-zombie? self and patch-is-z-food [
-    set TTL (TTL + food-TTL)
-    set pcolor black
+    eat
+    set z-food (z-food - 1)
+    color-food-patch
   ]
+end
+
+to eat
+  set TTL (TTL + food-TTL)
+  if TTL > base-TTL [ set TTL base-TTL ]
 end
 
 ; ===== ATTACK =====
@@ -249,7 +277,7 @@ to reap
   ask humans [
     ifelse (TTL <= 0) [      
       inform "die"
-      patch-set-z-food
+      patch-set-z-food 2
       die
     ][
       ifelse is-infected [
@@ -529,8 +557,8 @@ SLIDER
 h-food-count
 h-food-count
 0
+100
 20
-5
 1
 1
 NIL
