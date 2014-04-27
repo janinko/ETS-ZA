@@ -226,12 +226,10 @@ end
 
 to move-z
   forward zombie-speed
-  ;;battle
 end
 
 to move-h
   forward human-speed
-  ;;battle
 end
 
 ; reap the dead
