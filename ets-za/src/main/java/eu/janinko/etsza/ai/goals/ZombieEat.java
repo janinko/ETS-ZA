@@ -2,8 +2,8 @@
 package eu.janinko.etsza.ai.goals;
 
 import eu.janinko.etsza.ai.AI;
-import eu.janinko.etsza.ai.WorldConfig;
 import eu.janinko.etsza.ai.agents.Zombie;
+import eu.janinko.etsza.ai.goals.steps.Eat;
 import eu.janinko.etsza.ai.goals.steps.Move;
 import eu.janinko.etsza.ai.memory.MemoryOfFood;
 import eu.janinko.etsza.util.WorldMath;
@@ -31,39 +31,30 @@ public class ZombieEat implements Goal<Zombie>{
         return priority;
     }
 
-    private double getStatisfaction(double ttl){
-        if(ttl > maxTTL) return 1;
-        return ttl / maxTTL;
-    }
-
     @Override
     public Set<Plan> getPlans(Zombie zombie){
 
 		Collection<MemoryOfFood> foods = zombie.getMemories().getAll(MemoryOfFood.class).values();
-		WorldConfig cfg = ai.getConfig();
 		WorldMath wm = ai.getWorldMath();
 
 		double x = zombie.getPosX();
 		double y = zombie.getPosY();
-        double speed = cfg.getZombieSpeed();
 
         double ttl = zombie.getTTL();
 
         Set<Plan> plans = new HashSet<>();
         for (MemoryOfFood h : foods) {
-            long age = ai.getTime() - h.getDate();
+			long age = ai.getTime() - h.getDate();
             if (age > 50) continue;
-            double d = wm.distance(x, y, h.getPosx(), h.getPosy());
+			double d = wm.distance(x, y, h.getPosx(), h.getPosy());
             Plan p = new Plan();
-            p.add(new Move(h.getPosx(), h.getPosy(), d));
-            double steps = d / speed;
-            if (steps >= ttl) {
-                p.setLinking(0);
-            } else {
-                p.setLinking(getStatisfaction(ttl + 1000 - steps) * priority);
+            if (d > 0.5) {
+                p.add(new Move(h.getPosx(), h.getPosy(), d));
             }
+            p.add(new Eat());
+            p.setLinking((1 - 0.5*ttl / maxTTL) * priority);
             plans.add(p);
-        }
+		}
         return plans;
     }
 }

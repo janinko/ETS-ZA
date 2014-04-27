@@ -92,6 +92,10 @@ public abstract class DefaultAgent implements Agent{
                 a.attack(attack.getId());
                 return;
             }
+            case Eat: {
+                a.eat();
+                return;
+            }
             default: {
                 throw new UnsupportedOperationException("Unknown action: " + action);
             }

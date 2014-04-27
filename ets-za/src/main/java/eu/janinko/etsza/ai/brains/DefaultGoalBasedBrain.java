@@ -10,6 +10,7 @@ import eu.janinko.etsza.ai.goals.steps.Move;
 import eu.janinko.etsza.ai.goals.Plan;
 import eu.janinko.etsza.ai.goals.steps.Step;
 import eu.janinko.etsza.ai.goals.Utility;
+import eu.janinko.etsza.ai.goals.steps.Eat;
 import eu.janinko.etsza.ai.goals.steps.Rotate;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.HashSet;
@@ -71,6 +72,8 @@ public abstract class DefaultGoalBasedBrain<T extends Agent> extends DefaultBrai
         }else if( step instanceof Rotate){
             Rotate r = (Rotate) step;
             return Actions.rotate((int) r.getAngle());
+        }else if( step instanceof Eat){
+            return Actions.eat();
         }else{
             throw new IllegalArgumentException("Unknown plan step " + step);
         }
