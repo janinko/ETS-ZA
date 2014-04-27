@@ -24,6 +24,10 @@ public class Move implements Step {
         return ty;
     }
 
+    public double getDistance() {
+        return distance;
+    }
+
     @Override
     public String toString() {
         return "Move{" + "tx=" + tx + ", ty=" + ty + ", distance=" + distance + '}';
