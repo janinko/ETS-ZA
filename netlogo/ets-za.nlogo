@@ -24,23 +24,26 @@ zombies-own [
   TTL ; number of ticks after which the zombie dies
 ]
 
+; ===== SETUP =====
 to setup
   clear-all
+
+; ==== set globals ====
   set see-cone 90
-  
+
   set base-TTL 1000
   set z-food-color 113
   set h-food-color 123
   set food-TTL base-TTL
-  setup-h-food
-  
-  
+
+  set human-population round (total-population * (1 - zombie-population-percent / 100))
+  set zombie-population round (total-population * (zombie-population-percent / 100))
+
   set-default-shape turtles "default" ;; arrow
   set-default-shape halos "60cone"
-  
-  gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed world-width world-height attack-distance
-  gbui:select-brains "BasicBrain" "BasicBrain"
 
+
+; ==== TASKS actuators ====
   let tmove task [
     ifelse breed = zombies
       [ move-z ]
@@ -49,6 +52,11 @@ to setup
   let trotate task [
      right ?1
   ]
+  let tattack task [
+    attack (turtle ?1) ( TTL / 10)
+  ]
+
+; ==== TASKS sensors ====
   let tcount-z task [
      count zombies in-radius sense-distance
   ]
@@ -61,33 +69,24 @@ to setup
   let tsee-patches task [
     patches in-cone see-distance see-cone
   ]
-  
   let tcan-attack task [
     can-attack turtle ?1
   ]
-  
-  
-  let tattack task [
-    attack (turtle ?1) TTL
-  ]
-  
-  
-  
-  
+
+; ==== GBUI setting ====
+  gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed world-width world-height attack-distance
+  gbui:select-brains "BasicBrain" "BasicBrain"
   gbui:set-sensors tcount-z tcount-h tsee tsee-patches tcan-attack
   gbui:set-actuators tmove trotate tattack
-  
-  set human-population round (total-population * (1 - zombie-population-percent / 100))
-  set zombie-population round (total-population * (zombie-population-percent / 100))
+
+
+; ==== generate world ====
+  setup-h-food
   create-humans human-population [ setup-human ]
   create-zombies zombie-population [ setup-zombie ]
-  ask humans [
-    set TTL base-TTL
-    set infection-timeout -1
-  ]
-  ask zombies [ set TTL base-TTL ]
   ask turtle 1 [ make-halo ] ;;  zvyrazneni cloveka c. 1
   ask turtle 99 [ make-halo ] ;;  zvyrazneni zombie c. 99
+
   reset-ticks
 end
 
@@ -210,13 +209,16 @@ end
 
 to setup-human
   setxy random-xcor random-ycor
-  set color 14
+  set TTL base-TTL
+  set infection-timeout -1
+  color-TTL 14
 end
 
 
 to setup-zombie
   setxy random-xcor random-ycor
-  set color 54
+  set TTL base-TTL
+  color-TTL 54
 end
 
 
