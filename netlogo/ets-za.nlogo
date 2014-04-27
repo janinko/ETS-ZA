@@ -56,8 +56,7 @@ to setup
      count humans in-radius sense-distance
   ]
   let tsee task [
-    color-it
-     
+    (turtle-set zombies humans) in-cone see-distance see-cone
   ]
   let tsee-patches task [
     patches in-cone see-distance see-cone
@@ -284,32 +283,8 @@ to color-TTL [ a b c d ]
   ;]
 end
 
-;to battle
-;  let hs humans-here
-;  let zs zombies-here
-;  let hc count hs
-;  let zc count zs
-;  ifelse hc = zc [
-;    ask hs [ die ]
-;    ask zs [ die ]
-;  ][
-;    ifelse hc < zc
-;      [ ask hs [ die ] ]
-;      [ ask zs [ die ] ]
-;  ]
-;end
-
 to decay
   ask zombies [ set TTL (TTL - 1) ]
-end
-  
-to-report color-it
-  if who = 1 [
-     ask zombies in-cone see-distance see-cone [
-       ; set color white
-     ]
-  ]
-  report (turtle-set zombies humans) in-cone see-distance see-cone
 end
 
 to info-death
@@ -448,7 +423,7 @@ zombie-speed
 zombie-speed
 0.01
 1
-0.05
+0.1
 0.01
 1
 NIL
