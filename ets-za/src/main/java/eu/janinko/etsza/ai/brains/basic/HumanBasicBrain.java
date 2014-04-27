@@ -22,7 +22,6 @@ public class HumanBasicBrain extends DefaultBrain<Human> {
     public Action perform() {
 
         for(MemoryOfZombie m : owner.getZombiesAhead(360, 1)){
-            System.out.println("attacking: " + m.getId());
             return Actions.attack(m.getId());
         }
 

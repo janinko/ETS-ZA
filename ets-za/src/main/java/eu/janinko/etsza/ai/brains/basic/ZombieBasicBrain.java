@@ -24,7 +24,6 @@ public class ZombieBasicBrain extends DefaultBrain<Zombie> {
     @Override
     public Action perform() {
         for (MemoryOfHuman m : owner.getHumansAhead(360, 1)) {
-            System.out.println("attacking: " + m.getId());
             return Actions.attack(m.getId());
         }
         if (owner.countHumansAhead(20, 5) > 0) {
