@@ -18,7 +18,7 @@ public class Rotate implements Step {
 
     @Override
     public String toString() {
-        return "Move{angle=" + angle + '}';
+        return "Rotate{angle=" + angle + '}';
     }
 
     @Override
