@@ -19,10 +19,11 @@ import java.util.List;
  */
 public abstract class DefaultAgent implements Agent{
     protected AI ai;
-    protected Brain brain;
     protected long id;
     protected double posX, posY;
     protected double heading;
+
+    protected Brain brain;
     protected Memories memories = new Memories();
     protected List<Utility> utilities = new ArrayList<>();
     protected List<Goal> goals = new ArrayList<>();

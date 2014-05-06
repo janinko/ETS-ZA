@@ -27,7 +27,7 @@ public class MemoryOfFood implements Memory{
     
     final public void update(Patch patch, AI ai){
         if(patch.getId() != id){
-            throw new IllegalArgumentException("Provided turtle doesn't have same id.");
+            throw new IllegalArgumentException("Provided patch doesn't have same id.");
         }
         posx = patch.getPosX();
         posy = patch.getPosY();
