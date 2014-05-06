@@ -21,11 +21,12 @@ public class HumanEat implements Goal<Human>{
     private AI ai;
     private double priority;
 
-    private static final double maxTTL = 1000;
+    private final double maxTTL;
 
     public HumanEat(AI ai, double priority) {
         this.ai = ai;
         this.priority = priority;
+        maxTTL = ai.getConfig().getMaxTTL();
     }
 
     @Override
