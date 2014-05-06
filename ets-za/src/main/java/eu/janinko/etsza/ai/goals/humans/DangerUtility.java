@@ -27,15 +27,19 @@ public class DangerUtility implements Utility<Human>{
     
     public double getCurrentUtility(Human h){
         Collection<MemoryOfZombie> zombies = h.getMemories().getAll(MemoryOfZombie.class).values();
-        return dangerToUtility(getDanger(h.getPosX(), h.getPosY(), zombies));
+        return dangerToUtility(getDanger(h.getPosX(), h.getPosY(), zombies, ai));
     }
     
     private double dangerToUtility(double danger){
 		if (danger <= acceptedDanger) return 0;
 		return (acceptedDanger - danger) / (acceptedDanger - 1);
     }
-    
+
     public double getDanger(double x, double y, Collection<MemoryOfZombie> zombies){
+        return getDanger(x, y, zombies, ai);
+    }
+
+    public static double getDanger(double x, double y, Collection<MemoryOfZombie> zombies, AI ai){
         double maxDistance = ai.getConfig().getZombieSpeed() * 100;
         double agingParam = 50;
         long time = ai.getTime();
@@ -58,7 +62,7 @@ public class DangerUtility implements Utility<Human>{
     //@Override
     public double getUtilityWhen(WorldModel model) {
         Collection<MemoryOfZombie> zombies = model.getMemories().getAll(MemoryOfZombie.class).values();
-        return dangerToUtility(getDanger(model.getPosx(), model.getPosy(), zombies));
+        return dangerToUtility(getDanger(model.getPosx(), model.getPosy(), zombies, ai));
     }
 
 	public double getAcceptedDanger() {
@@ -70,7 +74,7 @@ public class DangerUtility implements Utility<Human>{
         for (Step step : plan.getSteps()) {
             if (step instanceof Move) {
                 Move m = (Move) step;
-                double danger = getDanger(m.getTx(), m.getTy(), agent.getMemories().getAll(MemoryOfZombie.class).values());
+                double danger = getDanger(m.getTx(), m.getTy(), agent.getMemories().getAll(MemoryOfZombie.class).values(), ai);
                 plan.setLinking(plan.getLiking() * dangerToUtility(danger));
             }
         }
