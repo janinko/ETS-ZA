@@ -25,7 +25,11 @@ public class HumanGoalBasedBrain extends DefaultGoalBasedBrain<Human>{
 		WorldConfig cfg = ai.getConfig();
 
         if(owner.getAroundZ() == 0){
-            return Actions.rotate((int) cfg.getSeeCone());
+            if(r.nextInt(5)==0){
+                return Actions.rotateAndMove((r.nextDouble()-0.5)*20);
+            }else{
+                return Actions.rotate((int) cfg.getSeeCone());
+            }
         }
         if(owner.countZombiesAhead(20, 6) > 0){
             return Actions.rotate(r.nextBoolean() ? 20 : -20);
