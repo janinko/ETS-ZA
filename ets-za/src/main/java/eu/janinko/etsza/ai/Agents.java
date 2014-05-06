@@ -48,9 +48,17 @@ public class Agents {
 	public Human getHuman(long id){
 		return humans.get(id);
 	}
-	
+
 	public Zombie getZombie(long id){
 		return zombies.get(id);
+	}
+
+	public Agent getAgent(long id){
+        if(zombies.containsKey(id)){
+            return zombies.get(id);
+        }else{
+            return humans.get(id);
+        }
 	}
 
     public void setDefaultBrains(String hbrain, String zbrain) {
