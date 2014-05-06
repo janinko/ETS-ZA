@@ -170,8 +170,15 @@ to z-eat
 end
 
 to eat
-  set TTL (TTL + food-TTL)
-  if TTL > base-TTL [ set TTL base-TTL ]
+  let maxheal base-TTL - TTL
+  let toheal food-TTL
+  if toheal > maxheal [ set toheal maxheal ]
+  set TTL (TTL + toheal)
+  ifelse is-zombie? self [
+    set healed-zombie (healed-zombie + toheal)
+  ][
+    set healed-human (healed-human + toheal)
+  ]
 end
 
 ; ===== ATTACK =====
