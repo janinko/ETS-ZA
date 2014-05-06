@@ -10,6 +10,7 @@ import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.ai.goals.steps.Attack;
 import eu.janinko.etsza.ai.goals.steps.Move;
 import eu.janinko.etsza.ai.memory.MemoryOfHuman;
+import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.Collection;
 import java.util.HashSet;
@@ -54,9 +55,10 @@ public class HumanAttack implements Goal<Human>{
 			double d = wm.distance(x, y, z.getPosX(), z.getPosY());
             Plan p = new Plan();
             if(d > attackDist){
-                p.add(new Move(z.getPosX(), z.getPosY(), d));
+                Vector v = new Vector(wm.angle(x, y, z.getPosX(), z.getPosY()), attackDist);
+                p.add(new Move(z.getPosX() - v.dx(), z.getPosY() - v.dy(), d - attackDist));
             }
-            p.add(new Attack(z.getId(), false));
+            p.add(new Attack(z.getId(), d, false));
             p.setLinking(priority);
             plans.add(p);
 		}
@@ -69,7 +71,7 @@ public class HumanAttack implements Goal<Human>{
             if (d > attackDist) {
                 p.add(new Move(h.getPosX(), h.getPosY(), d));
             }
-            p.add(new Attack(h.getId(), false));
+            p.add(new Attack(h.getId(), d, false));
             p.setLinking(priority);
             plans.add(p);
         }

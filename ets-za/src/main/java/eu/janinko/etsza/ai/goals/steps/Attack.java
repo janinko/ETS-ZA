@@ -6,11 +6,13 @@ package eu.janinko.etsza.ai.goals.steps;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class Attack implements Step {
-    final long target;
-    final boolean isHuman;
+    private final long target;
+    private final double dist;
+    private final boolean isHuman;
 
-    public Attack(long target, boolean isHuman) {
+    public Attack(long target, double distance, boolean isHuman) {
         this.target = target;
+        this.dist = distance;
         this.isHuman = isHuman;
     }
 
@@ -20,6 +22,10 @@ public class Attack implements Step {
 
     public long getTarget() {
         return target;
+    }
+
+    public double getDistance() {
+        return dist;
     }
 
     @Override

@@ -11,6 +11,7 @@ import eu.janinko.etsza.ai.goals.steps.Move;
 import eu.janinko.etsza.ai.goals.steps.Rotate;
 import eu.janinko.etsza.ai.memory.MemoryOfHuman;
 import eu.janinko.etsza.ai.memory.MemoryOfZombie;
+import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.Collection;
 import java.util.HashSet;
@@ -63,9 +64,10 @@ public class ZombieAttack implements Goal<Zombie>{
             }
             Plan p = new Plan();
             if(d > attackDist){
-                p.add(new Move(h.getPosX(), h.getPosY(), d));
+                Vector v = new Vector(wm.angle(x, y, h.getPosX(), h.getPosY()), attackDist);
+                p.add(new Move(h.getPosX() - v.dx(), h.getPosY() - v.dy(), d - attackDist));
             }
-            p.add(new Attack(h.getId(), true));
+            p.add(new Attack(h.getId(), d, true));
             p.setLinking(priority);
             plans.add(p);
 		}
