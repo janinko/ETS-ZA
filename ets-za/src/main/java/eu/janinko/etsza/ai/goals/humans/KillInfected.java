@@ -20,13 +20,13 @@ import java.util.Set;
  *
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
-public class HumanAttack implements Goal<Human>{
+public class KillInfected implements Goal<Human>{
     private AI ai;
     private double priority;
 
     private static final double maxTTL = 1000;
 
-    public HumanAttack(AI ai, double priority) {
+    public KillInfected(AI ai, double priority) {
         this.ai = ai;
         this.priority = priority;
     }
@@ -38,29 +38,32 @@ public class HumanAttack implements Goal<Human>{
 
     @Override
     public Set<Plan> getPlans(Human human){
-		Collection<MemoryOfZombie> zombies = human.getMemories().getAll(MemoryOfZombie.class).values();
+		Collection<MemoryOfHuman> humans = human.getMemories().getAll(MemoryOfHuman.class).values();
 		WorldConfig cfg = ai.getConfig();
 		WorldMath wm = ai.getWorldMath();
 
 		double x = human.getPosX();
 		double y = human.getPosY();
         double attackDist = cfg.getAttackDistance();
+        if(human.getAmmo() > 0){
+            attackDist = cfg.getShootDistance();
+        }
         long time = ai.getTime();
 
         Set<Plan> plans = new HashSet<>();
-		for(MemoryOfZombie z : zombies){
-			long age = time - z.getDate();
-			if(age > 30) continue;
-			double d = wm.distance(x, y, z.getPosX(), z.getPosY());
+        for (MemoryOfHuman h : humans) {
+            if (!h.isInfected()) continue;
+            long age = time - h.getDate();
+            if (age > 30) continue;
+            double d = wm.distance(x, y, h.getPosX(), h.getPosY());
             Plan p = new Plan();
-            if(d > attackDist){
-                Vector v = new Vector(wm.angle(x, y, z.getPosX(), z.getPosY()), attackDist);
-                p.add(new Move(z.getPosX() - v.dx(), z.getPosY() - v.dy(), d - attackDist));
+            if (d > attackDist) {
+                p.add(new Move(h.getPosX(), h.getPosY(), d));
             }
-            p.add(new Attack(z.getId(), d, false));
+            p.add(new Attack(h.getId(), d, false));
             p.setLinking(priority);
             plans.add(p);
-		}
+        }
         return plans;
     }
 }
