@@ -20,6 +20,7 @@ import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Patch;
 import eu.janinko.etsza.wrapper.Turtle;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import org.nlogo.api.Context;
 
@@ -38,12 +39,14 @@ public class Zombie extends DefaultAgent{
         memories.addMemoryClass(MemoryOfHuman.class);
         memories.addMemoryClass(MemoryOfZombie.class);
         memories.addMemoryClass(MemoryOfFood.class);
+        
+        Random random = ai.getRandom();
 
         utilities.add(new Canibalism(0, ai));
-        utilities.add(new DontStarveUtility(0.8, ai));
+        utilities.add(new DontStarveUtility(0.7, ai));// + random.nextDouble()*0.4, ai));
 
-        goals.add(new ZombieAttack(ai, 0.9));
-        goals.add(new ZombieEat(ai, 1));
+        goals.add(new ZombieAttack(ai, 0.8));// + random.nextDouble()*0.4));
+        goals.add(new ZombieEat(ai, 1));// + random.nextDouble()*0.4));
     }
 
     @Override

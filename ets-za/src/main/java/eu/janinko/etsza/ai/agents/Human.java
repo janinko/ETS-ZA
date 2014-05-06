@@ -4,27 +4,32 @@ import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.Callbacks.Actuators;
 import eu.janinko.etsza.ai.Callbacks.Sensors;
 import eu.janinko.etsza.ai.agents.Actions.Action;
-import eu.janinko.etsza.ai.brains.basic.HumanBasicBrain;
 import eu.janinko.etsza.ai.agents.Actions.Shoot;
 import eu.janinko.etsza.ai.brains.HumanGoalBasedBrain;
 import eu.janinko.etsza.ai.brains.HumanMemoryBrain;
 import eu.janinko.etsza.ai.brains.HumanPathfindingBrain;
-import eu.janinko.etsza.ai.goals.humans.DangerUtility;
-import eu.janinko.etsza.ai.memory.MemoryOfZombie;
+import eu.janinko.etsza.ai.brains.basic.HumanBasicBrain;
+import eu.janinko.etsza.ai.goals.humans.AvoidZombie;
+import eu.janinko.etsza.ai.goals.humans.FearUtility;
 import eu.janinko.etsza.ai.goals.humans.HumanAttack;
 import eu.janinko.etsza.ai.goals.humans.HumanEat;
+import eu.janinko.etsza.ai.goals.humans.KillInfected;
+import eu.janinko.etsza.ai.goals.humans.PickupAmmo;
+import eu.janinko.etsza.ai.goals.humans.SaveAmmoUtility;
+import eu.janinko.etsza.ai.goals.humans.ShootZombie;
 import eu.janinko.etsza.ai.goals.humans.StayUtility;
 import eu.janinko.etsza.ai.memory.MemoryOfAmmo;
 import eu.janinko.etsza.ai.memory.MemoryOfFood;
 import eu.janinko.etsza.ai.memory.MemoryOfHuman;
+import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Patch;
 import eu.janinko.etsza.wrapper.Turtle;
-import org.nlogo.api.Context;
-
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
+import org.nlogo.api.Context;
 
 /**
  *
@@ -42,12 +47,20 @@ public class Human extends DefaultAgent {
         ammo = turtle.getAmmo();
 
         brain = new HumanMemoryBrain(this, ai);
+        Random random = ai.getRandom();
 
         //utilities.add(new DangerUtility(0, ai));
-        utilities.add(new StayUtility(25, ai));
+        utilities.add(new StayUtility(20, ai));// + random.nextDouble()*10, ai));
+        //utilities.add(new AvoidDangerUtility(ai, 0.4));
+        utilities.add(new SaveAmmoUtility(ai, 3));
+        utilities.add(new FearUtility(ai, 0.7));
 
-        goals.add(new HumanAttack(ai, 0.6));
-        goals.add(new HumanEat(ai, 1));
+        goals.add(new HumanAttack(ai, 0.8));// + random.nextDouble()*0.3));
+        goals.add(new ShootZombie(ai, 0.6));// + random.nextDouble()*0.3));
+        goals.add(new KillInfected(ai, 0.3));// + random.nextDouble()*0.3));
+        goals.add(new HumanEat(ai, 1));// + random.nextDouble()*0.2));
+        goals.add(new AvoidZombie(ai, 0.7));// + random.nextDouble()*0.5));
+        goals.add(new PickupAmmo(ai, 0.7));// + random.nextDouble()*0.5));
 
         memories.addMemoryClass(MemoryOfZombie.class);
         memories.addMemoryClass(MemoryOfHuman.class);
