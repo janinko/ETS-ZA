@@ -30,12 +30,8 @@ public class Actions {
         return idle;
     }
     
-    private static final Rotate[] rotates = new Rotate[360];
     public static Rotate rotate(int degree){
-        if(rotates[degree] == null){
-            rotates[degree] = new Rotate(degree);
-        }
-        return rotates[degree];
+        return new Rotate(degree);
     }
     
     public static RotateAndMove rotateAndMove(double degree){
