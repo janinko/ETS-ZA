@@ -5,6 +5,7 @@ import eu.janinko.etsza.ai.Callbacks.Actuators;
 import eu.janinko.etsza.ai.Callbacks.Sensors;
 import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.brains.basic.HumanBasicBrain;
+import eu.janinko.etsza.ai.agents.Actions.Shoot;
 import eu.janinko.etsza.ai.brains.HumanGoalBasedBrain;
 import eu.janinko.etsza.ai.brains.HumanMemoryBrain;
 import eu.janinko.etsza.ai.brains.HumanPathfindingBrain;
@@ -13,6 +14,7 @@ import eu.janinko.etsza.ai.memory.MemoryOfZombie;
 import eu.janinko.etsza.ai.goals.humans.HumanAttack;
 import eu.janinko.etsza.ai.goals.humans.HumanEat;
 import eu.janinko.etsza.ai.goals.humans.StayUtility;
+import eu.janinko.etsza.ai.memory.MemoryOfAmmo;
 import eu.janinko.etsza.ai.memory.MemoryOfFood;
 import eu.janinko.etsza.ai.memory.MemoryOfHuman;
 import eu.janinko.etsza.util.Vector;
@@ -32,9 +34,13 @@ public class Human extends DefaultAgent {
     private int aroundZ;
 
     private double ttl;
+    private int ammo;
 
     public Human(Turtle turtle, AI ai) {
         super(turtle, ai);
+        ttl = turtle.getTTL();
+        ammo = turtle.getAmmo();
+
         brain = new HumanMemoryBrain(this, ai);
 
         //utilities.add(new DangerUtility(0, ai));
@@ -46,12 +52,14 @@ public class Human extends DefaultAgent {
         memories.addMemoryClass(MemoryOfZombie.class);
         memories.addMemoryClass(MemoryOfHuman.class);
         memories.addMemoryClass(MemoryOfFood.class);
+        memories.addMemoryClass(MemoryOfAmmo.class);
     }
 
     @Override
     public void updateAgent(Turtle turtle) {
         super.updateAgent(turtle);
         ttl = turtle.getTTL();
+        ammo = turtle.getAmmo();
     }
 
     @Override
@@ -77,6 +85,11 @@ public class Human extends DefaultAgent {
     @Override
     protected void act(Action action, Actuators a) {
         switch (action.getType()) {
+            case Shoot:{
+                Shoot s = (Shoot) action;
+                a.shoot(s.getId());
+                break;
+            }
             default: {
                 super.act(action, a);
             }
@@ -111,6 +124,15 @@ public class Human extends DefaultAgent {
                 }
             }else{
                 memories.forget(MemoryOfFood.class, pid);
+            }
+            if(p.getAmmoBoxes() > 0){
+              if(memories.contains(MemoryOfAmmo.class, pid)){
+                    memories.get(MemoryOfAmmo.class, pid).update(p, ai);
+                }else{
+                    memories.put(new MemoryOfAmmo(p, ai), pid);
+                }
+            }else{
+                memories.forget(MemoryOfAmmo.class, pid);
             }
         }
         aroundZ = s.zombiesAround();
@@ -148,5 +170,9 @@ public class Human extends DefaultAgent {
 
     public double getTTL() {
         return ttl;
+    }
+
+    public int getAmmo() {
+        return ammo;
     }
 }

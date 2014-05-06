@@ -28,6 +28,7 @@ public class SetSettings extends DefaultCommand {
                 Syntax.NumberType(),
                 Syntax.NumberType(),
                 Syntax.NumberType(),
+                Syntax.NumberType(),
                 Syntax.NumberType()});
     }
 
@@ -41,7 +42,8 @@ public class SetSettings extends DefaultCommand {
                 args[5].getDoubleValue(),
                 args[6].getDoubleValue(),
                 args[7].getDoubleValue(),
-                args[8].getDoubleValue());
+                args[8].getDoubleValue(),
+                args[9].getDoubleValue());
         ai.setConfig(wc);
     }
 

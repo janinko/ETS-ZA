@@ -12,6 +12,7 @@ import eu.janinko.etsza.ai.goals.steps.Step;
 import eu.janinko.etsza.ai.goals.Utility;
 import eu.janinko.etsza.ai.goals.steps.Eat;
 import eu.janinko.etsza.ai.goals.steps.Rotate;
+import eu.janinko.etsza.ai.goals.steps.Shoot;
 import eu.janinko.etsza.util.WorldMath;
 import java.util.HashSet;
 import java.util.Set;
@@ -58,6 +59,9 @@ public abstract class DefaultGoalBasedBrain<T extends Agent> extends DefaultBrai
         if(step instanceof Attack){
             Attack a = (Attack) step;
             return Actions.attack(a.getTarget());
+        }else if(step instanceof Shoot){
+            Shoot a = (Shoot) step;
+            return Actions.shoot(a.getTarget());
         }else if( step instanceof Move){
             Move m = (Move) step;
             double x = owner.getPosX();

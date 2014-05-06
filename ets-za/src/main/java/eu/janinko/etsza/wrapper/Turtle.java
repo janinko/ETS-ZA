@@ -44,6 +44,11 @@ public class Turtle implements AgentWrapper{
         return isHuman() && getCustomVariable(2) >= 0;
     }
 
+    public int getAmmo(){
+        if(!isHuman()) return 0;
+        return (int) getCustomVariable(3);
+    }
+
     private double getCustomVariable(int i){
         return (double) turtle.getVariable(AgentVariableNumbers.VAR_PENMODE + i);
     }

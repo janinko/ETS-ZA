@@ -40,6 +40,10 @@ public class Patch implements AgentWrapper{
         return getCustomVariable(2);
     }
 
+    public double getAmmoBoxes(){
+        return getCustomVariable(3);
+    }
+
     private double getCustomVariable(int i){
         return (double) patch.getVariable(AgentVariableNumbers.VAR_PLABELCOLOR + i);
     }

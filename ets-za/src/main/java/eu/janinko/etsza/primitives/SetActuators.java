@@ -23,6 +23,7 @@ public class SetActuators extends DefaultCommand {
         return Syntax.commandSyntax(new int[]{Syntax.CommandTaskType(),
                 Syntax.CommandTaskType(),
                 Syntax.CommandTaskType(),
+                Syntax.CommandTaskType(),
                 Syntax.CommandTaskType()});
     }
 
@@ -32,7 +33,8 @@ public class SetActuators extends DefaultCommand {
         cb.setMove(args[0].getCommandTask());
         cb.setRotate(args[1].getCommandTask());
         cb.setAttack(args[2].getCommandTask());
-        cb.setEat(args[3].getCommandTask());
+        cb.setShoot(args[3].getCommandTask());
+        cb.setEat(args[4].getCommandTask());
     }
 
 }

@@ -20,6 +20,7 @@ public class Callbacks {
     CommandTask move;
     CommandTask rotate;
     CommandTask attack;
+    CommandTask shoot;
     CommandTask eat;
 
     ReporterTask aroundZ;
@@ -63,6 +64,10 @@ public class Callbacks {
 
     public void setSeePatches(ReporterTask seePatches) {
         this.seePatches = seePatches;
+    }
+
+    public void setShoot(CommandTask commandTask) {
+        this.shoot = commandTask;
     }
 
     public Sensors getSensors(Context ctx){
@@ -135,6 +140,10 @@ public class Callbacks {
         }
 
         public void attack(long id) {
+            attack.perform(ctx, new Object[] {(double) id});
+        }
+
+        public void shoot(long id) {
             attack.perform(ctx, new Object[] {(double) id});
         }
     }

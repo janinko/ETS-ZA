@@ -16,6 +16,7 @@ globals [
 humans-own [  
   TTL ; represents health of a human, number of tick after which he dies
   infection-timeout ; if the value is < 0 the human is not infected
+  ammo
 ]
 
 zombies-own [  
@@ -25,6 +26,7 @@ zombies-own [
 patches-own [
   z-food
   h-food
+  ammo-boxes
 ]
 
 ; ===== SETUP =====
@@ -61,6 +63,9 @@ to setup
   let tattack task [
     attack (turtle ?1) ( TTL / 10)
   ]
+  let tshoot task [
+    attack (turtle ?1) ( TTL / 3)
+  ]
 
 ; ==== TASKS sensors ====
   let tcount-z task [
@@ -80,14 +85,15 @@ to setup
   ]
 
 ; ==== GBUI setting ====
-  gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed world-width world-height attack-distance base-TTL
+  gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed world-width world-height attack-distance shoot-distance base-TTL
   gbui:select-brains human-brain zombie-brain
   gbui:set-sensors tcount-z tcount-h tsee tsee-patches tcan-attack
-  gbui:set-actuators tmove trotate tattack teat
+  gbui:set-actuators tmove trotate tattack tshoot teat
 
 
 ; ==== generate world ====
   setup-h-food
+  setup-ammo
   create-humans human-population [ setup-human ]
   create-zombies zombie-population [ setup-zombie ]
   ask turtle 1 [ make-halo ] ;;  zvyrazneni cloveka c. 1
@@ -101,6 +107,7 @@ to step
   gbui:tick
   if random 20 = 1 [setup-h-food]
   ask humans [
+    pickup-ammo
     check-turn-into-zombie
     gbui:ai-perform
   ]
@@ -125,7 +132,7 @@ end
 to patch-set-h-food [ amount ]
   set h-food (h-food + amount)
   set h-current-food-count (h-current-food-count + amount)
-  color-food-patch
+  color-patch
 end
 
 to-report patch-is-h-food
@@ -138,25 +145,7 @@ end
 
 to patch-set-z-food [ amount ]
   set z-food (z-food + amount)
-  color-food-patch
-end
-
-to color-food-patch
-  let jidla (h-food + z-food)
-  ifelse jidla = 0 [
-    set pcolor black
-  ][ ; h-food and/or z-food > 0
-    let base 0
-    ifelse h-food > 0 and z-food > 0 [
-      set base 110
-    ][ ifelse h-food > 0 [
-      set base 120
-    ][ 
-      set base 100
-    ]]
-    let posun 10 - ((7 * jidla + 20) / (3 * jidla))
-    set pcolor base + posun
-  ]
+  color-patch
 end
 
 ; ===== EAT =====
@@ -167,7 +156,7 @@ to h-eat
     eat
     set h-food (h-food - 1)
     set h-current-food-count (h-current-food-count - 1)
-    color-food-patch
+    color-patch
   ]
 end
 
@@ -176,7 +165,7 @@ to z-eat
   if is-zombie? self and patch-is-z-food [
     eat
     set z-food (z-food - 1)
-    color-food-patch
+    color-patch
   ]
 end
 
@@ -188,7 +177,11 @@ end
 ; ===== ATTACK =====
 
 to-report can-attack [ x ]
-  report attack-enabled and is-turtle? x and (distance x) <= attack-distance
+  let dist attack-distance
+  if is-human? self and ammo > 0[
+    set dist shoot-distance
+  ]
+  report attack-enabled and is-turtle? x and (distance x) <= dist
 end
 
 ; inflict damage equal to the agents TTL, representing its strength
@@ -199,6 +192,8 @@ to attack [ target damage ]
     ask target [
       set TTL (TTL - damage)
       try-infect-when-attacking
+    if distance target > attack-distance [
+      set ammo (ammo - 1)
     ]
   ]    
 end
@@ -229,11 +224,36 @@ to check-turn-into-zombie
   if is-human? self and is-infected [
     ifelse infection-timeout = 0 [
       print "Human turned into a zombie!"
+      drop-ammo
       set breed zombies
       inform "zombifie"
     ][
       set infection-timeout (infection-timeout - 1)
     ]    
+  ]
+end
+
+; ===== AMMO =====
+
+to setup-ammo
+  ask max-n-of ammo-count patches [random-float 1] [
+    set ammo-boxes (ammo-boxes + 5)
+    color-patch
+  ]
+end
+
+to pickup-ammo
+  if ammo-boxes > 0 [
+    set ammo-boxes (ammo-boxes - 1)
+    set ammo (ammo + 1)
+    color-patch
+  ]
+end
+
+to drop-ammo
+  if ammo > 0 [
+    set ammo-boxes (ammo-boxes + ammo)
+    color-patch
   ]
 end
 
@@ -243,6 +263,7 @@ to setup-human
   setxy random-xcor random-ycor
   set TTL base-TTL
   set infection-timeout -1
+  set ammo starting-ammo
   color-TTL 14
 end
 
@@ -252,8 +273,6 @@ to setup-zombie
   set TTL base-TTL
   color-TTL 54
 end
-
-
 
 
 to move-z
@@ -278,6 +297,7 @@ to reap
     ifelse (TTL <= 0) [      
       inform "die"
       patch-set-z-food 2
+      drop-ammo
       die
     ][
       ifelse is-infected [
@@ -315,7 +335,27 @@ to inform [ info ]
   ]
 end
 
-
+to color-patch
+  let jidla (h-food + z-food)
+  ifelse jidla = 0 [
+    ifelse ammo-boxes > 0 [
+      set pcolor 6
+    ][
+      set pcolor black
+    ]
+  ][ ; h-food and/or z-food > 0
+    let base 0
+    ifelse h-food > 0 and z-food > 0 [
+      set base 110
+    ][ ifelse h-food > 0 [
+      set base 120
+    ][ 
+      set base 100
+    ]]
+    let posun 10 - ((7 * jidla + 20) / (3 * jidla))
+    set pcolor base + posun
+  ]
+end
 
 to make-halo  ;; runner procedure
   ;; when you use HATCH, the new turtle inherits the
@@ -337,10 +377,10 @@ to make-halo  ;; runner procedure
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-492
-32
-1382
-603
+385
+20
+1275
+591
 -1
 -1
 20.0
@@ -383,7 +423,7 @@ NIL
 SLIDER
 40
 65
-415
+375
 98
 total-population
 total-population
@@ -398,13 +438,13 @@ HORIZONTAL
 SLIDER
 40
 105
-414
+375
 138
 zombie-population-percent
 zombie-population-percent
 0
 100
-60
+50
 1
 1
 % zombie/human
@@ -436,7 +476,7 @@ zombie-speed
 zombie-speed
 0.01
 1
-0.1
+0.09
 0.01
 1
 NIL
@@ -475,10 +515,10 @@ NIL
 1
 
 PLOT
-40
-455
-410
-605
+385
+600
+715
+750
 plot 1
 time
 count
@@ -494,9 +534,9 @@ PENS
 "#zombies" 1.0 0 -10899396 true "" "plot count zombies"
 
 SWITCH
-270
+230
 165
-415
+375
 198
 attack-enabled
 attack-enabled
@@ -535,9 +575,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-270
+230
 205
-415
+375
 238
 attack-distance
 attack-distance
@@ -550,30 +590,30 @@ NIL
 HORIZONTAL
 
 SLIDER
-270
-245
-415
-278
+230
+285
+375
+318
 h-food-count
 h-food-count
 0
 100
-20
+10
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-270
-285
-415
-318
+230
+365
+375
+398
 infection-probability
 infection-probability
 0
 100
-100
+3
 1
 1
 %
@@ -587,7 +627,7 @@ CHOOSER
 human-brain
 human-brain
 "BasicBrain" "MemoryBrain" "GoalBrain"
-0
+2
 
 CHOOSER
 40
@@ -597,7 +637,52 @@ CHOOSER
 zombie-brain
 zombie-brain
 "BasicBrain" "ChaseBrain" "GoalBrain"
+2
+
+SLIDER
+230
+245
+375
+278
+shoot-distance
+shoot-distance
 0
+20
+3
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+230
+325
+375
+358
+ammo-count
+ammo-count
+0
+50
+5
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+230
+405
+375
+438
+starting-ammo
+starting-ammo
+0
+20
+3
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?

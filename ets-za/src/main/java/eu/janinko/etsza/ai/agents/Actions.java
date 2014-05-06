@@ -11,6 +11,7 @@ public class Actions {
         Rotate,
         RotateAndMove,
 		Attack,
+		Shoot,
 		Eat,
         Idle;
     }
@@ -40,6 +41,10 @@ public class Actions {
 
     public static Attack attack(long id){
         return new Attack(id);
+    }
+
+    public static Shoot shoot(long id){
+        return new Shoot(id);
     }
     
     public interface Action{
@@ -108,6 +113,21 @@ public class Actions {
         @Override
         public Type getType() {
             return Type.Attack;
+        }
+
+        public long getId() {
+            return id;
+        }
+    }
+    public static class Shoot implements Action{
+        private final long id;
+        private Shoot(long id){
+            this.id = id;
+        }
+
+        @Override
+        public Type getType() {
+            return Type.Shoot;
         }
 
         public long getId() {
