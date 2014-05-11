@@ -32,6 +32,7 @@ patches-own [
 ; ===== SETUP =====
 to setup
   clear-all
+  gbui:clear
 
 ; ==== set globals ====
   set see-cone 90

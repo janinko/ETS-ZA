@@ -19,6 +19,7 @@ public class GBUIExtension extends DefaultClassManager {
         pm.addPrimitive("set-actuators", new SetActuators(ai));
         pm.addPrimitive("set-sensors", new SetSensors(ai));
         pm.addPrimitive("tick", new Tick(ai));
+        pm.addPrimitive("clear", new Clear(ai));
         pm.addPrimitive("select-brains", new SelectBrains(ai));
         pm.addPrimitive("inform", new Inform(ai));
         pm.addPrimitive("set-settings", new SetSettings(ai));
