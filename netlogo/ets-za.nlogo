@@ -81,14 +81,11 @@ to setup
   let tsee-patches task [
     patches in-cone see-distance see-cone
   ]
-  let tcan-attack task [
-    can-attack turtle ?1
-  ]
 
 ; ==== GBUI setting ====
   gbui:set-settings see-distance see-cone sense-distance zombie-speed human-speed world-width world-height attack-distance shoot-distance base-TTL
   gbui:select-brains human-brain zombie-brain
-  gbui:set-sensors tcount-z tcount-h tsee tsee-patches tcan-attack
+  gbui:set-sensors tcount-z tcount-h tsee tsee-patches
   gbui:set-actuators tmove trotate tattack tshoot teat
 
 

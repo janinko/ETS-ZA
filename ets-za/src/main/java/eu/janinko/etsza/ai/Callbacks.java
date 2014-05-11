@@ -27,8 +27,6 @@ public class Callbacks {
     ReporterTask aroundH;
     ReporterTask see;
     ReporterTask seePatches;
-    ReporterTask canAttack;
-
 
     public void setMove(CommandTask commandTask) {
         move = commandTask;
@@ -56,10 +54,6 @@ public class Callbacks {
 
     public void setAttack(CommandTask commandTask) {
         attack = commandTask;
-    }
-
-    public void setCanAttack(ReporterTask canAttack) {
-        this.canAttack = canAttack;
     }
 
     public void setSeePatches(ReporterTask seePatches) {
@@ -111,10 +105,6 @@ public class Callbacks {
                 ret.add(new Patch((org.nlogo.api.Patch) agent));
             }
             return ret;
-        }
-
-        public boolean canAttack(Long id) {
-            return (Boolean) canAttack.report(ctx, new Object[] {id});
         }
     }
     
