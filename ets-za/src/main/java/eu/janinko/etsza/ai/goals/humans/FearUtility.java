@@ -14,7 +14,6 @@ import eu.janinko.etsza.ai.goals.steps.Step;
  */
 public class FearUtility implements Utility<Human>{
     private final double ttl;
-    private final AI ai;
 
     /**
      * Penalize attacking when low TTL.
@@ -22,7 +21,6 @@ public class FearUtility implements Utility<Human>{
      */
     public FearUtility(AI ai, double ttlPerc) {
         this.ttl = ttlPerc * ai.getConfig().getMaxTTL();
-        this.ai = ai;
     }
 
     @Override

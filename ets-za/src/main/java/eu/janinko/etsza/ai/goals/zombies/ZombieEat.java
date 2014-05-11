@@ -18,8 +18,8 @@ import java.util.Set;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class ZombieEat implements Goal<Zombie>{
-    private AI ai;
-    private double priority;
+    private final AI ai;
+    private final double priority;
 
     private static final double maxTTL = 1000;
 

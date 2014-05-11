@@ -18,8 +18,8 @@ import java.util.Set;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class HumanEat implements Goal<Human>{
-    private AI ai;
-    private double priority;
+    private final AI ai;
+    private final double priority;
 
     private final double maxTTL;
 

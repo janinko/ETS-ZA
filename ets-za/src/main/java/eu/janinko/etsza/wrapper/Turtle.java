@@ -8,7 +8,7 @@ import org.nlogo.api.AgentVariableNumbers;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class Turtle implements AgentWrapper{
-    org.nlogo.api.Turtle turtle;
+    private final org.nlogo.api.Turtle turtle;
 
     public Turtle(org.nlogo.api.Turtle turtle) {
         this.turtle = turtle;

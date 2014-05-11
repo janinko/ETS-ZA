@@ -8,7 +8,7 @@ import org.nlogo.api.AgentVariableNumbers;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class Patch implements AgentWrapper{
-    org.nlogo.api.Patch patch;
+    private final org.nlogo.api.Patch patch;
 
     public Patch(org.nlogo.api.Patch patch) {
         this.patch = patch;

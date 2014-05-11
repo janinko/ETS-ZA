@@ -21,8 +21,8 @@ public class AvoidZombie implements Goal<Human>{
     // coplexity depends on depth: (depth*2+1)^2
     // 0 -> 1; 1 -> 9; 2 -> 25; 3 -> 49; 4 -> 81; 5 -> 121; 6 -> 169; 7 -> 225; 8-> 289; 9 -> 361
     private static final int depth = 4;
-    private AI ai;
-    private double priority;
+    private final AI ai;
+    private final double priority;
 
     public AvoidZombie(AI ai, double priority) {
         this.ai = ai;

@@ -13,13 +13,11 @@ import eu.janinko.etsza.ai.goals.Utility;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class Canibalism implements Utility<Zombie>{
-    private AI ai;
 
     private double canibalismRate;
 
     public Canibalism(double canibalismRate, AI ai) {
         this.canibalismRate = canibalismRate;
-        this.ai = ai;
     }
 
     public double getCurrentUtility(Zombie h) {

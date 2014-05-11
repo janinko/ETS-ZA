@@ -21,10 +21,8 @@ import java.util.Set;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class KillInfected implements Goal<Human>{
-    private AI ai;
-    private double priority;
-
-    private static final double maxTTL = 1000;
+    private final AI ai;
+    private final double priority;
 
     public KillInfected(AI ai, double priority) {
         this.ai = ai;

@@ -21,10 +21,8 @@ import java.util.Set;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class HumanAttack implements Goal<Human>{
-    private AI ai;
-    private double priority;
-
-    private static final double maxTTL = 1000;
+    private final AI ai;
+    private final double priority;
 
     public HumanAttack(AI ai, double priority) {
         this.ai = ai;

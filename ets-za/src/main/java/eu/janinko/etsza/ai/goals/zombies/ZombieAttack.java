@@ -22,8 +22,8 @@ import java.util.Set;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class ZombieAttack implements Goal<Zombie>{
-    private AI ai;
-    private double priority;
+    private final AI ai;
+    private final double priority;
 
     public ZombieAttack(AI ai, double priority) {
         this.ai = ai;

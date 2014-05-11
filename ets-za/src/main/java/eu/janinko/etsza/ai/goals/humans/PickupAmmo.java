@@ -17,8 +17,8 @@ import java.util.Set;
  * @author Honza Brázdil <janinko.g@gmail.com>
  */
 public class PickupAmmo implements Goal<Human>{
-    private AI ai;
-    private double priority;
+    private final AI ai;
+    private final double priority;
 
     public PickupAmmo(AI ai, double priority) {
         this.ai = ai;
