@@ -22,6 +22,7 @@ import eu.janinko.etsza.ai.memory.MemoryOfAmmo;
 import eu.janinko.etsza.ai.memory.MemoryOfFood;
 import eu.janinko.etsza.ai.memory.MemoryOfHuman;
 import eu.janinko.etsza.ai.memory.MemoryOfZombie;
+import eu.janinko.etsza.ai.goals.GoalConfig;
 import eu.janinko.etsza.util.Vector;
 import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Patch;
@@ -48,19 +49,20 @@ public class Human extends DefaultAgent {
 
         brain = new HumanMemoryBrain(this, ai);
         Random random = ai.getRandom();
+        GoalConfig gc = ai.getAgents().getGoalConfig();
 
         //utilities.add(new DangerUtility(0, ai));
-        utilities.add(new StayUtility(20, ai));// + random.nextDouble()*10, ai));
+        utilities.add(new StayUtility(gc.getStay(), ai));// + random.nextDouble()*10, ai));
         //utilities.add(new AvoidDangerUtility(ai, 0.4));
-        utilities.add(new SaveAmmoUtility(ai, 3));
-        utilities.add(new FearUtility(ai, 0.7));
+        utilities.add(new SaveAmmoUtility(ai, gc.getSaveAmmo()));
+        utilities.add(new FearUtility(ai, gc.getFear()));
 
-        goals.add(new HumanAttack(ai, 0.8));// + random.nextDouble()*0.3));
-        goals.add(new ShootZombie(ai, 0.6));// + random.nextDouble()*0.3));
-        goals.add(new KillInfected(ai, 0.3));// + random.nextDouble()*0.3));
-        goals.add(new HumanEat(ai, 1));// + random.nextDouble()*0.2));
-        goals.add(new AvoidZombie(ai, 0.7));// + random.nextDouble()*0.5));
-        goals.add(new PickupAmmo(ai, 0.7));// + random.nextDouble()*0.5));
+        goals.add(new HumanAttack(ai, gc.getHumanAttack()));// + random.nextDouble()*0.3));
+        goals.add(new ShootZombie(ai, gc.getShootZombie()));// + random.nextDouble()*0.3));
+        goals.add(new KillInfected(ai, gc.getKillInfected()));// + random.nextDouble()*0.3));
+        goals.add(new HumanEat(ai, gc.getHumanEat()));// + random.nextDouble()*0.2));
+        goals.add(new AvoidZombie(ai, gc.getAvoidZombie()));// + random.nextDouble()*0.5));
+        goals.add(new PickupAmmo(ai, gc.getPickupAmmo()));// + random.nextDouble()*0.5));
 
         memories.addMemoryClass(MemoryOfZombie.class);
         memories.addMemoryClass(MemoryOfHuman.class);

@@ -4,6 +4,7 @@ package eu.janinko.etsza.ai;
 import eu.janinko.etsza.ai.agents.Agent;
 import eu.janinko.etsza.ai.agents.Human;
 import eu.janinko.etsza.ai.agents.Zombie;
+import eu.janinko.etsza.ai.goals.GoalConfig;
 import eu.janinko.etsza.wrapper.Turtle;
 import java.util.HashMap;
 
@@ -17,6 +18,7 @@ public class Agents {
     private HashMap<Long, Human> humans = new HashMap<>();
     private String hbrain = "BasicBrain";
     private String zbrain = "BasicBrain";
+    private GoalConfig gc;
 
     Agents(AI ai) {
         this.ai = ai;
@@ -64,5 +66,13 @@ public class Agents {
     public void setDefaultBrains(String hbrain, String zbrain) {
         this.hbrain = hbrain;
         this.zbrain = zbrain;
+    }
+
+    public void setGoalConfig(GoalConfig gc) {
+        this.gc = gc;
+    }
+
+    public GoalConfig getGoalConfig() {
+        return gc;
     }
 }
