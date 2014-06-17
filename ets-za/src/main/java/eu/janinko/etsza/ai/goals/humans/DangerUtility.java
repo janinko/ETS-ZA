@@ -41,7 +41,7 @@ public class DangerUtility implements Utility<Human>{
 
     public static double getDanger(double x, double y, Collection<MemoryOfZombie> zombies, AI ai){
         double maxDistance = ai.getConfig().getZombieSpeed() * 100;
-        double agingParam = 50;
+        double agingParam = 40;
         long time = ai.getTime();
         WorldMath wm = new WorldMath(ai.getConfig().getWidth(), ai.getConfig().getHeight());
         
