@@ -3,7 +3,6 @@ package eu.janinko.etsza.ai.agents;
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.Callbacks.Actuators;
 import eu.janinko.etsza.ai.Callbacks.Sensors;
-import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.agents.Actions.Shoot;
 import eu.janinko.etsza.ai.brains.HumanGoalBasedBrain;
 import eu.janinko.etsza.ai.brains.HumanMemoryBrain;
@@ -30,7 +29,6 @@ import eu.janinko.etsza.wrapper.Turtle;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import org.nlogo.api.Context;
 
 /**
  *
@@ -89,30 +87,22 @@ public class Human extends DefaultAgent {
     }
     
     @Override
-    public void perform(Context ctx) {
-        Sensors s = ai.getCallbacks().getSensors(ctx);
-        Actuators a = ai.getCallbacks().getActuators(ctx);
-        sense(s);
-        Action action = brain.perform();
-        act(action, a);
-    }
-    
-    @Override
-    protected void act(Action action, Actuators a) {
-        switch (action.getType()) {
+    protected void act(Actuators a) {
+        switch (thinkResult.getType()) {
             case Shoot:{
-                Shoot s = (Shoot) action;
+                Shoot s = (Shoot) thinkResult;
                 a.shoot(s.getId());
                 break;
             }
             default: {
-                super.act(action, a);
+                super.act(a);
             }
         }
     }
     
-    private void sense(Sensors s){
-        for(Turtle t : s.see()){
+    @Override
+    public void sense(Sensors s){
+        for(Turtle t : s.see(id)){
             Long tid = t.getId();
             if(t.isHuman()){
                 if(id == tid) continue;
@@ -129,7 +119,7 @@ public class Human extends DefaultAgent {
                 }
             }
         }
-        for(Patch p : s.seePatches()){
+        for(Patch p : s.seePatches(id)){
             Long pid = p.getId();
             if(p.getHFood() > 0){
                 if(memories.contains(MemoryOfFood.class, pid)){
@@ -150,7 +140,7 @@ public class Human extends DefaultAgent {
                 memories.forget(MemoryOfAmmo.class, pid);
             }
         }
-        aroundZ = s.zombiesAround();
+        aroundZ = s.zombiesAround(id);
     }
 
     public int getAroundZ() {

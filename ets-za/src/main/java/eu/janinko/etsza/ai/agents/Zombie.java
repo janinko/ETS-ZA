@@ -4,7 +4,6 @@ package eu.janinko.etsza.ai.agents;
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.Callbacks.Actuators;
 import eu.janinko.etsza.ai.Callbacks.Sensors;
-import eu.janinko.etsza.ai.agents.Actions.Action;
 import eu.janinko.etsza.ai.brains.basic.ZombieBasicBrain;
 import eu.janinko.etsza.ai.brains.ZombieChaseBrain;
 import eu.janinko.etsza.ai.brains.ZombieGoalBasedBrain;
@@ -22,7 +21,6 @@ import eu.janinko.etsza.wrapper.Turtle;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import org.nlogo.api.Context;
 
 /**
  *
@@ -66,26 +64,17 @@ public class Zombie extends DefaultAgent{
     }
     
     @Override
-    public void perform(Context ctx) {
-        Sensors s = ai.getCallbacks().getSensors(ctx);
-        Actuators a = ai.getCallbacks().getActuators(ctx);
-        
-        sense(s);
-        Action action = brain.perform();
-        act(action, a);
-    }
-    
-    @Override
-    protected void act(Action action, Actuators a) {
-        switch (action.getType()) {
+    protected void act(Actuators a) {
+        switch (thinkResult.getType()) {
             default: {
-                super.act(action, a);
+                super.act(a);
             }
         }
     }
     
-    private void sense(Sensors s){
-        for(Turtle t : s.see()){
+    @Override
+    public void sense(Sensors s){
+        for(Turtle t : s.see(id)){
             Long tid = t.getId();
             if(t.isHuman()){
                 if(memories.contains(MemoryOfHuman.class, tid)){
@@ -102,7 +91,7 @@ public class Zombie extends DefaultAgent{
                 }
             }
         }
-        for(Patch p : s.seePatches()){
+        for(Patch p : s.seePatches(id)){
             Long pid = p.getId();
             if(p.getZFood() > 0){
                 if(memories.contains(MemoryOfFood.class, pid)){
@@ -114,7 +103,7 @@ public class Zombie extends DefaultAgent{
                 memories.forget(MemoryOfFood.class, pid);
             }
         }
-        aroundH = s.humansAround();
+        aroundH = s.humansAround(id);
     }
 
     public int getAroundH() {

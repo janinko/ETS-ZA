@@ -70,16 +70,16 @@ to setup
 
 ; ==== TASKS sensors ====
   let tcount-z task [
-     count zombies in-radius sense-distance
+    count-z turtle ?1
   ]
   let tcount-h task [
-     count humans in-radius sense-distance
+    count-h turtle ?1
   ]
   let tsee task [
-    (turtle-set zombies humans) in-cone see-distance see-cone
+    see turtle ?1
   ]
   let tsee-patches task [
-    patches in-cone see-distance see-cone
+    see-patches turtle ?1
   ]
 
 ; ==== GBUI setting ====
@@ -104,12 +104,13 @@ end
 to step
   gbui:tick
   if random 20 = 1 [setup-h-food]
+  
   ask humans [
     pickup-ammo
     check-turn-into-zombie
-    gbui:ai-perform
   ]
-  ask zombies [
+  gbui:ai-think (turtle-set zombies humans)
+  ask (turtle-set zombies humans) [
     gbui:ai-perform
   ]
   decay  
@@ -260,6 +261,32 @@ to drop-ammo
     set ammo-boxes (ammo-boxes + ammo)
     color-patch
   ]
+end
+
+; ===== SENSORS =====
+
+to-report count-z [ x ]
+   let ret 0
+   ask x [ set ret count (zombies in-radius sense-distance) ]
+   report ret
+end
+
+to-report count-h [ x ] 
+   let ret 0
+   ask x [ set ret (count humans in-radius sense-distance) ]
+   report ret
+end
+
+to-report see [ x ]
+   let ret 0
+   ask x [ set ret ((turtle-set zombies humans) in-cone see-distance see-cone) ]
+   report ret
+end
+
+to-report see-patches [ x ]
+   let ret 0
+   ask x [ set ret (patches in-cone see-distance see-cone) ]
+   report ret
 end
 
 ; =====

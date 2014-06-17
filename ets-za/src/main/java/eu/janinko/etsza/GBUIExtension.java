@@ -15,6 +15,7 @@ public class GBUIExtension extends DefaultClassManager {
     @Override
     public void load(PrimitiveManager pm) {
         pm.addPrimitive("print-agent-info", new PrintAgentInfo(ai));
+        pm.addPrimitive("ai-think", new AIThink(ai));
         pm.addPrimitive("ai-perform", new AIPerform(ai));
         pm.addPrimitive("set-actuators", new SetActuators(ai));
         pm.addPrimitive("set-sensors", new SetSensors(ai));

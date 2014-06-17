@@ -80,28 +80,28 @@ public class Callbacks {
         private Sensors(Context ctx) {
             this.ctx = ctx;
         }
-        
-        public int zombiesAround(){
-            return ((Double) aroundZ.report(ctx, new Object[0])).intValue();
+
+        public int zombiesAround(long id) {
+            return ((Double) aroundZ.report(ctx, new Object[]{(double) id})).intValue();
         }
-        
-        public int humansAround(){
-            return ((Double) aroundH.report(ctx, new Object[0])).intValue();
+
+        public int humansAround(long id) {
+            return ((Double) aroundH.report(ctx, new Object[]{(double) id})).intValue();
         }
-        
-        public Set<Turtle> see(){
+
+        public Set<Turtle> see(long id) {
             Set<Turtle> ret = new HashSet<>();
-            AgentSet agents = (AgentSet) see.report(ctx, new Object[0]);
-            for(Agent agent : agents.agents()){
+            AgentSet agents = (AgentSet) see.report(ctx, new Object[]{(double) id});
+            for (Agent agent : agents.agents()) {
                 ret.add(new Turtle((org.nlogo.api.Turtle) agent));
             }
             return ret;
         }
 
-        public Set<Patch> seePatches(){
+        public Set<Patch> seePatches(long id) {
             Set<Patch> ret = new HashSet<>();
-            AgentSet agents = (AgentSet) seePatches.report(ctx, new Object[0]);
-            for(Agent agent : agents.agents()){
+            AgentSet agents = (AgentSet) seePatches.report(ctx, new Object[]{(double) id});
+            for (Agent agent : agents.agents()) {
                 ret.add(new Patch((org.nlogo.api.Patch) agent));
             }
             return ret;
@@ -117,23 +117,23 @@ public class Callbacks {
             this.ctx = ctx;
         }
         
-        public void rotate(Double i){
+        public synchronized void rotate(Double i){
             rotate.perform(ctx, new Object[] {i});
         }
 
-        public void move(){
+        public synchronized void move(){
             move.perform(ctx, new Object[] {});
         }
 
-        public void eat(){
+        public synchronized void eat(){
             eat.perform(ctx, new Object[] {});
         }
 
-        public void attack(long id) {
+        public synchronized void attack(long id) {
             attack.perform(ctx, new Object[] {(double) id});
         }
 
-        public void shoot(long id) {
+        public synchronized void shoot(long id) {
             attack.perform(ctx, new Object[] {(double) id});
         }
     }

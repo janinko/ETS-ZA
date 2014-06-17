@@ -3,6 +3,7 @@ package eu.janinko.etsza.ai.agents;
 
 import eu.janinko.etsza.ai.AI;
 import eu.janinko.etsza.ai.Callbacks;
+import eu.janinko.etsza.ai.Callbacks.Actuators;
 import eu.janinko.etsza.ai.brains.Brain;
 import eu.janinko.etsza.ai.goals.Goal;
 import eu.janinko.etsza.ai.goals.Utility;
@@ -19,6 +20,7 @@ import java.util.List;
  */
 public abstract class DefaultAgent implements Agent{
     protected AI ai;
+
     protected long id;
     protected double posX, posY;
     protected double heading;
@@ -27,6 +29,8 @@ public abstract class DefaultAgent implements Agent{
     protected Memories memories = new Memories();
     protected List<Utility> utilities = new ArrayList<>();
     protected List<Goal> goals = new ArrayList<>();
+
+    protected Actions.Action thinkResult;
 
     public DefaultAgent(Turtle turtle, AI ai) {
         this.ai = ai;
@@ -68,14 +72,14 @@ public abstract class DefaultAgent implements Agent{
         return memories;
     }
 
-    protected void act(Actions.Action action, Callbacks.Actuators a) {
-        switch (action.getType()) {
+    protected void act(Callbacks.Actuators a) {
+        switch (thinkResult.getType()) {
             case Move: {
                 a.move();
                 return;
             }
             case Rotate: {
-                Actions.Rotate rotate = (Actions.Rotate) action;
+                Actions.Rotate rotate = (Actions.Rotate) thinkResult;
                 a.rotate((double) rotate.getDegree());
                 return;
             }
@@ -83,13 +87,13 @@ public abstract class DefaultAgent implements Agent{
                 return;
             }
             case RotateAndMove: {
-                Actions.RotateAndMove rotateAndMove = (Actions.RotateAndMove) action;
+                Actions.RotateAndMove rotateAndMove = (Actions.RotateAndMove) thinkResult;
                 a.rotate(rotateAndMove.getDegree());
                 a.move();
                 return;
             }
             case Attack: {
-                Actions.Attack attack = (Actions.Attack) action;
+                Actions.Attack attack = (Actions.Attack) thinkResult;
                 a.attack(attack.getId());
                 return;
             }
@@ -98,10 +102,22 @@ public abstract class DefaultAgent implements Agent{
                 return;
             }
             default: {
-                throw new UnsupportedOperationException("Unknown action: " + action);
+                throw new UnsupportedOperationException("Unknown action: " + thinkResult);
             }
 
         }
+    }
+
+    @Override
+    public void think() {
+        thinkResult = brain.perform();
+    }
+
+    @Override
+    public void perform(Actuators a) {
+        if(thinkResult == null) throw new IllegalStateException("Method perform called before method think.");
+        act(a);
+        thinkResult = null;
     }
 
     @Override
