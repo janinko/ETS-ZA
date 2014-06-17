@@ -11,6 +11,28 @@ globals [
   base-TTL
   food-TTL
   h-current-food-count
+  damage-to-zombie
+  damage-to-human
+  healed-zombie
+  healed-human
+  time
+  total-time
+  zombies-count-at-end
+  humans-count-at-end
+  iterations
+  base-seed
+  seed
+  
+  gvalue
+  stayU
+  saveU
+  fearU
+  attkG
+  shotG
+  kinfG
+  heatG
+  avodG
+  pckaG
 ]
 
 humans-own [  
@@ -29,9 +51,40 @@ patches-own [
   ammo-boxes
 ]
 
+; ===== Run =====
+to runSetup
+  clear-all
+  
+  ; set stayU 20
+  ; set saveU 3
+  ; set fearU 0.7
+  ; set attkG 0.8
+  ; set shotG 0.6
+  ; set kinfG 0.3
+  ; set heatG 1
+  ; set avodG 0.7
+  ; set pckaG 0.7
+  
+  set stayU 5 ; done
+  set saveU 0 ; done
+  set fearU 0.9 ; done
+  set attkG 0.5 ; done
+  set shotG 1.0 ; done
+  set kinfG 0.2 ; done
+  set heatG 0.25 ; done
+  set avodG 0.7 ; done
+  set pckaG 0.3 ; done
+  
+  setup
+  reset-ticks
+end
+
 ; ===== SETUP =====
 to setup
-  clear-all
+  clear-turtles
+  clear-patches
+  clear-drawing
+  clear-output
   gbui:clear
 
 ; ==== set globals ====
@@ -43,9 +96,16 @@ to setup
   set human-population round (total-population * (1 - zombie-population-percent / 100))
   set zombie-population round (total-population * (zombie-population-percent / 100))
 
-  set-default-shape turtles "default" ;; arrow
+  set-default-shape turtles "person" ;; default = arrow (other person)
   set-default-shape halos "60cone"
 
+  set h-current-food-count 0
+  set time 0
+  set damage-to-zombie 0
+  set damage-to-human 0
+  set healed-zombie 0
+  set healed-human 0
+  
 
 ; ==== TASKS actuators ====
   let tmove task [
@@ -87,6 +147,7 @@ to setup
   gbui:select-brains human-brain zombie-brain
   gbui:set-sensors tcount-z tcount-h tsee tsee-patches
   gbui:set-actuators tmove trotate tattack tshoot teat
+  gbui:set-weights attkG heatG kinfG pckaG shotG avodG fearU saveU stayU
 
 
 ; ==== generate world ====
@@ -94,13 +155,17 @@ to setup
   setup-ammo
   create-humans human-population [ setup-human ]
   create-zombies zombie-population [ setup-zombie ]
-  ask turtle 1 [ make-halo ] ;;  zvyrazneni cloveka c. 1
-  ask turtle 99 [ make-halo ] ;;  zvyrazneni zombie c. 99
+  ; ask turtle 1 [ make-halo ] ;;  zvyrazneni cloveka c. 1
+  ; ask turtle 99 [ make-halo ] ;;  zvyrazneni zombie c. 99
 
-  reset-ticks
 end
 
 ; ===== STEP =====
+to runStep
+  step
+  tick
+end
+
 to step
   gbui:tick
   if random 20 = 1 [setup-h-food]
@@ -115,7 +180,83 @@ to step
   ]
   decay  
   reap
+  set time (time + 1)
+end
+
+
+; ===== ITERATE =====
+
+to itSetup
+  clear-all
+  
+  set base-seed new-seed
+  
+  set stayU 5 ; 5
+  set saveU 0 ; 0
+  set fearU 0.9 ; 0.9
+  set attkG 0.5 ; 0.5
+  set shotG 0.95 ; 0.95
+  set kinfG 0.2 ; 0.2
+  set heatG 0.5 ; 0.5
+  set avodG 0.7 ; 0.7
+  set pckaG 0.3 ; 0.3
+  
+  reset-ticks
+end
+
+to iteration
+  random-seed seed
+  gbui:set-seed seed
+  setup
+  while [count zombies > 0 and count humans > 0] [
+    step
+  ]
+  set zombies-count-at-end ( zombies-count-at-end + count zombies )
+  set humans-count-at-end ( humans-count-at-end + count humans )
+  set total-time ( total-time + time )
+  set iterations ( iterations + 1 )
+  print (word date-and-time " iterations " iterations " zombies avg: " zombies-avg " humans avg: " humans-avg " avg ticks: " time-avg)
+end
+
+to iterate
+  print (word "seed " base-seed)
+  set zombies-count-at-end 0
+  set humans-count-at-end 0
+  set total-time 0
+  set iterations 0
+  
+  set gvalue (ticks / 20)
+  set stayU gvalue
+  print (word "goals: " attkG " " heatG " " kinfG " " pckaG " " shotG " " avodG " utilities: " fearU " " saveU " " stayU)
+  while [ iterations < 50 ] [
+    set seed (base-seed + iterations)
+    iteration
+  ]
   tick
+end
+
+to-report humans-avg
+  ifelse iterations = 0 [
+    report 0
+  ][
+    report (humans-count-at-end / iterations)
+  ]
+end
+
+to-report zombies-avg
+  ifelse iterations = 0 [
+    report 0
+  ][
+    report (zombies-count-at-end / iterations)
+  ]
+end
+
+to-report time-avg
+  ifelse iterations = 0 [
+    report 0
+  ][
+    report (total-time / iterations)
+  ]
 end
 
 ; ===== FOOD =====
@@ -197,7 +338,13 @@ to attack [ target damage ]
   if can-attack target [
     ask target [
       set TTL (TTL - damage)
-      try-infect-when-attacking
+      ifelse is-zombie? self [
+        set damage-to-zombie ( damage-to-zombie + damage )
+      ][
+        set damage-to-human ( damage-to-human + damage )
+        try-infect-when-attacking
+      ]
+    ]
     if distance target > attack-distance [
       set ammo (ammo - 1)
     ]
@@ -229,7 +376,7 @@ end
 to check-turn-into-zombie
   if is-human? self and is-infected [
     ifelse infection-timeout = 0 [
-      print "Human turned into a zombie!"
+      ;print "Human turned into a zombie!"
       drop-ammo
       set breed zombies
       inform "zombifie"
@@ -320,6 +467,7 @@ to reap
   ask zombies [
     ifelse (TTL <= 0) [
       inform "die"
+      ;patch-set-z-food 1
       die
     ][
       color-TTL 54
@@ -441,7 +589,7 @@ BUTTON
 114
 53
 Setup
-setup
+runSetup
 NIL
 1
 T
@@ -488,7 +636,7 @@ BUTTON
 190
 53
 Step
-step
+runStep
 NIL
 1
 T
@@ -508,7 +656,7 @@ zombie-speed
 zombie-speed
 0.01
 1
-0.09
+0.1
 0.01
 1
 NIL
@@ -535,7 +683,7 @@ BUTTON
 263
 53
 Run
-step
+runStep
 T
 1
 T
@@ -549,21 +697,21 @@ NIL
 PLOT
 385
 600
-715
-750
-plot 1
-time
+825
+800
+zombies / humans
+Goal value
 count
 0.0
-1000.0
+1.0
 0.0
-100.0
+10.0
 true
 false
 "" ""
 PENS
-"#humans" 1.0 0 -612749 true "" "plot count humans"
-"#zombies" 1.0 0 -10899396 true "" "plot count zombies"
+"pen-2" 1.0 0 -2674135 true "" "plotxy gvalue humans-avg"
+"pen-3" 1.0 0 -13345367 true "" "plotxy gvalue zombies-avg"
 
 SWITCH
 230
@@ -630,7 +778,7 @@ h-food-count
 h-food-count
 0
 100
-10
+5
 1
 1
 NIL
@@ -715,6 +863,109 @@ starting-ammo
 1
 NIL
 HORIZONTAL
+
+BUTTON
+20
+520
+97
+553
+NIL
+iterate
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+PLOT
+835
+600
+1275
+800
+time
+Goal value
+ticks
+0.0
+1.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"pen-1" 1.0 0 -13791810 true "" "plotxy gvalue time-avg"
+
+BUTTON
+20
+485
+195
+518
+NIL
+itSetup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+100
+520
+222
+553
+iterate 0-1
+while [gvalue < 1] [iterate]
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+275
+20
+347
+53
+RunAll
+runSetup\nwhile [count zombies > 0 and count humans > 0] [\n    runStep\n]\nprint random 2000
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+225
+520
+317
+553
+NIL
+iteration
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
