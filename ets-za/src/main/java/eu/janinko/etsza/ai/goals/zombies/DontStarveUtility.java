@@ -57,4 +57,21 @@ public class DontStarveUtility implements Utility<Zombie>{
             plan.setLinking(plan.getLiking() * afterTTL / treshold);
         }
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 23 * hash + (int) (Double.doubleToLongBits(this.treshold) ^ (Double.doubleToLongBits(this.treshold) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final DontStarveUtility other = (DontStarveUtility) obj;
+        if (Double.doubleToLongBits(this.treshold) != Double.doubleToLongBits(other.treshold))
+            return false;
+        return true;
+    }
 }

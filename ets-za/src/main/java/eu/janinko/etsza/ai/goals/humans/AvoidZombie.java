@@ -71,4 +71,21 @@ public class AvoidZombie implements Goal<Human>{
         plans.add(plan);
         return plans;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 83 * hash + (int) (Double.doubleToLongBits(this.priority) ^ (Double.doubleToLongBits(this.priority) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final AvoidZombie other = (AvoidZombie) obj;
+        if (Double.doubleToLongBits(this.priority) != Double.doubleToLongBits(other.priority))
+            return false;
+        return true;
+    }
 }

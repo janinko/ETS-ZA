@@ -99,4 +99,21 @@ public class ZombieAttack implements Goal<Zombie>{
 		}*/
         return plans;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 79 * hash + (int) (Double.doubleToLongBits(this.priority) ^ (Double.doubleToLongBits(this.priority) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final ZombieAttack other = (ZombieAttack) obj;
+        if (Double.doubleToLongBits(this.priority) != Double.doubleToLongBits(other.priority))
+            return false;
+        return true;
+    }
 }

@@ -59,4 +59,21 @@ public class HumanEat implements Goal<Human>{
 		}
         return plans;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + (int) (Double.doubleToLongBits(this.priority) ^ (Double.doubleToLongBits(this.priority) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final HumanEat other = (HumanEat) obj;
+        if (Double.doubleToLongBits(this.priority) != Double.doubleToLongBits(other.priority))
+            return false;
+        return true;
+    }
 }

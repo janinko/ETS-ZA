@@ -79,4 +79,21 @@ public class DangerUtility implements Utility<Human>{
             }
         }
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 47 * hash + (int) (Double.doubleToLongBits(this.acceptedDanger) ^ (Double.doubleToLongBits(this.acceptedDanger) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final DangerUtility other = (DangerUtility) obj;
+        if (Double.doubleToLongBits(this.acceptedDanger) != Double.doubleToLongBits(other.acceptedDanger))
+            return false;
+        return true;
+    }
 }

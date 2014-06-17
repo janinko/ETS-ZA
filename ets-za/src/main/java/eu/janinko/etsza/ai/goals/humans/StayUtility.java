@@ -41,4 +41,20 @@ public class StayUtility implements Utility<Human>{
             }
         }
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (int) (Double.doubleToLongBits(this.mod) ^ (Double.doubleToLongBits(this.mod) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final StayUtility other = (StayUtility) obj;
+        if (Double.doubleToLongBits(this.mod) != Double.doubleToLongBits(other.mod)) return false;
+        return true;
+    }
 }

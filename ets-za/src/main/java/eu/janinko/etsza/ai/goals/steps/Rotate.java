@@ -26,4 +26,21 @@ public class Rotate implements Step {
         return 1;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + (int) (Double.doubleToLongBits(this.angle) ^ (Double.doubleToLongBits(this.angle) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final Rotate other = (Rotate) obj;
+        if (Double.doubleToLongBits(this.angle) != Double.doubleToLongBits(other.angle))
+            return false;
+        return true;
+    }
+
 }

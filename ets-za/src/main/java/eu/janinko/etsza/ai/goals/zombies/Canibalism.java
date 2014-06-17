@@ -36,4 +36,21 @@ public class Canibalism implements Utility<Zombie>{
         }
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + (int) (Double.doubleToLongBits(this.canibalismRate) ^ (Double.doubleToLongBits(this.canibalismRate) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final Canibalism other = (Canibalism) obj;
+        if (Double.doubleToLongBits(this.canibalismRate) != Double.doubleToLongBits(other.canibalismRate))
+            return false;
+        return true;
+    }
+
 }

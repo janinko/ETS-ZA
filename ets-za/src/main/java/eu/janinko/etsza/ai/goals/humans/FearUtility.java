@@ -33,4 +33,20 @@ public class FearUtility implements Utility<Human>{
             }
         }
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + (int) (Double.doubleToLongBits(this.ttl) ^ (Double.doubleToLongBits(this.ttl) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final FearUtility other = (FearUtility) obj;
+        if (Double.doubleToLongBits(this.ttl) != Double.doubleToLongBits(other.ttl)) return false;
+        return true;
+    }
 }

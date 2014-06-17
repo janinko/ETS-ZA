@@ -43,4 +43,20 @@ public class SaveAmmoUtility implements Utility<Human>{
             }
         }
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 41 * hash + (int) (Double.doubleToLongBits(this.mod) ^ (Double.doubleToLongBits(this.mod) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final SaveAmmoUtility other = (SaveAmmoUtility) obj;
+        if (Double.doubleToLongBits(this.mod) != Double.doubleToLongBits(other.mod)) return false;
+        return true;
+    }
 }

@@ -59,4 +59,21 @@ public class ZombieEat implements Goal<Zombie>{
 		}
         return plans;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + (int) (Double.doubleToLongBits(this.priority) ^ (Double.doubleToLongBits(this.priority) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final ZombieEat other = (ZombieEat) obj;
+        if (Double.doubleToLongBits(this.priority) != Double.doubleToLongBits(other.priority))
+            return false;
+        return true;
+    }
 }

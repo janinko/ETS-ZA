@@ -62,4 +62,21 @@ public class ShootZombie implements Goal<Human>{
 		}
         return plans;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 37 * hash + (int) (Double.doubleToLongBits(this.priority) ^ (Double.doubleToLongBits(this.priority) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final ShootZombie other = (ShootZombie) obj;
+        if (Double.doubleToLongBits(this.priority) != Double.doubleToLongBits(other.priority))
+            return false;
+        return true;
+    }
 }
