@@ -17,7 +17,7 @@ public class HumanGoalBasedBrain extends DefaultGoalBasedBrain<Human>{
 
 	public HumanGoalBasedBrain(Human owner, AI ai) {
 		super(owner, ai);
-        r = ai.getRandom();
+        r = ai.getRandom((int) owner.getId());
 	}
 
     @Override

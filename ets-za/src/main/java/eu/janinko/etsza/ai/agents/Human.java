@@ -27,7 +27,6 @@ import eu.janinko.etsza.util.WorldMath;
 import eu.janinko.etsza.wrapper.Patch;
 import eu.janinko.etsza.wrapper.Turtle;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 /**
@@ -46,7 +45,6 @@ public class Human extends DefaultAgent {
         ammo = turtle.getAmmo();
 
         brain = new HumanMemoryBrain(this, ai);
-        Random random = ai.getRandom();
         GoalConfig gc = ai.getAgents().getGoalConfig();
 
         //utilities.add(new DangerUtility(0, ai));

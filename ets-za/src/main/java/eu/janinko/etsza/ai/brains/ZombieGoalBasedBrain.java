@@ -17,7 +17,7 @@ public class ZombieGoalBasedBrain extends DefaultGoalBasedBrain<Zombie>{
 
 	public ZombieGoalBasedBrain(Zombie owner, AI ai) {
 		super(owner, ai);
-        r = ai.getRandom();
+        r = ai.getRandom((int) owner.getId());
 	}
 
     @Override

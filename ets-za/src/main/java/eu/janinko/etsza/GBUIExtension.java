@@ -25,6 +25,7 @@ public class GBUIExtension extends DefaultClassManager {
         pm.addPrimitive("inform", new Inform(ai));
         pm.addPrimitive("set-settings", new SetSettings(ai));
         pm.addPrimitive("set-weights", new SetWeights(ai));
+        pm.addPrimitive("set-seed", new SetSeed(ai));
     }
 
     @Override

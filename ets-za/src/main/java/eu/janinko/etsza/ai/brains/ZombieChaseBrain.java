@@ -19,7 +19,7 @@ public class ZombieChaseBrain extends DefaultBrain<Zombie>{
 
 	public ZombieChaseBrain(Zombie owner, AI ai) {
 		super(owner, ai);
-        r = ai.getRandom();
+        r = ai.getRandom((int) owner.getId());
 	}
 
 	@Override

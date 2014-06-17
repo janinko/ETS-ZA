@@ -18,7 +18,7 @@ public class ZombieBasicBrain extends DefaultBrain<Zombie> {
 
     public ZombieBasicBrain(Zombie owner, AI ai) {
         super(owner, ai);
-        r = ai.getRandom();
+        r = ai.getRandom((int) owner.getId());
     }
 
     @Override

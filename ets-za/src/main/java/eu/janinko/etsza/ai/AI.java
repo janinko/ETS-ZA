@@ -25,7 +25,7 @@ public class AI {
     private static final ExecutorService es = Executors.newFixedThreadPool(10);
 
     private Callbacks cb;
-    private Random random;
+    private long seed;
     private Agents agents;
     private WorldConfig wc;
     private WorldMath wm;
@@ -42,7 +42,6 @@ public class AI {
     
     private void init(){
         cb = new Callbacks();
-        random = new Random();
         wc = new WorldConfig();
         wm = new WorldMath(wc.getWidth(), wc.getHeight());
         agents = new Agents(this);
@@ -57,8 +56,8 @@ public class AI {
         return agents;
     }
 
-    public Random getRandom() {
-        return random;
+    public Random getRandom(int id) {
+        return new Random(seed);
     }
 
     public void tick() {
@@ -81,6 +80,10 @@ public class AI {
 		this.wc = wc;
         wm = new WorldMath(wc.getWidth(), wc.getHeight());
 	}
+
+    public void setSeed(long seed) {
+        this.seed = seed;
+    }
 
     public void think(Set<Turtle> turtles, Context ctx) {
         Sensors s = cb.getSensors(ctx);
